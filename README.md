@@ -1,3 +1,7 @@
 # jiagnjw.top-hexo
+here is my blog:
+<a>jiangjw.top<a>
 
-my blog is jiangjw.top , here is the hexo source .md file for my blog.
+this repo contains the hexo source .md file for my blog.
+
+About some articles about leetcode answer, redis , c++ , linux server and so on.
