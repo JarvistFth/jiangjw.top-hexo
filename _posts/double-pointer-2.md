@@ -346,6 +346,4 @@ public:
         return dummy->next;
     }
 };
-
-t
 ```
