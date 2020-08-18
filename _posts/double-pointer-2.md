@@ -229,3 +229,122 @@ public:
     
 };
 ```
+
+# 接雨水
+https://leetcode-cn.com/problems/trapping-rain-water/
+
+这题还挺难理解的。。。
+
+当然O(n^2)的方法还是比较好写的，两重循环，对于每次的height[i]找其左右的最大值。ans就是左右最大值的最小值和height[i]的差值。
+
+链接：https://leetcode-cn.com/problems/trapping-rain-water/solution/jie-yu-shui-by-leetcode/
+```C++
+int trap(vector<int>& height)
+{
+    int ans = 0;
+    int size = height.size();
+    for (int i = 1; i < size - 1; i++) {
+        int max_left = 0, max_right = 0;
+        for (int j = i; j >= 0; j--) { //Search the left part for max bar size
+            max_left = max(max_left, height[j]);
+        }
+        for (int j = i; j < size; j++) { //Search the right part for max bar size
+            max_right = max(max_right, height[j]);
+        }
+        ans += min(max_left, max_right) - height[i];
+    }
+    return ans;
+}
+
+```
+
+双指针法比较巧妙，O(n)的时间复杂度。主要想法是对于一个height[i]，如果我们确定了一边的较高值，那么ans就由另一边的较低值确定。所以对于height[l]<height[r]，其是由leftMaxHeight确定装雨水的量。所以如果当前height[l]是大于leftMaxHeight，就更新leftMaxHeight；否则的话这时候height[l]刚好处于凹陷的状态，ans=leftMaxHeight - height[l]。
+
+同样的，当height[l]>=height[r]就是相反的状态。
+
+```C++
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        if(height.size() < 3){
+            return 0;
+        }
+        int l=0,r=height.size()-1;
+        int leftMaxHeight = 0, rightMaxHeight = 0;
+        int ans = 0;
+        while(l<r){
+            if(height[l]<height[r]){
+                if(height[l] > leftMaxHeight){
+                    leftMaxHeight = height[l];
+                }else{
+                    ans+=leftMaxHeight - height[l];
+                }
+                l++;
+            }else{
+                if(height[r] > rightMaxHeight){
+                    rightMaxHeight = height[r];
+                }else{
+                    ans+=rightMaxHeight - height[r];
+                }
+                r--;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+# 86. 分隔链表
+https://leetcode-cn.com/problems/partition-list/
+
+双指针，先找到第一个>=x的节点q及其前一个节点p；其前一个节点就是要插入的头节点。然后用一个指针指向p，一个指向q的后继节点。如果q的后继节点<x就将其插入到p->next中。然后p再往后移动。
+
+这里要注意的是可能要插入到head以前，所以最好先定义一个虚拟头节点。
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        if(head == NULL){
+            return NULL;
+        }
+
+        ListNode* dummy = new ListNode(-1);
+        dummy->next = head;
+
+        ListNode* p = dummy;
+        ListNode* q = dummy;
+
+        while(p->next != NULL && p->next->val<x){
+            p = p->next;
+        }
+
+        //p is the insert header
+        if(p->next == NULL){
+            return head;
+        }
+        q = p->next; 
+        while(q->next != NULL){
+            if(q->next->val < x){
+                auto pnext = p->next;
+                p->next = q->next;
+                q->next = q->next->next;
+                p->next->next = pnext;
+                p = p->next;
+            }else{
+                q = q->next;
+            }     
+        }
+        return dummy->next;
+    }
+};
+
+```
