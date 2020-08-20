@@ -256,6 +256,12 @@ public:
 # 239. 滑动窗口最大值
 https://leetcode-cn.com/problems/sliding-window-maximum/
 
+维护一个单调双端队列作为窗口，每次将数组元素下标入窗。当队头元素下标超出窗口大小k时，队头元素出窗。此时window.front()<=此时元素下标-k。
+
+同样，如果入窗的元素大于窗内末尾元素，就将窗口末尾元素出窗。这样就可以维持队头元素是最大值。
+
+当窗口超过k的时候，将此时队头元素（也就是最大值的下标）送入ans。
+
 ```C++
 class Solution {
 public:
@@ -268,7 +274,7 @@ public:
         
 
         while(right<nums.size()){
-            if(!window.empty() && window.front() == right-k){
+            while(!window.empty() && window.front() <= right-k){
                 window.pop_front();
             }
             while(!window.empty() && nums[right]>nums[window.back()]){
@@ -285,3 +291,42 @@ public:
     }
 };
 ```
+
+# 424. 替换后的最长重复字符
+https://leetcode-cn.com/problems/longest-repeating-character-replacement/
+
+模板走起。先入窗，当需要替换的字符大于k的时候，也就是窗口长度-最长重复字符长度>k时，窗口收缩。所以定义一个变量count计算当前窗口最长重复字符的长度。
+
+最后每次窗口右移就更新一下最长重复字符长度。
+
+```C++
+class Solution {
+public:
+    int characterReplacement(string s, int k) {
+        unordered_map<char,int> window;
+
+        int left=0,right=0;
+        int ans = 0;
+        int count = 0;
+
+        while(right<s.size()){
+            char c = s[right];
+            window[c]++;
+            count = max(count,window[c]);
+
+            while(right-left+1 > count+ k){
+                char d = s[left];
+                window[d]--;
+                left++;
+            }
+
+            ans = max(ans,right-left+1);
+            right++;
+        }
+
+        return ans;
+
+    }
+};
+```
+

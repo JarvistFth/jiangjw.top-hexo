@@ -486,3 +486,37 @@ public:
     }
 };
 ```
+
+# # 1498. 满足条件的子序列数目
+https://leetcode-cn.com/problems/number-of-subsequences-that-satisfy-the-given-sum-condition/
+
+先排序，然后二分查找当前元素可以加的最大值；在这个最大值元素前的所有元素都可以成为子序列。
+然后计算子序列的数量。数量通过枚举得到，确定一个当前元素后，每新有n个元素，可以构成2^n种可能选择。
+
+```C++
+class Solution {
+public:
+    int numSubseq(vector<int>& nums, int target) {
+        sort(nums.begin(),nums.end());
+        int mod = 1e9+7;
+
+        int ans = 0;
+        vector<int> dp(nums.size());
+        dp[0] = 1;
+        for(int i=1;i<nums.size();i++){
+            dp[i] = (long long)dp[i-1]*2 % mod;
+        }
+        for (int i = 0; i < nums.size() && nums[i] * 2 <= target; ++i) {
+            int remain = target - nums[i];
+            int index = upper_bound(nums.begin(),nums.end(),remain)- nums.begin() - 1;
+            int contribute = (index >= i) ? dp[index - i] : 0;
+            ans = (ans + contribute) % mod;            
+        }
+
+        return ans;
+
+
+        
+    }
+};
+```
