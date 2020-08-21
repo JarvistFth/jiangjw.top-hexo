@@ -2,7 +2,9 @@
 title: double-pointer-3/4
 date: 2020-08-15 20:23:20
 tags: [leetcode,双指针]
-categories: leetcode-doublePointer
+categories: 
+- leetcode
+- 双指针2
 ---
 LeetCode双指针，第3第4页题目。
 <!---more--->

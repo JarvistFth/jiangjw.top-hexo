@@ -1,10 +1,10 @@
 ---
 title: leetcode-tree-backtrack
 date: 2020-07-13 00:25:39
-categories: leetcode-tree
-tags: 
-    leetcode 
-    树
+categories: 
+- leetcode
+- 树
+tags: [leetcode,树]
 ---
 遍历过程可能需要回溯，核心是，遍历前做选择；遍历后取消选择。
 <!---more--->

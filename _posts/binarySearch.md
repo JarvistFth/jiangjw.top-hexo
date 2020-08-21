@@ -1,7 +1,9 @@
 ---
 title: binarySearch
 date: 2020-07-29 23:43:11
-categories: leetcode-binarySearch
+categories: 
+- leetcode
+- 二分查找
 tags: [leetcode ,二分查找]
 keywords: [leetcode,二分查找]
 ---

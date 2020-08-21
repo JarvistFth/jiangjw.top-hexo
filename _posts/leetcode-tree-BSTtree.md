@@ -1,10 +1,10 @@
 ---
 title: leetcode-tree-BSTtree
 date: 2020-06-25 17:22:20
-categories: leetcode-tree
-tags: 
-    leetcode 
-    树
+categories: 
+- leetcode
+- 树
+tags: [leetcode,树]
 ---
 
 二叉搜索树
@@ -446,6 +446,28 @@ public:
             maxFreq = currentFreq;
         }
         dfs(root->right,preval,currentFreq,maxFreq,ans);
+    }
+};
+```
+
+
+## 验证二叉搜索树
+<a>https://leetcode-cn.com/problems/validate-binary-search-tree/</a>
+
+看到二叉搜索树首先想到中序遍历
+先遍历左子树，然后记录左子树的值；
+访问根节点，将根节点的值和记录左子树的值作比较，符合返回true，否则返回false；
+用根节点的值更新记录值，遍历右子树，用于与右子树的值进行比较。
+
+```C++
+class Solution {
+public:
+    long pre = LONG_MIN;
+    bool isValidBST(TreeNode* root) {
+        if(root == NULL){
+            return true;
+        }
+        return isValidBST(root->left) && pre < (pre = root->val) && isValidBST(root->right);
     }
 };
 ```

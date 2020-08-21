@@ -1,10 +1,10 @@
 ---
 title: leetcode-tree-base
 date: 2020-06-25 17:19:31
-categories: leetcode-tree
-tags: 
-    leetcode 
-    树
+categories: 
+- leetcode
+- 树
+tags: [leetcode,树]
 ---
 树的基本特性，例如深度、高度等特性，类型的题目。
 <!---more--->

@@ -1,7 +1,9 @@
 ---
 title: leetcode-tree-path
 date: 2020-06-25 17:21:51
-categories: leetcode-tree
+categories: 
+- leetcode
+- 树
 tags: [leetcode ,树]
 ---
 
@@ -9,6 +11,62 @@ tags: [leetcode ,树]
 <!---more--->
 # 前序遍历
 
+## N叉树的前序遍历
+https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/
+
+经典前序遍历
+递归
+```C++
+
+class Solution {
+public:
+    vector<int> ret;
+    vector<int> preorder(Node* root) {
+        if(root == nullptr){
+            return {};
+        }
+        ret.push_back(root->val);
+        for(auto c:root->children){
+            preorder(c);
+        }
+        return ret;
+
+        
+    }
+};
+```
+非递归，先将右节点入栈，访问就先从左节点开始了。
+```C++
+class Solution {
+public:
+    vector<int> ret;
+    stack<Node*> s;
+    vector<int> preorder(Node* root) {
+        if(root == nullptr){
+            return {};
+        }
+        //
+        // ret.push_back(root->val);
+        // for(auto c:root->children){
+        //     preorder(c);
+        // }
+        // return ret;
+
+        s.push(root);
+        while(!s.empty()){
+            Node* node = s.top();
+            s.pop();
+            ret.push_back(node->val);
+            for(int i=node->children.size()-1;i>=0;i--){
+                s.push(node->children[i]);
+            }
+        }
+        return ret;
+
+        
+    }
+};
+```
 ## 971. 翻转二叉树以匹配先序遍历
 https://leetcode-cn.com/problems/flip-binary-tree-to-match-preorder-traversal/
 前序遍历，如果当前root节点和voyage的当前下标的值不相等，清空vector返回-1；如果有左子树，并且左子树的值和voyage下一个值不相等，翻转（左右子树交换遍历顺序，先右后左），否则正常遍历。

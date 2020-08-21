@@ -1,7 +1,9 @@
 ---
 title: leetcode-tree-double-recursion
 date: 2020-06-28 23:31:55
-categories: leetcode-tree
+categories: 
+- leetcode
+- 树
 tags: [leetcode ,树]
 ---
 一些问题经常会用到双重递归的办法，一般都是要每个根节点都与一个列表/树进行比较，外层递归负责移动root，里层递归负责对比。

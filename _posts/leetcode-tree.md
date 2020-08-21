@@ -1,33 +1,15 @@
 ---
 title: leetcode-tree[1]
 date: 2020-06-23 13:55:54
-categories: leetcode-tree
+categories: 
+- leetcode
+- 树
 tags: [leetcode ,树]
 
 ---
 树系列
 <!---more--->
 
-## 验证二叉搜索树
-<a>https://leetcode-cn.com/problems/validate-binary-search-tree/</a>
-
-看到二叉搜索树首先想到中序遍历
-先遍历左子树，然后记录左子树的值；
-访问根节点，将根节点的值和记录左子树的值作比较，符合返回true，否则返回false；
-用根节点的值更新记录值，遍历右子树，用于与右子树的值进行比较。
-
-```C++
-class Solution {
-public:
-    long pre = LONG_MIN;
-    bool isValidBST(TreeNode* root) {
-        if(root == NULL){
-            return true;
-        }
-        return isValidBST(root->left) && pre < (pre = root->val) && isValidBST(root->right);
-    }
-};
-```
 
 ## 节点与其祖先之间的最大差值
 <a>https://leetcode-cn.com/problems/maximum-difference-between-node-and-ancestor/</a>
@@ -191,63 +173,8 @@ public:
     }
 };
 ```
- 
-## N叉树的前序遍历
-https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/
 
-经典前序比遍历
-递归
-```C++
 
-class Solution {
-public:
-    vector<int> ret;
-    vector<int> preorder(Node* root) {
-        if(root == nullptr){
-            return {};
-        }
-        ret.push_back(root->val);
-        for(auto c:root->children){
-            preorder(c);
-        }
-        return ret;
-
-        
-    }
-};
-```
-非递归，先将右节点入栈，访问就先从左节点开始了。
-```C++
-class Solution {
-public:
-    vector<int> ret;
-    stack<Node*> s;
-    vector<int> preorder(Node* root) {
-        if(root == nullptr){
-            return {};
-        }
-        //
-        // ret.push_back(root->val);
-        // for(auto c:root->children){
-        //     preorder(c);
-        // }
-        // return ret;
-
-        s.push(root);
-        while(!s.empty()){
-            Node* node = s.top();
-            s.pop();
-            ret.push_back(node->val);
-            for(int i=node->children.size()-1;i>=0;i--){
-                s.push(node->children[i]);
-            }
-        }
-        return ret;
-
-        
-    }
-};
-```
 ## 二叉树中第二小的节点
 https://leetcode-cn.com/problems/second-minimum-node-in-a-binary-tree/
 

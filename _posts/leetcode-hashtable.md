@@ -1,7 +1,9 @@
 ---
 title: leetcode-hashtable
 date: 2020-08-04 18:44:54
-categories: leetcode-hashtable
+categories: 
+- leetcode
+- 哈希表
 tags: [leetcode ,哈希表]
 keywords: [leetcode,哈希表]
 ---

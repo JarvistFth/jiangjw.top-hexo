@@ -1,8 +1,10 @@
 ---
 title: leetcode-tree-buildtree
 date: 2020-06-25 17:19:47
-categories: leetcode-tree
-tags:
+categories: 
+- leetcode
+- 树
+tags: [leetcode,树]
 ---
 
 构造二叉树系列

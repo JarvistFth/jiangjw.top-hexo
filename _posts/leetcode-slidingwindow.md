@@ -1,7 +1,9 @@
 ---
 title: leetcode-slidingwindow
 date: 2020-08-19 21:18:11
-categories: leetcode-slidingwindow
+categories: 
+- leetcode
+- 滑动窗口
 tags: [leetcode ,滑动窗口]
 keywords: [leetcode,滑动窗口]
 ---
@@ -326,6 +328,98 @@ public:
 
         return ans;
 
+    }
+};
+```
+
+# 1456. 定长子串中元音的最大数目
+https://leetcode-cn.com/problems/maximum-number-of-vowels-in-a-substring-of-given-length/
+
+入窗；窗口长度>=k时出窗。出窗时更新最长长度。当出窗和入窗是元音字母的时候，更新当前元音字母数量。
+
+```C++
+class Solution {
+public:
+    int maxVowels(string s, int k) {
+
+        int left=0,right=0;
+        int ans = 0;
+        int count = 0;
+
+        while(right<s.size()){
+            char c = s[right];
+            
+            if(c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u'){
+                count++;
+            }
+
+            while(right-left+1 >= k){
+                ans = max(ans,count);
+                char d = s[left];
+                if(d == 'a' || d == 'e' || d == 'i' || d == 'o' || d == 'u'){
+                    count--;
+                }
+                left++;
+                
+            }
+            right++;  
+        }
+        return ans;
+
+
+    }
+};
+```
+
+# 567. 字符串的排列
+
+字符串模板；入窗；如果入窗的字符是子串中的字符，入窗的map对应字符++，表示窗口内有该字符；当窗口内的某一字符数和子串中对应字符的数量相等时，表明子串中有一个字符已经符合结果；
+
+当窗口长度大于子串长度时，开始出窗；当子串所有字符都符合结果，也就是valid==need.size()时，返回true。判断出窗字符是不是在子串中，如果是，更新window；再看出窗字符中window保存的数量是不是子串中保存的数量，如果是，出窗后valid应该--，表明子串中仍有未满足的字符。
+
+最后返回false。
+
+```C++
+class Solution {
+public:
+    bool checkInclusion(string s1, string s2) {
+        unordered_map<char,int> need,window;
+
+        for(auto c:s1){
+            need[c]++;
+        }
+
+        int left=0,right=0;
+        int valid = 0;
+
+        while(right<s2.size()){
+            char c = s2[right];
+            if(need.count(c)){
+                window[c]++;
+                if(need[c] == window[c]){
+                    valid++;
+                }
+            }
+            
+
+            while(right-left+1 >= s1.size()){
+                if(valid == need.size()){
+                    return true;
+                }
+                char d = s2[left];
+                if(need.count(d)){
+                    if(window[d] == need[d]){
+                        valid--;
+                    }
+                    window[d]--;
+                }
+                left++;
+            }
+            right++;
+
+
+        }
+        return false;
     }
 };
 ```

@@ -2,7 +2,9 @@
 title: double-pointer-1/2
 date: 2020-08-09 01:50:27
 tags: [leetcode,双指针]
-categories: leetcode-doublePointer
+categories: 
+- leetcode
+- 双指针1
 ---
 
 双指针主要分两种，一种是快慢指针，一般用来解决链表问题，比如判断链表是否有环；另一种是左右指针，解决数组或字符串的问题。（来自labuladong的算法小抄）。

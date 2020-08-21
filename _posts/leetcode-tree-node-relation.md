@@ -1,7 +1,9 @@
 ---
 title: leetcode-tree-node-relation
 date: 2020-06-25 17:21:33
-categories: leetcode-tree
+categories: 
+- leetcode
+- 树
 tags: [leetcode ,树]
     
 ---

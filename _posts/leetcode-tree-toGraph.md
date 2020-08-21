@@ -1,10 +1,10 @@
 ---
 title: leetcode-tree-toGraph
 date: 2020-07-11 12:42:43
-categories: leetcode-tree
-tags: 
-    leetcode 
-    树
+categories: 
+- leetcode
+- 树
+tags: [leetcode,树]
 ---
 
 

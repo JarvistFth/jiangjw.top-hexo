@@ -1,7 +1,9 @@
 ---
 title: leetcode-树-分类
 date: 2020-06-25 13:53:07
-categories: leetcode-tree
+categories: 
+- leetcode
+- 树
 tags: [leetcode ,树]
 keywords: [leetcode,树]
 
