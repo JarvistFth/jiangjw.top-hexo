@@ -8,8 +8,8 @@ tags: [leetcode ,滑动窗口]
 keywords: [leetcode,滑动窗口]
 ---
 
-参考labudalong大佬的滑动窗口框架；一些是适用于字符串，一些则不是。
-
+参考labudalong大佬的滑动窗口框架；一些是适用于给定子串，一些则不是，但是需要维护window。
+window的维护，有的选deque，有选priority_queue的。
 <!---more--->
 
 滑动窗口框架：
@@ -294,6 +294,56 @@ public:
 };
 ```
 
+# 剑指 Offer 59 - II. 队列的最大值
+https://leetcode-cn.com/problems/dui-lie-de-zui-da-zhi-lcof/
+
+和上题基本一致，维护一个deque，最大值放在队列头；当存入的value大于队尾元素时，将队尾元素出队；当从队头出队时，判断一下是不是deque的队列头，如果是deque也出队。
+
+```C++
+class MaxQueue {
+public:
+    MaxQueue() {
+
+    }
+    
+    int max_value() {
+        return deque.empty()?-1:deque.front();
+    }
+    
+    void push_back(int value) {
+        queue.push(value);
+        while(!deque.empty() && deque.back()<value){
+            deque.pop_back();
+        }
+        deque.push_back(value);
+    }
+    
+    int pop_front() {
+        if(queue.empty()){
+            return -1;
+        }
+        int val = queue.front();
+        queue.pop();
+        if(deque.front() == val){
+            deque.pop_front();
+        }
+        return val;
+    }
+
+private:
+    deque<int> deque;
+    queue<int> queue;
+};
+
+/**
+ * Your MaxQueue object will be instantiated and called as such:
+ * MaxQueue* obj = new MaxQueue();
+ * int param_1 = obj->max_value();
+ * obj->push_back(value);
+ * int param_3 = obj->pop_front();
+ */
+```
+
 # 424. 替换后的最长重复字符
 https://leetcode-cn.com/problems/longest-repeating-character-replacement/
 
@@ -424,3 +474,62 @@ public:
 };
 ```
 
+# 面试题 17.18. 最短超串
+最短子串类问题，框架走起。注意这里说的是返回最左端的端点，开始多想了怎么保证是最左端；后来发现在下面这里就确定了。
+```C++
+                //right-left<len 就保证了是最左端；如果改为<=len，就是最右端。
+                if(right-left < len){
+                    start = left;
+                    len = right-left;
+                }
+```
+完整代码和上面有一题最短子串也差不多。
+
+```C++
+class Solution {
+public:
+    vector<int> shortestSeq(vector<int>& big, vector<int>& small) {
+        unordered_map<int,int> need,window;
+
+        for(auto i:small){
+            need[i]++;
+        }
+
+        int left=0,right=0;
+        int valid = 0;
+        int start=0,len=INT_MAX;
+        while(right<big.size()){
+            int c = big[right];
+            right++;
+
+            if(need.count(c)){
+                window[c]++;
+                if(need[c] == window[c]){
+                    valid++;
+                }
+            }
+
+            while(valid == need.size()){
+                if(right-left < len){
+                    start = left;
+                    len = right-left;
+                }
+                int d = big[left];
+                left++;
+                if(need.count(d)){
+                    if(window[d] == need[d]){
+                        valid--;
+                    }
+                    window[d]--;
+                } 
+            }
+        }
+        if(len == INT_MAX){
+            return {};
+        }
+        return {start,start+len-1};
+
+
+    }
+};
+```
