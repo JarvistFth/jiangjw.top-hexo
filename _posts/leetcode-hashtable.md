@@ -66,3 +66,67 @@ public:
     }
 };
 ```
+
+# 532. 数组中的K-diff数对
+https://leetcode-cn.com/problems/k-diff-pairs-in-an-array/
+
+先将数组放入哈希表；然后再哈希表中找当前的值+k在哈希表中是否存在；如果存在ans++。因为这里只返回一个数对，所以(1,3)和(3,1)是一样的，所以直接正向+k就可以。另外注意需要特判k是否为0 。如果是的话，只有出现次数大于1的数字，才能作为数对进行返回。
+
+```C++
+class Solution {
+public:
+    int findPairs(vector<int>& nums, int k) {
+        unordered_map<int,int> map;
+        int ans = 0;
+        if(k<0){
+            return 0;
+        }
+
+        for(auto n:nums){
+            map[n]++;
+        }
+
+        if(k == 0){
+            for(auto m:map){
+                if(m.second > 1){
+                    ans++;
+                }
+            }
+            return ans;
+        }
+
+
+        for(auto m:map){
+            if(map.count(m.first+k)){
+                ans++;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+# 350. 两个数组的交集 II
+第一个数组放入map，遍历第二个数组，在map中找当前元素出现过的次数；如果大于0，证明有交集，这时候输出到ans中，并且让出现的次数-1。
+
+```C++
+class Solution {
+public:
+    vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
+        unordered_map<int,int> map;
+        vector<int> ans;
+
+        for(auto n:nums1){
+            map[n]++;
+        }
+
+        for(auto n:nums2){
+            if(map[n] > 0){
+                map[n]--;
+                ans.push_back(n);
+            }
+        }
+        return ans;
+    }
+};
+```

@@ -299,10 +299,47 @@ public:
 # 86. 分隔链表
 https://leetcode-cn.com/problems/partition-list/
 
-双指针，先找到第一个>=x的节点q及其前一个节点p；其前一个节点就是要插入的头节点。然后用一个指针指向p，一个指向q的后继节点。如果q的后继节点<x就将其插入到p->next中。然后p再往后移动。
+新建两个链表，一个存放比x小的元素，一个存放比x大的元素；然后将小的链表和大的链表合起来就可以了。
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        if(head == NULL){
+            return NULL;
+        }
 
-这里要注意的是可能要插入到head以前，所以最好先定义一个虚拟头节点。
+        ListNode* smallDummy = new ListNode(-1);
+        ListNode* bigDummy = new ListNode(-1);
 
+        ListNode* smallCur = smallDummy;
+        ListNode* bigCur = bigDummy;
+
+        while(head != NULL){
+            if(head->val < x){
+                smallCur->next = head;
+                smallCur = smallCur->next;
+            }else{
+                bigCur->next = head;
+                bigCur = bigCur->next;
+            }
+            head = head->next;
+        }
+        smallCur->next = bigDummy->next;
+        bigCur->next = NULL;
+        return smallDummy->next;
+    }
+};
+```
+原地修改的代码想法是先找到第一个比x小的元素的前一个节点p，作为插入的头节点。然后再在这个节点的后一个节点开始寻找比x小的节点，把它插入到p的后面。
+原地修改版代码：
 ```C++
 /**
  * Definition for singly-linked list.
@@ -329,11 +366,13 @@ public:
             p = p->next;
         }
 
-        //p is the insert header
+        //p is the insert point
         if(p->next == NULL){
             return head;
         }
+        //q is the first node that are more than or equal to x
         q = p->next; 
+        
         while(q->next != NULL){
             if(q->next->val < x){
                 auto pnext = p->next;

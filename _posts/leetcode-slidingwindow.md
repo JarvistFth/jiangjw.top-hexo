@@ -533,3 +533,47 @@ public:
     }
 };
 ```
+
+# 1248. 统计「优美子数组」
+https://leetcode-cn.com/problems/count-number-of-nice-subarrays/
+入窗；当奇数数目为k时，出窗；出窗时子数组数量+1；因为题目不是只包含奇数的子数组，所以可以有偶数。但是和上面一些题目不同的是，当奇数数目小于k时，也符合要求，所以我们这时候要把之前所有符合要求的子数组数目都加上。
+
+```C++
+class Solution {
+public:
+    int numberOfSubarrays(vector<int>& nums, int k) {
+        int ans = 0;
+
+        int left=0,right=0;
+        int count = 0;
+        int temp = 0;
+
+        while(right<nums.size()){
+            if(count < k){
+                int c = nums[right];
+                right++;
+                if(c % 2 != 0){
+                    count++;
+                }
+            }
+            
+            if(count == k){
+                temp = 0;
+                while(count == k){
+                    int d = nums[left];
+                    ans++;temp++;
+                    if(d % 2 != 0){
+                        count--;
+                    }
+                    left++;
+                }
+            }else if(count < k){
+                ans += temp;
+            }
+
+
+        }
+        return ans;
+    }
+};
+```
