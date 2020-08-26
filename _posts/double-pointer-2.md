@@ -4,7 +4,7 @@ date: 2020-08-15 20:23:20
 tags: [leetcode,双指针]
 categories: 
 - leetcode
-- 双指针2
+- 双指针
 ---
 LeetCode双指针，第3第4页题目。
 <!---more--->
@@ -372,7 +372,7 @@ public:
         }
         //q is the first node that are more than or equal to x
         q = p->next; 
-        
+
         while(q->next != NULL){
             if(q->next->val < x){
                 auto pnext = p->next;

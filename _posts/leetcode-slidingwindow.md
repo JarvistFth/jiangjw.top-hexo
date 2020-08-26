@@ -577,3 +577,66 @@ public:
     }
 };
 ```
+
+# 992. K 个不同整数的子数组
+https://leetcode-cn.com/problems/subarrays-with-k-different-integers/
+
+入窗；当遇到window里的元素大于K的时候，需要出窗。
+
+当window的size等于k时，这时候子序列是从最长的子序列开始统计的。所以统计时候，每次window的size是k的时候，ans++。同时可以让另一个指针指向left，让left假装出窗，缩小窗口范围，直至window的size不为k。
+
+但是要注意的是这里当window的size是k的时候，这时候left假装出窗只是为了方便统计；统计完毕以后还要恢复在window中的原样。
+
+
+```C++
+class Solution {
+public:
+    int subarraysWithKDistinct(vector<int>& A, int K) {
+        if(A.size() == 0 || K == 0){
+            return 0;
+        }
+
+        int left=0,right=0;
+        unordered_map<int,int> window;
+        int ans = 0;
+
+        while(right<A.size()){
+            int c = A[right];
+            right++;
+            window[c]++;
+
+        while(window.size() > K){
+            int d = A[left];
+            if(window.count(d)){
+                window[d]--;
+                if(window[d] == 0){
+                    window.erase(d);
+                }
+            }
+            left++;
+        }
+
+            int temp = left;
+
+            //为了统计，假装出窗。
+            while(window.size() == K){
+                ans++;
+                int e = A[temp];
+                if(window[e] > 1){
+                    window[e]--;
+                }else{
+                    window.erase(e);
+                }
+                temp++;
+            }
+            
+            //恢复原来hashtable中的数据原样
+            while(temp > left){
+                window[A[temp-1]]++;
+                temp--;
+            }
+        }
+        return ans;
+    }
+};
+```

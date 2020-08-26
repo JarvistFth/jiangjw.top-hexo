@@ -6,7 +6,7 @@ categories:
 - leetcode
 - 双指针
 ---
-LeetCode双指针，第5第6页题目。
+LeetCode双指针，第5第6第7页题目。
 <!---more--->
 
 
@@ -163,3 +163,234 @@ public:
 };
 ```
 
+# 881. 救生艇
+https://leetcode-cn.com/problems/boats-to-save-people/
+
+先接最重的人，然后如果接了重的人还可以接最轻的人，就两个一起接走；否则只接重的。
+
+所以就是先排序，然后双指针，一个指向轻的，一个指向重的。如果只能接重的，就让right--；如果两个都可以接，就right--和left++。
+
+```C++
+class Solution {
+public:
+    int numRescueBoats(vector<int>& people, int limit) {
+        sort(people.begin(),people.end());
+        int left=0,right=people.size()-1;
+        int ans = 0;
+
+        while(left<=right){
+            int r = people[right];
+            int l = people[left];
+            if(r == limit){
+                ans++;
+                right--;
+            }else if(r < limit){
+                if(l+r <= limit){
+                    ans++;
+                    left++;
+                    right--;
+                }else{
+                    ans++;
+                    right--;
+                }
+            }
+        }
+
+        return ans;
+
+    }
+};
+```
+
+# 142. 环形链表 II
+https://leetcode-cn.com/problems/linked-list-cycle-ii/
+
+双指针经典应用。应用labuladong大佬的思路：
+
+![](https://jaroffertree.oss-cn-hongkong.aliyuncs.com/20200825213756.png)
+![](https://jaroffertree.oss-cn-hongkong.aliyuncs.com/20200825213832.png)
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        if(head == NULL){
+            return NULL;
+        }
+
+        ListNode* fast = head;
+        ListNode* slow = head;
+
+        if(head->next == NULL){
+            return NULL;
+        }
+
+        while(fast != NULL && fast->next != NULL){
+            fast = fast->next->next;
+            slow = slow->next;
+            //有环
+            if(slow == fast){
+                slow = head;
+                while(slow != fast){
+                    fast = fast->next;
+                    slow = slow->next;
+                }
+                return slow;
+            }
+        }
+        //无环
+        return NULL;
+    }   
+};
+```
+
+# 28. 实现 strStr()
+https://leetcode-cn.com/problems/implement-strstr/
+
+双指针指向两个字符串。如果两个指针指向的字符相等，开始比较，双指针后移；否则指向要比较字符串的指针归零，原字符串指针回到已经进行了比较的字符串长度之前的位置。
+
+最后判断一下j是不是走到要比较的字符串的末尾，如果是，就证明有相等的字符串；否则没有。
+
+```C++
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        if(needle == ""){
+            return 0;
+        }
+        int i=0,j=0;
+
+        while(i<haystack.size() && j<needle.size()){
+            if(haystack[i] == needle[j]){
+                i++;
+                j++;
+            }else{
+                i = i-j+1;
+                j = 0;
+            }
+        }
+        return j==needle.size()?i-needle.size():-1;
+
+    }
+};
+```
+
+
+# 925. 长按键入
+https://leetcode-cn.com/problems/long-pressed-name/
+
+同样的，双指针指向两个字符串。如果两个指针指向的字符相等，往前移动；如果不等，判断typed字符串的前一个字符和现在这个字符是不是相等，如果是，继续让指向typed的指针前移；否则证明这时候两个指针指向的字符不等了并且未到末尾，所以返回false。
+
+如果name字符串已经处理完，但typed字符串还没处理完，继续处理；如果typed后面的字符和当前字符不等，就说明不是重复按的输入，直接返回false。
+
+最后是通过指向name指针的位置是不是到name字符串的末尾来判断答案。
+
+```C++
+class Solution {
+public:
+    bool isLongPressedName(string name, string typed) {
+        int i=0,j=0;
+
+        if(name.size() > typed.size()){
+            return false;
+        }
+
+        while(i<name.size() && j<typed.size()){
+            if(name[i] == typed[j]){
+                i++;j++;
+            }
+            else if(j>0 && typed[j] == typed[j-1]){
+                j++;
+            }else{
+                return false;
+            }
+        }
+
+        while(j<typed.size()){
+            if(j>0 && typed[j] != typed[j-1]){
+                return false;
+            }
+            j++;
+        }
+
+        return i==name.size();
+    }
+};
+
+```
+# 面试题 10.01. 合并排序的数组
+https://leetcode-cn.com/problems/sorted-merge-lcci/
+
+归并排序，从大到小放入到原数组中。最后如果B中还有元素没处理完，继续处理。
+
+```C++
+class Solution {
+public:
+    void merge(vector<int>& A, int m, vector<int>& B, int n) {
+        
+
+       
+        int i=m-1,j=n-1;
+        int pos = m+n-1;
+
+        while(i>=0 && j>=0){
+            if(A[i] >= B[j]){
+                A[pos--] = A[i--];
+            }
+
+            else{
+                A[pos--] = B[j--];
+            }
+        }
+
+        // while(i>=0){
+        //     A[pos--] = A[i--];
+        // }
+        while(j>=0){
+            A[pos--] = B[j--];
+        }
+
+    }
+};
+```
+
+# 11. 盛最多水的容器
+https://leetcode-cn.com/problems/container-with-most-water/
+
+双指针，一个指向左边，一个指向右边；
+盛水容积=底*高（左右的最小值）；
+
+如果左高<右高，就让左指针往右移，因为此时如果把右高往左移，面积会变小。否则让右指针往左移。这样逐渐找到最大的容积。
+
+```C++
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        if(height.size() <= 1){
+            return -1;
+        }
+
+        int l=0,r=height.size()-1;
+        int ans = 0;
+
+        while(l<r){
+            int h = min(height[l],height[r]);
+            ans = max(ans,(r-l) * h);
+            if(height[l] <height[r]){
+                l++;
+            }else{
+                r--;
+            }
+        }
+        return ans;
+    }
+};
+```
