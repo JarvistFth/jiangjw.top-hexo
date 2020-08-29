@@ -187,3 +187,52 @@ public:
     }
 };
 ```
+
+# 787. K 站中转内最便宜的航班
+
+考虑状态变量，这里有两个，一个是到达站j，一个是中转次数k。
+
+考虑f[(i,j),k]，表示k次中转从i站到j站时最便宜的花费。
+
+再考虑集合，所有的集合就是从i,i+1,i+2...j-1处，经过0,1,2...K次中转后到达j。对这么多个子集取min。
+
+那么f[(i,j),k] = min(f[i,j][k],f[i,t][k-1]+t[2]);
+
+意思是，当前最便宜的花费，是看选择直达还是中转的最小值。
+
+baseline是dp[src][0]，表示从0次中转到达src的次数，所以是0 。 对于其他的，我们是要选择src参数出发的地点，可能会不存在路径。所以我们假设其他的是INT_MAX，对于可以到达的地点，我们更新dp。
+
+```C++
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int K) {
+        if(flights.size() == 0){
+            return -1;
+        }
+
+        vector<vector<int>> dp(n,vector<int>(K+2,INT_MAX));
+
+        //baseline
+        for(int k=0;k<K+2;k++){
+            dp[src][k] = 0;
+        }
+
+        //枚举k选择子集
+        for(int k=1;k<=K+1;k++){
+            //枚举从flight从src到dst的集合
+            for(auto flight:flights){
+                //走到dst，需要先走k-1步先到这次的src，然后再中转1次到dst。
+                //可能会不存在这样的方式，所以要特判
+                if(dp[flight[0]][k-1] != INT_MAX){
+                    //最小值就是，直接走还是通过中转的方式。
+                    dp[flight[1]][k] = min(dp[flight[1]][k],dp[flight[0]][k-1]+flight[2]);
+                }
+            }
+        }
+
+        return dp[dst][K+1] == INT_MAX?-1:dp[dst][K+1];
+
+
+    }
+};
+```
