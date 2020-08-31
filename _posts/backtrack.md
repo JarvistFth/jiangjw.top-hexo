@@ -40,7 +40,7 @@ public:
     vector<vector<string>> solveNQueens(int n) {
 
 
-        vector<string> board(n,string(n,'.'));
+        vector<string> board(n,string(n,"."));
         backtrack(board,0);
         return ans;
 
@@ -128,6 +128,7 @@ public:
             return;
         }
 
+        //对当前字符串，从start到i取子串；后续递归从start+i开始取子串。
         for(int i=1;i<=len-start;i++){
             string s1 = s.substr(start,i);
             if(!isValid(s1)){
@@ -175,4 +176,207 @@ public:
         }
     }
 };
+```
+
+# 1286. 字母组合迭代器
+https://leetcode-cn.com/problems/iterator-for-combination/
+
+排列组合问题，第一次选择是从character长度中任意位置选一位；后面选完后，对后续的字符继续递归回溯选择。
+
+当选定的字符串长度是给定长度时结束递归回溯。
+
+```C++
+class CombinationIterator {
+public:
+    CombinationIterator(string characters, int combinationLength) {
+        string track = "";
+        this->combinationLength = combinationLength;
+        backtrack(characters,track,0);
+    }
+    
+    string next() {
+        return charactersArray[index++];
+        
+    }
+    
+    bool hasNext() {
+        return index < charactersArray.size();
+    }
+
+    void backtrack(string& characters, string& track, int start ){
+        if(track.size() == combinationLength){
+            charactersArray.push_back(track);
+            return;
+        }
+
+        for(int i=start;i<characters.size();i++){
+            track.push_back(characters[i]);
+            backtrack(characters,track,i+1);
+            track.pop_back();
+        }
+    }
+
+
+private:
+    vector<string> charactersArray;
+    int combinationLength;
+    int index = 0;
+};
+
+/**
+ * Your CombinationIterator object will be instantiated and called as such:
+ * CombinationIterator* obj = new CombinationIterator(characters, combinationLength);
+ * string param_1 = obj->next();
+ * bool param_2 = obj->hasNext();
+ */
+
+ ```
+
+ # 面试题 08.08. 有重复字符串的排列组合
+ https://leetcode-cn.com/problems/permutation-ii-lcci/
+ 
+ 先排序，这样可以比较好的处理有重复的字符串。
+
+ 然后就是对每个字符做选择，选择完以后，递归回溯继续选择；
+
+ 当生成的字符串到达给定长度的时候，就结束递归；为防止重复选择，加入visited数组；难点在于通过式子：i>0 && s[i] == s[i-1] && !visited[i-1]，排除重复的字符串。
+
+ 利用这个式子，可以取两个重复字符串的左边。 意思是，当我们遍历到s[i]的时候，我们看看s[i]是不是和之前的一样；如果是的话，再看s[i-1]用过没有。如果s[i-1]用过了，就不使用；否则继续使用。但是我们从左侧开始遍历，所以这时候第一个重复的字母可以使用，而第二个使用的字母不可以使用。
+
+ ```C++
+ class Solution {
+public:
+    vector<string> ans;
+    string path;
+    int len = 0;
+    vector<string> permutation(string S) {
+        if(S.empty()){
+            return {};
+        }
+        len = S.size();
+        vector<bool> visited(len,false);
+        sort(S.begin(),S.end());
+        backtrack(S,path,visited);
+        return ans;
+
+
+    }
+
+    void backtrack(string& s, string &path, vector<bool>& visited ){
+        if(path.size() == len){
+            ans.push_back(path);
+            return ;
+        }
+
+        for(int i=0;i<len;i++){
+            if(visited[i]){
+                continue;
+            }
+
+            if(i>0 && s[i] == s[i-1] && !visited[i-1]){
+                continue;
+            }
+           
+            path.push_back(s[i]); 
+            visited[i] = true;
+            backtrack(s,path,visited);
+            visited[i] = false;
+            path.pop_back();
+            
+        }
+    }
+};
+```
+
+# 39. 组合总和
+https://leetcode-cn.com/problems/combination-sum/
+
+
+1. 当递归到sum==target时退出递归；
+2. 对数组中每个数字做选择；
+3. 从当前位置开始递归回溯继续选择数组； （所以要传入上次遍历的pos作为参数开始遍历）
+4. 回溯时候要记得减去加上的sum。
+
+```C++
+class Solution {
+public:
+    vector<vector<int>> ans;
+    vector<int> path;
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        if(candidates.empty()){
+            return {};
+        }
+        sort(candidates.begin(),candidates.end());
+        backtrack(candidates,target,0,0);
+        return ans;
+    }
+
+    void backtrack(vector<int>& candidates, int target, int sum, int start){
+        if(sum == target){
+            ans.push_back(path);
+            return ;
+        }
+
+        for(int i=start;i<candidates.size();i++){
+            if(candidates[i] + sum > target){
+                break;
+            }
+            path.push_back(candidates[i]);
+            sum+=candidates[i];
+            backtrack(candidates,target, sum,i);
+            path.pop_back();
+            sum-=candidates[i];
+        }
+    }
+
+
+};
+```
+
+# 1239. 串联字符串的最大长度
+
+位运算奇巧淫技实在是学不会，，其实思想就是个bitmap，但是就是很难去使用。。。
+
+所以构建个vector作为类哈希表使用；当vector对应字符下标存储的次数>1时，认为是有重复字符，就跳过递归选择。
+
+照样的，for循环做第一次选择，递归做后面所有的选择；
+每次做选择之前，都先判断一下有没有重复字符；如果有，跳过；否则继续。
+
+如果没有重复字符， 每次都更新一下串联字符的最大长度，然后继续递归；递归前后回溯hash表的数值。
+
+```C++
+class Solution {
+public:
+    int ans = 0;
+    int maxLength(vector<string>& arr) {
+        vector<int> hash(26);
+        backtrack(arr,hash,0,0);
+        return ans;
+    }
+
+    void backtrack(vector<string>& a, vector<int>& hash, int currentLen, int start){
+        
+
+        for(int &i:hash){
+            if(i>1){
+                return;
+            }
+        }
+        
+        ans = max(ans,currentLen);
+
+        
+        for(int i=start;i<a.size();i++){
+            
+            for(auto& s:a[i]){
+                hash[s - 'a']++;
+            }
+            backtrack(a,hash,currentLen+a[i].size(),i+1);
+            for(auto& s:a[i]){
+                hash[s - 'a']--;
+            }
+        }
+    }
+};
+
 ```
