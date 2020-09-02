@@ -380,3 +380,212 @@ public:
 };
 
 ```
+
+
+# 216. 组合总和 III
+https://leetcode-cn.com/problems/combination-sum-iii/
+
+枚举1-9的数字，从当前选择的数字后面开始继续递归选择。
+
+当组合长度为k时退出递归；如果此时sum==n，就将当前组合发入ans。
+
+```C++
+class Solution {
+public:
+    vector<vector<int>> ans;
+    vector<int> path;
+    vector<vector<int>> combinationSum3(int k, int n) {
+        backtrack(1,k,n,0);
+        return ans;
+    }
+
+    void backtrack(int start,int k, int n, int sum){
+        if(k == path.size()){
+            if(sum == n){
+                ans.push_back(path);
+            }
+            return ;
+        }
+
+        for(int i=start;i<=9;i++){
+            path.push_back(i);
+            sum+=i;
+            backtrack(i+1,k,n,sum);
+            path.pop_back();
+            sum-=i;
+        }
+    }
+};
+```
+
+# 面试题 08.04. 幂集
+子集问题，和组合不一样的是，每次遍历一个数字，都可以放入答案中。
+
+循环枚举和组合排列都是一样的。
+
+```C++
+class Solution {
+public:
+    vector<vector<int>> ans;
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<int> path;
+        backtrack(path,nums,0);
+        return ans;
+    }
+
+    void backtrack(vector<int>& path, vector<int>&nums, int start){
+        ans.push_back(path);
+
+        for(int i=start;i<nums.size();i++){
+            path.push_back(nums[i]);
+            backtrack(path,nums,i+1);
+            path.pop_back();
+        }
+    }
+};
+```
+
+# 面试题 08.07. 无重复字符串的排列组合
+https://leetcode-cn.com/problems/permutation-i-lcci/
+
+无重复字符串，所以不用通过s[i] == s[i-1] && !visited[i-1]来去重；
+
+枚举每个字符串，为了防止重复枚举，需要一个visited数组来控制。
+
+当递归回溯到当前字符串的长度和给定字符串长度时，结束递归。
+
+```C++
+class Solution {
+public:
+    vector<string> permutation(string S) {
+        vector<string> ans;
+        vector<bool> visited(S.size(),false);
+        string path;
+        backtrack(ans,path,S,visited);
+        return ans;
+    }
+
+    void backtrack(vector<string>& ans, string& path, string& s, vector<bool>& visited ){
+        if(path.size() == s.size()){
+            ans.push_back(path);
+            return ;
+        }
+
+        for(int i=0;i<s.size();i++){
+            if(visited[i]){
+                continue;
+            }
+
+            visited[i] = true;
+            path.push_back(s[i]);
+            backtrack(ans,path,s,visited);
+            visited[i] = false;
+            path.pop_back();
+        }
+    }
+};
+```
+
+# 17. 电话号码的字母组合
+https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/
+
+看到这一串映射先想到用map保存每一个char的对应关系；
+
+原来是想用for去枚举每一个digits的位置，但是用for后再backtrack回溯，这时候还要继续用for来枚举后面的每一位数字对应的字符。
+
+后来一想，这里的做选择其实是一步一步做的，选完了第一位数字，再选第二位数字，在选择数字的时候做回溯会比较好。
+
+所以针对每一位数字做递归回溯选择，当选择的位置>=digits的长度的时候，退出递归。
+
+进行数字的选择后，从哈希表中拿出数字对应的字符串，对字符串进行枚举，每一位字符都先选一个，然后进入到递归回溯环节。
+
+```C++
+class Solution {
+public:
+    unordered_map<char,string> map;
+    vector<string> ans;
+    vector<string> letterCombinations(string digits) {
+        if(digits.empty()){
+            return {};
+        }
+        string path;
+        init();
+        backtrack(digits,path,0);
+        return ans;
+
+
+    }
+
+    void backtrack(string& digits, string& path, int start){
+        if(start >= digits.size()){
+            ans.push_back(path);
+            return ;
+        }
+
+        char c = digits[start];
+        string str = map[c];
+        for(auto &s:str){
+            path.push_back(s);
+            backtrack(digits,path,start+1);
+            path.pop_back();
+        }
+    }
+
+    void init(){
+        map['2'] = "abc";
+        map['3'] = "def";
+        map['4'] = "ghi";
+        map['5'] = "jkl";
+        map['6'] = "mno";
+        map['7'] = "pqrs";
+        map['8'] = "tuv";
+        map['9'] = "wxyz";
+    }
+};
+```
+
+# 90. 子集 II
+https://leetcode-cn.com/problems/subsets-ii/
+
+子集每个path都要加入到ans中；
+
+照样使用nums[i] == nums[i-1] && !visited[i-1]去重，一定要用!visited，虽然其他题用visited没问题，但是这道题会出问题。
+
+```C++
+class Solution {
+public:
+    vector<vector<int>> ans;
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        if(nums.empty()){
+            return {};
+        }
+        sort(nums.begin(),nums.end());
+        vector<int> path;
+        vector<bool> visited(nums.size(),false);
+        backtrack(nums,path,visited,0);
+        return ans;
+    }
+
+    void backtrack(vector<int>& nums, vector<int>& path, vector<bool>& visited, int start){
+        ans.push_back(path);
+        if(start >= nums.size()){
+            return ;
+        }
+
+        for(int i=start;i<nums.size();i++){
+            if(visited[i]){
+                continue;
+            }
+            if(i>0 && nums[i] == nums[i-1] && !visited[i-1]){
+                continue;
+            }
+
+            path.push_back(nums[i]);
+            visited[i] = true;
+            backtrack(nums,path,visited,i+1);
+            visited[i] = false;
+            path.pop_back();
+        }
+    }
+};
+```
