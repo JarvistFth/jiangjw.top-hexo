@@ -89,6 +89,9 @@ public:
 };
 ```
 
+
+
+
 # 131. 分割回文串
 https://leetcode-cn.com/problems/palindrome-partitioning/
 
@@ -584,6 +587,85 @@ public:
             visited[i] = true;
             backtrack(nums,path,visited,i+1);
             visited[i] = false;
+            path.pop_back();
+        }
+    }
+};
+```
+
+# 46. 全排列
+https://leetcode-cn.com/problems/permutations/
+
+老套路了，全排列只需要判断一下自身是否已经加入到集合中，需要个visited数组。
+
+```C++
+class Solution {
+public:
+    vector<vector<int>> ans;
+    vector<int> path;
+
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<bool> visisted(nums.size(),false);
+        backtrack(nums,visisted);
+        return ans;
+    }
+
+    void backtrack(vector<int>& nums, vector<bool>& visisted){
+        if(path.size() == nums.size()){
+            ans.push_back(path);
+            return;
+        }
+
+        for(int i=0;i<nums.size();i++){
+            if(visisted[i]){
+                continue;
+            }
+
+            visisted[i] = true;
+            path.push_back(nums[i]);
+            backtrack(nums,visisted);
+            visisted[i] = false;
+            path.pop_back();
+        }
+    }
+};
+```
+
+# 784. 字母大小写全排列
+https://leetcode-cn.com/problems/letter-case-permutation/
+
+isalpha tolower toupper 操作字符的好东西啊。。。
+
+基本想法和排列一样，选择一个字符，看他是不是字母，如果不是，直接递归回溯对下一个字符做选择；否则就分别选择他的小写和他的大写。
+
+```C++
+class Solution {
+public:
+    vector<string> ans;
+    vector<string> letterCasePermutation(string S) {
+        string path;
+        backtrack(S,path,0);
+        return ans;
+    }
+
+    void backtrack(string& s, string& path, int start){
+        if(start == s.size()){
+            ans.push_back(path);
+            return ;
+        }
+
+        
+        if('0' <= s[start] && s[start] <= '9'){
+            path.push_back(s[start]);
+            backtrack(s,path,start+1);
+            path.pop_back();
+        }else{
+            path.push_back(tolower(s[start]));
+            backtrack(s,path,start+1);
+            path.pop_back();
+
+            path.push_back(toupper(s[start]));
+            backtrack(s,path,start+1);
             path.pop_back();
         }
     }

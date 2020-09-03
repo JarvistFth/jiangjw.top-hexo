@@ -162,3 +162,80 @@ public:
     }
 };
 ```
+
+# 37. 解数独
+https://leetcode-cn.com/problems/sudoku-solver/
+
+和N皇后问题有一点点相似：
+
+但是N皇后问题是排列组合，这里只有唯一解。所以每次去递归回溯的时候，要判断一下当前选择可不可行，如果是条死路，就要进行回溯了。
+
+难点在于确定每个小的九宫格里面的数字唯一性判断，题解是用了board[row/3*3 + i/3][col/3*3 + i%3]来获得每个小九宫格的横竖坐标起始值，然后用变量i去控制遍历整个小的九宫格。
+
+整个流程可以分为：
+
+1. 对当前是空格的位置，从1-9选取字符填入，不是空格字符，跳过，从当前行下一列开始填数；
+2. 判断一下当前这个字符可不可以填入（行、列、小九宫格是否有重复的）；如果有重复，不可填入；
+3. 尝试填入该数；
+4. 尝试递归机修填入下一个数，这里以下一列为单位；
+5. 如果下一列填不进数，会发现这是条错误的选择，返回false；
+6. 回溯，撤销当前填入的数；
+7. 当列遍历到第九列时，开始往下一行填数，递归下一行；
+8. 当遍历到最后一行的时候（这时前八行也已经填好了），结束递归返回true。
+
+
+```C++
+class Solution {
+public:
+    void solveSudoku(vector<vector<char>>& board) {
+        if(board.empty() || board.size() != 9){
+            return ;
+        }
+        backtrack(board,0,0);
+
+
+    }
+
+    bool backtrack(vector<vector<char>>& board, int row, int col){
+        if(col == 9){
+            return backtrack(board,row+1,0);
+        }
+
+        if(row == 9){
+            return true;
+        }
+
+        if(board[row][col] != '.'){
+            return backtrack(board,row,col+1);
+        }
+
+        for(char c = '1'; c <= '9'; c++){
+            if(!isValid(board,row,col,c)){
+                continue;
+            }
+            board[row][col] = c;
+            if(backtrack(board,row,col+1)){
+                return true;
+            }
+            board[row][col] = '.';
+        }
+        return false;
+
+    }
+
+    bool isValid(vector<vector<char>>& board, int row, int col, char c){
+        for(int i=0;i<9;i++){
+            if(board[i][col] == c){
+                return false;
+            }
+            if(board[row][i] == c){
+                return false;
+            }
+            if(board[row/3*3 + i/3][col/3*3 + i%3] == c){
+                return false;
+            }
+        }
+        return true;
+    }
+};
+```
