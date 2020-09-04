@@ -671,3 +671,166 @@ public:
     }
 };
 ```
+
+# 47. 全排列 II
+https://leetcode-cn.com/problems/permutations-ii/
+
+去重的排列，排序，i>0 && nums[i] == nums[i-1] && !visited[i-1]去重；
+
+```C++
+class Solution {
+public:
+    vector<vector<int>> ans;
+    vector<int> path;
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        if(nums.empty()){
+            return {};
+        }
+        sort(nums.begin(), nums.end());
+        vector<bool> visited(nums.size(),false);
+        backtrack(nums,visited);
+        return ans;
+    }
+
+    void backtrack(vector<int>& nums, vector<bool>& visited){
+        if(path.size() == nums.size()){
+            ans.push_back(path);
+            return ;
+        }
+
+        for(int i=0;i<nums.size();i++){
+            if(visited[i]){
+                continue;
+            }
+
+            if(i>0 && nums[i] == nums[i-1] && !visited[i-1]){
+                continue;
+            }
+            visited[i] = true;
+            path.push_back(nums[i]);
+            backtrack(nums,visited);
+            path.pop_back();
+            visited[i] = false;
+        }
+    }
+
+};
+```
+
+# 40. 组合总和 II
+https://leetcode-cn.com/problems/combination-sum-ii/
+
+
+
+```C++
+class Solution {
+public:
+    vector<vector<int>> ans;
+    vector<int>path;
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        if(candidates.empty()){
+            return {};
+        }
+        vector<bool> visited(candidates.size(),false);
+        sort(candidates.begin(),candidates.end());
+        backtrack(candidates,0,target,visited);
+        return ans;
+    }
+
+    void backtrack(vector<int>& candidates, int start, int target, vector<bool>& visited){
+        if(target == 0){
+            ans.push_back(path);
+            return ;
+        }
+        if(target < 0){
+            return ;
+        }
+
+        for(int i=start; i<candidates.size();i++){
+            if(visited[i]){
+                continue;
+            }
+            if(i>0 && candidates[i] == candidates[i-1] && !visited[i-1]){
+                continue;
+            }
+            visited[i] = true;
+            path.push_back(candidates[i]);
+            backtrack(candidates,i+1,target-candidates[i],visited);
+            visited[i] = false;
+            path.pop_back();
+        }
+
+    }
+};
+```
+
+# 77. 组合
+
+https://leetcode-cn.com/problems/combinations/
+
+组合问题的套路模板。
+
+```C++
+class Solution {
+public:
+    vector<vector<int>> ans;
+    vector<int> path;
+    vector<vector<int>> combine(int n, int k) {
+        backtrack(n,k,1);
+        return ans;
+    }
+
+    void backtrack(int n, int k, int start){
+        if(path.size() == k){
+            ans.push_back(path);
+            return ;
+        }
+
+        for(int i=start; i<=n; i++){
+            path.push_back(i);
+            backtrack(n,k,i+1);
+            path.pop_back();
+        }
+    }
+};
+```
+
+# 1291. 顺次数
+https://leetcode-cn.com/problems/sequential-digits/
+
+从1-9选择首位数字，每次选完了开始递归回溯继续选择，从当前选择数字的+1开始选；
+
+如果选到的是9，就结束；
+
+然后计算选到的和是不是在low和high之间。
+
+这里是传递参数，所以没有做显式回溯；如果是传引用，就要做显式回溯。
+
+```C++
+class Solution {
+public:
+    vector<int> ans;
+    vector<int> sequentialDigits(int low, int high) {
+        for(int i=1;i<=9;i++){
+            backtrack(i,i,low,high);
+        }
+        sort(ans.begin(),ans.end());
+        return ans;
+    }
+
+    void backtrack(int path, int end, int low, int high ){
+        if(path > high){
+            return ;
+        }
+
+        if(path >= low && path <= high){
+            ans.push_back(path);
+        }
+        if(end >= 9){
+            return;
+        }
+        path = path*10 + end+1;
+        backtrack(path, end+1,low,high);
+    }
+};
+```
