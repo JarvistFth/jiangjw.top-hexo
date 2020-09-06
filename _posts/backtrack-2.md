@@ -239,3 +239,46 @@ public:
     }
 };
 ```
+
+# 1219. 黄金矿工
+
+迷宫类题目，这里的起点是矩阵内任意起点，所以对每一个点都要做选择和递归回溯。
+
+1. 迷宫类问题递归回溯第一步，确定边界返回条件：当前坐标超出矩阵范围，或者不可选择或者已经访问过（grid[x][y] == 0），返回0；
+2. 开始选择，先保存当前grid[x][y]的值，然后进行递归选择；
+3. 撤销选择，结束回溯；
+4. 递归选择返回的是下一步四个方向的最大值，因此总最大值应该是当前节点的值和返回的最大值，返回总最大值。
+
+
+```C++
+class Solution {
+public:
+    int ans = 0;
+    int getMaximumGold(vector<vector<int>>& grid) {
+        if(grid.empty()){
+            return 0;
+        }
+        for(int i=0;i<grid.size();i++){
+            for(int j=0;j<grid[i].size();j++){
+                if(grid[i][j] <= 0){
+                    continue;
+                }
+                ans = max(ans,backtrack(grid,i,j));
+            }
+        }
+        return ans;
+    }
+
+    int backtrack(vector<vector<int>>& grid, int x, int y){
+        if(x<0 || x>=grid.size() || y<0 || y>=grid[x].size() || grid[x][y] == 0){
+            return 0;
+        }
+
+        int temp = grid[x][y];
+        grid[x][y] = 0;
+        int maxval = max({backtrack(grid,x+1,y), backtrack(grid,x-1,y), backtrack(grid,x,y-1), backtrack(grid,x,y+1)});
+        grid[x][y] = temp;
+        return temp+maxval;
+    }
+};
+```
