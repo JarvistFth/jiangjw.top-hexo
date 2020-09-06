@@ -5,4 +5,4 @@ here is my blog:
 
 this repo contains the hexo source .md file for my blog.
 
-About some articles about leetcode answer, redis , c++ , linux server and so on.
+Some articles about leetcode answers, redis , c++ , linux server and so on.
