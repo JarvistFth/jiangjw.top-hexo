@@ -105,6 +105,49 @@ clusterState还会保存slots-to-keys，一个zskiplist结构，用来保存key�
 
 # ASK错误
 
+重新分片过程中，源节点和目标节点在迁移一个slot的过程中，客户端刚好查询某个属于该slot的数据的时候，就可能会发送ASK错误。
+
+此时：如果找不到key对应的数据，并且发现源节点正在迁移slot，表明key可能在目标节点（已经被迁移了），那么源节点就会向client发送一个ASK错误，指引客户端转向目标节点并且发送之前执行的命令。
+
+通过clusterState中的importing_slots_from数组和migrating_slots_to数组，记录了当前节点正在从某个节点导入/迁移的slot，每个数组元素其指向一个clusterNode结构对象。
+
+---
+
+## ASK错误与MOVED错误
+MOVED错误是永久性的，代表slot已经移交给另一个节点处理；以后每次遇到该slot的命令时，都会重定向到MOVED错误指向的节点处理；
+
+ASK错误是临时性的，客户端只会在接下来一次的请求中将slot i的请求发送至ASK错误指示的节点；后面有关slot i的命令还是发送给目前处理slot i的节点，除非再次出现ASK错误。
+
+
 # 复制与故障转移
+
+redis集群中节点分为master和slave，master用于处理slot，slave复制master的结果。当master下线时，slave提升为master，继续处理slot。
+
+## 设置从节点
+命令：CLUSTER REPLICATE [NODE ID]：
+让接受命令的节点成为NODE-ID的从节点。
+
+1. 在clusterState.nodes字典中找到node-id对应的clusterNode结构，将自己的clusterState.myself.slaveof指向这个结构。
+
+2. 修改clusterState.myself.flags，关闭REDIS_NODE_MASTER，打开REDIS_NODE_SLAVE，表示节点从主节点变成从节点。
+
+3. 调用复制代码，开始对slaveof指向的clusterNode保存的IP:PORT进行复制。
+
+## 故障检测
+每个节点定时向集群中其他节点发送PING消息，当超过规定时间没有PONG消息返回，就标记为疑似下线（REDIS_NODE_PFAIL标识)。
+
+集群中节点通过互相发送消息来交换集群中的各个节点的状态信息。
+
+当主节点A通过消息得知主节点B认为主节点C已经进入了PFAIL状态时，主节点A会在自己的clusterState.nodes字典中找到主节点C对应的clusterNode结构，将主节点B的failure report添加到clusterNode结构的fail_reports链表里面。
+
+如果一个集群李，半数以上处理slot的主节点认为C是PFAIL，那么主节点C会被标记为FAIL，然后将C标记为FAIL的节点会向集群中所有的节点广播一条C的FAIL消息，所以接收到该消息的节点会立即将C标记为下线。
+
+## 故障转移
+当一个从节点发现自己正在复制的主节点下线时，开始故障转移：
+
+1. 复制下线主节点的所有从节点会有一个被选中执行 slaveof no one，称为新的主节点；
+2. 新的主节点会撤销所有对已下线的主节点的slot的指派，将这些slot指派给自己。
+3. 新的master向集群广播一条PONG消息，这条PONG消息会让集群中其他节点知道这个节点由从节点变成了主节点，并且这个主节点接管了原下线节点管理的slot。
+4. 新主节点开始接受和自己负责处理的slot有关的命令请求，完成故障转移。
 
 # 发送消息
