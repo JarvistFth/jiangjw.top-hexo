@@ -1,5 +1,5 @@
 ---
-title: leetcode-贪心算法系列
+title: leetcode-贪心算法系列（1）
 date: 2020-09-06 22:17:16
 categories: 
 - leetcode
