@@ -140,7 +140,7 @@ redis集群中节点分为master和slave，master用于处理slot，slave复制m
 
 当主节点A通过消息得知主节点B认为主节点C已经进入了PFAIL状态时，主节点A会在自己的clusterState.nodes字典中找到主节点C对应的clusterNode结构，将主节点B的failure report添加到clusterNode结构的fail_reports链表里面。
 
-如果一个集群李，半数以上处理slot的主节点认为C是PFAIL，那么主节点C会被标记为FAIL，然后将C标记为FAIL的节点会向集群中所有的节点广播一条C的FAIL消息，所以接收到该消息的节点会立即将C标记为下线。
+如果一个集群里，半数以上处理slot的主节点认为C是PFAIL，那么主节点C会被标记为FAIL，然后将C标记为FAIL的节点会向集群中所有的节点广播一条C的FAIL消息，所以接收到该消息的节点会立即将C标记为下线。
 
 ## 故障转移
 当一个从节点发现自己正在复制的主节点下线时，开始故障转移：
@@ -150,4 +150,51 @@ redis集群中节点分为master和slave，master用于处理slot，slave复制m
 3. 新的master向集群广播一条PONG消息，这条PONG消息会让集群中其他节点知道这个节点由从节点变成了主节点，并且这个主节点接管了原下线节点管理的slot。
 4. 新主节点开始接受和自己负责处理的slot有关的命令请求，完成故障转移。
 
-# 发送消息
+## 选举新的主节点
+
+1. 每个集群维护一个config_epoch用于选举，是一个自增计数器，初始为0；
+2. 当集群里的某个节点开始一次故障转移操作的时候，config_epoch自增1；
+3. 每个config_epoch，集群中的master都只有一次投票的机会，第一个向该master请求投票的slave将获得该master的投票；
+4. 当slave发现自己正在复制的master已下线，会向集群广播一条消息，要求所有收到消息且可以投票的master向这个slave进行投票；
+5. 如果一个master具有投票权，并且未投票给其他节点，那么master会向要求投票的slave返回一套消息，表示支持该slave成为新的master；
+6. 每个参与选举的slave都会通过接收master返回的消息，统计自己获得多少master的支持；
+7. 如果slave获得N/2+1个master的支持，就会成为新的master。
+8. 如果一个config_epoch里面没有slave获得足够多的投票，那么集群会进入一个新的config_epoch，再次进行选举，直到选举出结果为止。
+
+# 发送消息 
+
+* 消息头
+    ![](https://jaroffertree.oss-cn-hongkong.aliyuncs.com/20200909105017.png)
+    data指向消息正文。
+
+    ![](https://jaroffertree.oss-cn-hongkong.aliyuncs.com/20200909105144.png)
+
+    消息头中包括了发送者自身的一些消息，接收者可以根据消息头，在clusterNode中的nodes字典中找到对应的node进行更新。
+
+## MEET/PING/PONG
+MEET消息是客户端向服务器发送CLUSTER MEET命令时发送的；
+
+PING消息是默认1秒从列表中选出5个节点中最长没有发送过PING的节点发送PING消息；
+
+PONG消息是收到MEET/PING消息时为确认消息到达的回复。同时，节点也可以向集群广播自己的PONG消息，更新其他节点对自己的认识。
+
+每次发送消息时，从已知节点列表中选出两个，保存到下面的结构数组里面。
+![](https://jaroffertree.oss-cn-hongkong.aliyuncs.com/20200909152511.png)
+
+节点每次收到MEET/PING/PONG消息时，会根据clusterMsgDataGossip结构，判断自己是否首次接触该节点。
+
+如果接受的节点发现传来的消息不在列表里，说明接受者是第一次接触到该节点，接受者会根据传来的消息进行握手。
+
+如果被选中节点已经存在于列表，接受者就会根据消息记录的信息，更新对应的clusterNode结构。
+
+
+
+## FAIL
+但节点A认为节点B已经下线时，会向集群广播一条主节点B的FAIL消息，所有接收到该消息的节点都会将节点B标记为下线。
+
+采取广播是因为Gossip协议需要一定延迟才能通知到集群所有节点，为了尽快进行故障转移，故采用广播。
+
+FAIL消息正文只包含一个nodeName的属性，表示下线节点的名字。
+
+## PUBLISH
+client向服务端发送PUBLISH时，会向所有节点广播PUBLISH消息，所以所有节点都会执行  PUBLISH 命令。
