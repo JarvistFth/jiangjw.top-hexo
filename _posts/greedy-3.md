@@ -194,74 +194,6 @@ public:
 };
 ```
 
-# 860. 柠檬水找零
-https://leetcode-cn.com/problems/lemonade-change/
-
-枚举就完事了，枚举5块、10块、20块的数量。注意找零的时候，20块可以找1张10块1张5块，也可以找3张5块。如果5块的钱数小于0，证明没法找。
-
-```C++
-class Solution {
-public:
-    bool lemonadeChange(vector<int>& bills) {
-        int five=0,ten=0,twenty=0;
-
-        for(auto b:bills){
-            if(b == 5){
-                five++;
-            }else if(b == 10){
-                ten++;
-                five--;
-            }else if(b == 20){
-                twenty++;
-                if(ten>0){
-                    ten--;five--;
-                }else{
-                    five-=3;
-                }
-            }
-            if(five < 0){
-                return false;
-            }
-        }
-        return true;
-    }
-};
-```
-
-# 1414. 和为 K 的最少斐波那契数字数目
-https://leetcode-cn.com/problems/find-the-minimum-number-of-fibonacci-numbers-whose-sum-is-k/
-
-求出最大为k的斐波那契数列；然后从最大的取起，取到k为0为止。
-
-```C++
-class Solution {
-public:
-    int findMinFibonacciNumbers(int k) {
-        int ans = 0;
-        int i=2;
-        vector<int> dp(2,1);
-        
-        while(1){
-            dp.push_back(*dp.rbegin() + *(dp.rbegin()+1));
-            if(dp.back() > k){
-                break;
-            }
-        }
-
-        for(int i=dp.size()-1;i>=0;i--){
-            if(k >= dp[i]){
-                k-=dp[i];
-                ans++;
-            }
-            if(k == 0){
-                break;
-            }
-        }
-        return ans;
-    }
-};
-```
-
 # 1400. 构造 K 个回文字符串
 https://leetcode-cn.com/problems/construct-k-palindrome-strings/
 
@@ -286,6 +218,41 @@ public:
             }
         }
         return odd <=k;
+    }
+};
+```
+
+# 1247. 交换字符使得字符串相同
+https://leetcode-cn.com/problems/minimum-swaps-to-make-strings-equal/
+
+s1和s2可以交换任意位置的字符，所以我们统计不相等的x和y的字符总数；
+
+如果不相等的x或y的字符数为偶数，则每两个字符只要交换一次就可以让他们相等了。
+
+如果不相等的x和y的字符数为1，则要交换两次。
+
+如果要交换的x和y的和是奇数，就说明就算交换，也不能使得字符串相同，return -1。
+
+
+
+```C++
+class Solution {
+public:
+    int minimumSwap(string s1, string s2) {
+        int countx = 0, county = 0;
+        for(int i=0;i<s1.size();i++){
+            if(s1[i] != s2[i]){
+                if(s1[i] == 'x'){
+                    countx ++;
+                }else{
+                    county ++;
+                }
+            }
+        }
+        if((countx + county) % 2 == 1){
+            return -1;
+        }
+        return countx/2 + county/2 + 2*(countx % 2);
     }
 };
 ```
