@@ -1,7 +1,7 @@
 # jiagnjw.top-hexo
 here is my blog:
 
-[jiangjw.top](jiangjw.top)
+[jiangjw.top](https://jiangjw.top)
 
 this repo contains the hexo source .md file for my blog.
 
