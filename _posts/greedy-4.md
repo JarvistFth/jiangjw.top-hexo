@@ -230,3 +230,69 @@ public:
     }
 };
 ```
+
+# 621. 任务调度器
+https://leetcode-cn.com/problems/task-scheduler/
+
+每个相同任务之间要间隔n；所以我们直觉地将任务次数最多的任务放在一轮处理的开头。这样每一轮中间可以插入其他任务或者空转时间。
+
+这时候除去末尾最后一轮任务的总时间就是(maxCount - 1) * (n + 1);
+
+然后我们再看看所有的任务的次数，只要有次数是最大值的，我们就把它添加到最后一轮的时间里面。
+
+另外需要注意n=0的特殊情况，这时候我们返回task.size()就可以了。
+
+```C++
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        unordered_map<char,int> map;
+
+        int maxCount = 0;
+        for(auto c:tasks){
+            map[c]++;
+            maxCount = max(maxCount,map[c]);
+        }
+
+        int ans = (maxCount - 1) * (n + 1);
+
+        for(auto& m:map){
+            if(m.second == maxCount){
+                ans++;
+            }
+        }
+
+        return max((int)tasks.size(),ans);
+    }
+};
+```
+
+
+
+# 991. 坏了的计算器
+https://leetcode-cn.com/problems/broken-calculator/
+
+让Y向X靠近。如果X比Y大，只能递减，步骤数就是X-Y；
+
+否则的话，如果Y是偶数让Y/2，操作数是1；如果Y是奇数，证明X需要-1才等于Y；让Y=(Y+1)/2，操作数是2。
+
+```C++
+class Solution {
+public:
+    int brokenCalc(int X, int Y) {
+        int ans = 0;
+        while(Y > X){
+                Y = Y/2;
+            if(Y % 2 == 0){
+                ans++;
+            }else{
+                Y = (Y+1)/2;
+                ans+=2;
+            }
+        }
+
+        return ans + X - Y;
+
+    }
+};
+```

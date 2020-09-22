@@ -388,3 +388,23 @@ public:
     }
 };
 ```
+
+# 392. 判断子序列
+
+双指针指向两个字符串，如果相等，让s[i]指针前移。
+
+```C++
+class Solution {
+public:
+    bool isSubsequence(string s, string t) {
+        int i=0,j=0;
+        while(i<s.size() && j<t.size()){
+            if(s[i] == t[j]){
+                i++;
+            }
+            j++;
+        }
+        return i==s.size()?true:false;
+    }
+};
+```

@@ -1,10 +1,10 @@
 ---
-title: c++ObjectModel-2
+title: C++对象模型（2）
 date: 2020-09-12 17:44:28
 categories: 
-- c++
-tags: [c++]
-keywords: [c++,对象模型]
+- C++
+tags: [C++]
+keywords: [C++,对象模型]
 ---
 构造函数语义学
 
@@ -33,8 +33,63 @@ void foo_bar{
 
 如果类有默认构造函数，但他没有对类内另一个类的成员变量做初始化，那么会在该默认构造函数内添加一些代码，用于完成其他类成员变量的初始化。例如：
 
-```c++
+```C++
+//原定义构造函数
+Bar::Bar(){
+    str = 0;
+}
+
+//扩张后构造函数
+Bar::Bar(){
+    foo.Foo::Foo();
+    str = 0;
+}
+```
 
 
-2. D:\QtProject\build-qmc-decoder-Qt5-Desktop_Qt_5_13_1_MinGW_64_bit-Debug\debug\moc_mainwindow.cpp:80: error: undefined reference to `MainWindow::on_tableWidget_cellActivated(int, int)'
+2. 如果一个没有任何构造函数的class派生自一个带有默认构造函数的base class，这个派生出来的class会合成默认构造函数。
+
+3. class声明或继承一个virtual function；
+4. class派生自一个继承串链，其中有一个或更多的virtual base classes。
+
+其中3和4是为了让这个class的vptr有一个正确的初始化，指向编译产生的vtbl。
+
+# 复制构造函数
+
+复制构造函数如果没有被显式声明，就有可能被合成出来；
+
+具体是否会合成，取决于该类是否展现出bitwise copy semantics（位逐次拷贝）
+
+##  合成的复制构造函数
+递归方式进行成员变量初始化，从某一个object拷贝到另一个object上；但遇到成员是另一个class的object时，不会进行实例的复制，而是会继续递归地进行基础类型的拷贝。
+
+示例：
+
+```C++
+class String{
+    public:
+    // no explicit copy constructor
+    private:
+    char* str;
+    int len;
+}
+
+class Word{
+    public:
+    // no explicit copy constructor
+    private:
+    int occurs;
+    String words;
+}
+
+Word w("aa");
+Word b = w;
+
+//先对occurs进行初始化
+//b.occurs = w.occurs
+//然后对String类的words递归进行初始化
+// b.words.str = w.words.str; b.words.len = w.words.len
+```
+
+
 

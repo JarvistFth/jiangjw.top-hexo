@@ -1,11 +1,13 @@
 ---
-title: c++-objectModel-1
+title: C++对象模型（1）
 date: 2020-09-08 23:33:05
 categories: 
-- c++
-tags: [c++]
-keywords: [c++,对象模型]
+- C++
+tags: [C++]
+keywords: [C++,对象模型]
 ---
+C++对象模型基本内存分布。
+<!---more--->
 
 # C++对象模型
 
