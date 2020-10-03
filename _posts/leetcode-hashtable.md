@@ -130,3 +130,39 @@ public:
     }
 };
 ```
+
+# 128. 最长连续序列
+https://leetcode-cn.com/problems/longest-consecutive-sequence/
+
+用一个map记录当前位置元素所在序列的长度，然后每次遍历一个元素的时候，如果它的长度为0，就说明它是第一次出现，取其左右连续的元素的长度，将他们的长度相加再加上自身长度（+1）。
+
+然后更新map中当前位置记录的长度、左右边界记录的最大长度，以及序列的最长长度。
+
+```C++
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        if(nums.empty()){
+            return 0;
+        }
+        int ans = 0;
+
+        unordered_map<int,int> map;
+        int left=0,right=0;
+        for(auto n:nums){
+            int currentLength = 0;
+            if(map[n] == 0){
+                left = map[n-1];
+                right = map[n+1];
+                currentLength = 1+left+right;
+
+                ans = max(ans,currentLength);
+                map[n] = currentLength;
+                map[n-left] = currentLength;
+                map[n+right] = currentLength;
+            }
+        }
+        return ans;
+    }
+};
+```

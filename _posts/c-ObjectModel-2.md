@@ -58,10 +58,11 @@ Bar::Bar(){
 
 复制构造函数如果没有被显式声明，就有可能被合成出来；
 
-具体是否会合成，取决于该类是否展现出bitwise copy semantics（位逐次拷贝）
+具体是否会合成，取决于该类是否展现出bitwise copy semantics（位逐次拷贝）。
 
-##  合成的复制构造函数
-递归方式进行成员变量初始化，从某一个object拷贝到另一个object上；但遇到成员是另一个class的object时，不会进行实例的复制，而是会继续递归地进行基础类型的拷贝。
+
+##  展现位逐次拷贝的复制构造函数
+递归方式进行成员变量初始化，从某一个object拷贝到另一个object上。
 
 示例：
 
@@ -91,5 +92,23 @@ Word b = w;
 // b.words.str = w.words.str; b.words.len = w.words.len
 ```
 
+## 不展现位逐次拷贝的情况，合成复制构造函数
+
+1. 一个class内含有的member object声明有一个copy constructor；
+2. 当class继承自一个base class，而base class有一个copy constructor；
+
+上述1和2是为了能正确的调用copy constructor；
+
+3. 当一个class声明了virtual function；
+4. 当一个class派生自一个继承串链，其中有virtual base class的时候；
+
+上述3和4是因为：位逐次拷贝不会对vptr进行处理。
+
+3. 假如使用位逐次拷贝，将派生类拷贝给基类，那么基类object的vptr也会指向派生类。但是这时候根据运行时多态，实际上是调用基类的virtual function的时候，就会crash；所以我们要在合成的复制构造函数中调整vptr的指向；
+4. 将派生类拷贝给基类，需要设定指向虚基类的vptr。
 
 
+# 初始化列表
+尽量使用初始化列表进行类的构造初始化，这样可以节省一些copy的操作，相当于原地赋值构造；
+
+但是由于初始化列表可能会根据变量的声明顺序来重新进行排序安插代码，所以如果初始化的变量之间有依赖关系，建议最基础的变量放到初始化列表中，而其他有依赖关系的代码按照依赖关系在构造函数中调用。

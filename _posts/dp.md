@@ -237,4 +237,30 @@ public:
 };
 ```
 
-# 
+# 322. 零钱兑换
+https://leetcode-cn.com/problems/coin-change/
+
+dp[n]表示总金额n的金币最少个数；对于每个金额的情况，都可以选择从其中小于当前数值的某一种金币开始进行选择，或者不选；
+
+如果不选金币，就是dp[i];
+如果选了金币，就是dp[i-coins[j]]+1；
+二者取个最小值就可以。
+
+```C++
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        vector<int> dp(amount+1,amount+1);
+        dp[0] = 0;
+        for(int i=1;i<=amount;i++){
+            for(int j=0;j<coins.size();j++){
+                if(coins[j] <= i){
+                    dp[i] = min(dp[i],dp[i - coins[j]]+1) ;
+                }
+            }
+        }
+        return dp[amount] > amount?-1:dp[amount];
+
+    }
+};
+```
