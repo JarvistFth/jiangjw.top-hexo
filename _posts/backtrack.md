@@ -105,17 +105,34 @@ https://leetcode-cn.com/problems/palindrome-partitioning/
 ```C++
 class Solution {
 public:
+   
     vector<vector<string>> partition(string s) {
         vector<vector<string>> ans;
-        vector<string> subset;
-
-        backtrack(s,0,s.size(),ans,subset);
+        vector<string> track;
+        backtrack(s,0,ans,track);
         return ans;
     }
+    
+    //做选择，对s取子串，看是不是回文串
+    void backtrack(string &s, int start, vector<vector<string>>& ans, vector<string>& subset){
+         if(start>=s.size()){
+            ans.push_back(subset);
+            return;
+        }
+        string s1;
+        for(int i=start;i<s.size();i++){
+            s1 += s[i];
+            if(!isValid(s1)){
+                continue;
+            }
+            subset.push_back(s1);
+            backtrack(s,i+1,ans,subset);
+            subset.pop_back();
+        }
+    }
 
-    bool isValid(const string& s){
-        int i=0,j=s.size()-1;
-
+    bool isValid(string &s){
+        int i=0, j=s.size()-1;
         while(i<j){
             if(s[i] != s[j]){
                 return false;
@@ -123,24 +140,6 @@ public:
             i++;j--;
         }
         return true;
-    }
-
-    void backtrack(const string& s, int start, int len, vector<vector<string>>& ans, vector<string>& subset){
-        if(start>=len){
-            ans.push_back(subset);
-            return;
-        }
-
-        //对当前字符串，从start到i取子串；后续递归从start+i开始取子串。
-        for(int i=1;i<=len-start;i++){
-            string s1 = s.substr(start,i);
-            if(!isValid(s1)){
-                continue;
-            }
-            subset.emplace_back(std::move(s1));
-            backtrack(s,start+i,len,ans,subset);
-            subset.pop_back();
-        }
     }
 };
 ```

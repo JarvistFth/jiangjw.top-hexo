@@ -519,6 +519,638 @@ public:
 };
 ```
 
+# 104. 二叉树的最大深度
+https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/
+
+递归，每层+1返回。
+
+```C++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if(root == NULL){
+            return 0;
+        }
+        return 1+max(maxDepth(root->left),maxDepth(root->right));
+    }
+};
+```
+
+# 105. 从前序与中序遍历序列构造二叉树
+https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+
+递归建树，每次传入左子树范围和右子树的范围。
+
+```C++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        return buildTree(preorder,inorder,0,preorder.size()-1,0,inorder.size()-1);
+    }
+
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder, int preleft, int preright, int inleft, int inright){
+        if(preleft>preright || inleft>inright){
+            return NULL;
+        }
+
+        int rootval = preorder[preleft];
+        TreeNode* root = new TreeNode(rootval);
+        int index = 0;
+        for(int i=0;i<=inright;i++){
+            if(inorder[i] == rootval){
+                index = i;
+                break;
+            }
+        }
+        root->left = buildTree(preorder,inorder,preleft+1,preleft+index-inleft,inleft,index-1);
+        root->right = buildTree(preorder,inorder,preleft+1+index-inleft,preright,index+1,inright);
+        return root;
+    }
+};
+```
+
+# 114. 二叉树展开为链表
+https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/
+
+递归将左右子树捋直了，然后将左子树接到右子树上。
+
+```C++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        if(root == nullptr){
+            return ;
+        }
+
+        flatten(root->right);
+        flatten(root->left);
+        
+        auto tmp = root->right;
+        root->right = root->left;
+        root->left = nullptr;
+        while(root->right){
+            root = root->right;
+        }
+        root->right = tmp;
+    }
+};
+```
+
+# 124. 二叉树中的最大路径和
+https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/
+
+递归获取左右子树的最大路径和（如果是负数就让他为0）
+
+向上返回左右子树的最大值+当前root的值；最大路径和可能是root的左右子树构成的路径。
+
+ ans=max(ans，(left+right+root->val))。
+
+```C++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int ans = INT_MIN;
+    int maxPathSum(TreeNode* root) {
+        if(root == NULL){
+            return 0;
+        }
+        dfs(root);
+        return ans;
+    }
+
+    int dfs(TreeNode* root){
+        if(root == NULL){
+            return 0;
+        }
+        auto left = max(0,dfs(root->left));
+        auto right = max(0,dfs(root->right));
+        ans = max(ans,left+right+root->val);
+        return max(left,right)+root->val;
+    }
+};
+```
+
+# 128. 最长连续序列
+https://leetcode-cn.com/problems/longest-consecutive-sequence/
+
+用哈希表存储每个端点值对应连续区间的长度
+
+若数已在哈希表中：跳过不做处理
+
+若是新数加入：
+
+1. 取出其左右相邻数已有的连续区间长度 left 和 right
+2. 计算当前数的区间长度为：cur_length = left + right + 1
+3. 根据 cur_length 更新最大长度 max_length 的值
+4. 更新区间两端点的长度值
+
+```C++
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        if(nums.empty()){
+            return 0;
+        }
+        int ans = 0;
+
+        unordered_map<int,int> map;
+        int left=0,right=0;
+        for(auto n:nums){
+            int currentLength = 0;
+            if(map[n] == 0){
+                left = map[n-1];
+                right = map[n+1];
+                currentLength = 1+left+right;
+
+                ans = max(ans,currentLength);
+                map[n] = currentLength;
+                map[n-left] = currentLength;
+                map[n+right] = currentLength;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+# 136. 只出现一次的数字
+https://leetcode-cn.com/problems/single-number/
+
+每个数字和自己异或会变成0.
+
+```C++
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int ans = 0;
+        for(auto n:nums){
+            ans ^= n;
+        }
+        return ans;
+    }
+};
+```
+
+# 139. 单词拆分
+https://leetcode-cn.com/problems/word-break/
+
+背包模型dp；dp[j]表示第j个单词可以被划分；那么[j,...,i]的单词能不能被划分取决于dict中是否有s[j,...i]。
+
+```C++
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        vector<bool> dp(s.size()+1,false);
+        unordered_set<string> dict(wordDict.begin(),wordDict.end());
+
+        dp[0] = true;
+
+        for(int i=1;i<=s.size();i++){
+            for(int j=0;j<i;j++){
+                if(dp[j] && dict.count(s.substr(j,i-j))){
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[s.size()];
+    }
+};
+```
+
+# 141. 环形链表
+https://leetcode-cn.com/problems/linked-list-cycle/
+
+快慢指针，如果有环，快指针和慢指针最终会遇上（相等）。
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        if(head == NULL){
+            return false;
+        }
+
+        ListNode* fast = head;
+        ListNode* slow = head;
+
+        while(fast != NULL && fast->next != NULL){
+            fast = fast->next->next;
+            slow = slow->next;
+            if(fast == slow){
+                return true;
+            }
+        }
+        return false;
+    }
+};
+```
+
+# 146. LRU缓存机制
+https://leetcode-cn.com/problems/lru-cache/
+
+哈希双向链表；通过哈希O(1)找到key对应的listnode是否存在；
+
+通过双向链表，增删节点；
+
+1. 如果此时key/value已经存在，将其删除，然后往链表头插入；
+2. 如果此时key/value不存在，新建个节点；如果这时候已经超出容量了，删除尾部节点再往头部插入；否则直接往头部插入。
+3. 获取key/value的时候，直接通过哈希表的key获取对应的node节点；然后再将其put进LRUCache就可以了。
+
+```C++
+class LRUCache {
+public:
+    LRUCache(int capacity) : capacity(capacity),size(0) {
+        head = new ListNode();
+        tail = new ListNode();
+        head->next = tail;
+        tail->prev = head;
+    }
+    
+    int get(int key) {
+        if(map.count(key) == 0){
+            return -1;
+        }
+        int val = map[key]->val;
+        put(key,val);
+        return val;
+    }
+    
+    void put(int key, int value) {
+        ListNode* node = new ListNode(key,value);
+        //key exist 
+        
+        if(map.count(key)){
+            removeOne(map[key]);
+            addFirst(node);
+            map[key]=node;
+        }else{
+            if(capacity == size){
+                auto back = removeLast();
+                map.erase(back->key);
+                delete back;
+                size--;
+            }
+            addFirst(node);
+            map[key] = node;
+            size++;
+        }
+    }
+
+    
+
+private:
+    struct ListNode{
+        int key;
+        int val;
+        ListNode* prev;
+        ListNode* next;
+        ListNode():key(0),val(0),prev(nullptr),next(nullptr){};
+        ListNode(int key,int val):key(key),val(val),prev(nullptr),next(nullptr){};
+    };
+    unordered_map<int,ListNode*>map;
+    ListNode* head;
+    ListNode* tail;
+    int size;
+    int capacity;
+
+
+    void addFirst(ListNode* node){
+        auto n = head->next;
+        head->next = node;
+        node->next = n;
+        n->prev = node;
+        node->prev = head;
+    }
+
+    ListNode* removeLast(){
+        auto n = tail->prev;
+        removeOne(n);
+        return n;
+    }
+
+    void removeOne(ListNode* node){
+        node->prev->next = node->next;
+        node->next->prev = node->prev;
+    }
+
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
+ ```
+
+# 148. 排序链表
+https://leetcode-cn.com/problems/sort-list/
+
+归并或者快排版本都有。
+
+1. 归并排序先快慢指针找中点，然后断链，递归调用断链；对左右两部分进行归并排序；
+2. 快排
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+        if(head == NULL){
+            return NULL;
+        }
+        // ListNode* end = head;
+        // while(end->next){
+        //     end = end->next;
+        // }
+        // quickSort(head,end);
+        // return head;
+        return mergeSort(head);
+
+    }
+
+    // void quickSort(ListNode *start, ListNode *end){
+    //     if(start == NULL || end == NULL || start == end){
+    //         return ;
+    //     }
+
+    //     ListNode* p = start;
+    //     ListNode* q = start->next;
+    //     int midval = start->val;
+    //     while(q != end->next){
+    //         if(q->val < midval){
+    //             p = p->next;
+    //             if(p != q){
+    //                 swap(p->val,q->val);
+    //             }
+    //         }
+    //         q = q->next;
+    //     }
+    //     if(p != start){
+    //         swap(p->val ,start->val);
+    //     }
+    //     quickSort(start,p);
+    //     quickSort(p->next,end);
+    // }
+
+    
+
+    ListNode* mergeSort(ListNode* head){
+        if(!head || !head->next){
+            return head;
+        }
+        ListNode* fast = head;
+        ListNode* slow = head;
+        ListNode* pre = head;
+
+        while(fast  && fast->next ){
+            fast = fast->next->next;
+            pre = slow;
+            slow = slow->next;
+        }
+        pre->next = NULL;
+
+        ListNode* l = mergeSort(head);
+        ListNode* r = mergeSort(slow);
+        return merge(l,r);
+    }
+
+    ListNode* merge(ListNode* l1, ListNode* l2){
+        ListNode* dummy = new ListNode(-1);
+        ListNode* current = dummy;
+
+        while(l1!=NULL && l2 != NULL){
+            if(l1->val <= l2->val){
+                current->next = l1;
+                current = current->next;
+                l1 = l1->next;
+            }else{
+                current->next = l2;
+                current = current->next;
+                l2 = l2->next;
+            }
+        }
+
+        while(l1 != NULL){
+            current->next = l1;
+            current = current->next;
+            l1 = l1->next;
+        }
+        while(l2 != NULL){
+            current->next = l2;
+            current = current->next;
+            l2 = l2->next;
+        }
+        return dummy->next;
+    }
+};
+```
+
+# 152. 乘积最大子数组
+https://leetcode-cn.com/problems/maximum-product-subarray/
+
+遇到负数会让最大值变最小值，最小值变最大值；所以在更新最大值和最小值前，先判断一下当前元素是不是负数；如果是负数就先把他们交换。
+
+```C++
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        if(nums.size() == 0 ){
+            return 0;
+        }
+
+        int ans = INT_MIN;
+
+        int maxval = 1,minval = 1;
+        for(auto n:nums){
+            if(n<0){
+                swap(maxval,minval);
+            }
+            maxval = max(maxval * n,n);
+            minval = min(minval * n, n);
+            ans = max(maxval,ans);
+        }
+        return ans;
+    }
+};
+```
+
+# 155. 最小栈
+https://leetcode-cn.com/problems/min-stack/
+
+两个栈，一个正常出入，一个只将最小值入栈；如果当前push进来的值小于top的值，就将top push进去。getMin其实就是获取最小值的栈的top。
+
+```C++
+class MinStack {
+public:
+    /** initialize your data structure here. */
+    stack<int> s;
+    stack<int> v;
+    MinStack() {
+        
+    }
+    
+    void push(int x) {
+        s.push(x);
+        if(v.empty()){
+            v.push(x);
+        }else{
+            if(x < v.top()){
+                v.push(x);
+            }else{
+                v.push(v.top());
+            }
+        }
+    }
+    
+    void pop() {
+        if(s.empty() || v.empty()){
+            return ;
+        }
+        s.pop();
+        v.pop();
+    }
+    
+    int top() {
+        return s.empty()?0:s.top();
+    }
+    
+    int getMin() {
+        return v.empty()?0:v.top();
+    }
+};
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack* obj = new MinStack();
+ * obj->push(x);
+ * obj->pop();
+ * int param_3 = obj->top();
+ * int param_4 = obj->getMin();
+ */
+ ```
+
+# 160. 相交链表
+https://leetcode-cn.com/problems/intersection-of-two-linked-lists/
+
+每次走到一个本链表的末尾就让指针指向另一个链表的头；这样走两次后，如果有环，环的起点前走过的长度相等，此时pA==pB。返回pA即可。
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        if(headA == NULL || headB == NULL){
+            return NULL;
+        }
+        ListNode* pA = headA;
+        ListNode* pB = headB;
+        while(pA != pB){
+            pA = pA == NULL?headB:pA->next;
+            pB = pB == NULL?headA:pB->next;
+        }
+        return pA;
+    }
+};
+```
+
+# 169. 多数元素
+https://leetcode-cn.com/problems/majority-element/
+
+哈希表是最容易想到的。O(1)空间用摩尔投票法，每次如果遇到相同的数，就count++，否则count--；当count为0的时候，就换一个数去统计。最后剩下的肯定是count不为0的数，就是答案。
+
+```C++
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        // if(nums.empty()){
+        //     return 0;
+        // }
+        // map<int,int> map;
+        // for(auto n:nums){
+        //     map[n]++;
+        // }
+        // for(auto&[k,v] : map){
+        //     if(v > nums.size()/2){
+        //         return k;
+        //     }
+        // }
+        // return 0;
+        int count = 0;
+        int ans = 0;
+        for(auto n:nums){
+            if(count == 0){
+                ans = n;
+                count++;
+            }else{
+                ans == n?count++:count--;
+            }
+        }
+        return ans;
+    }
+};
+```
+
 # 347. 前 K 个高频元素
 https://leetcode-cn.com/problems/top-k-frequent-elements/
 
