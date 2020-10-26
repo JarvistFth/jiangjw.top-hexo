@@ -11,7 +11,7 @@ tags: [leetcode,树]
 <!---more--->
 
 
-## 面试题 04.06. 后继者
+### 面试题 04.06. 后继者
 https://leetcode-cn.com/problems/successor-lcci/
 
 二叉搜索树基本都是利用中序遍历得到排序访问。
@@ -38,7 +38,7 @@ public:
 
 };
 ```
-## 面试题 04.05. 合法二叉搜索树
+### 面试题 04.05. 合法二叉搜索树
 https://leetcode-cn.com/problems/legal-binary-search-tree-lcci/
 
 中序遍历需要记录前一个节点的值做比较的时候，需要一个全局变量来记录前一个节点的值
@@ -68,11 +68,11 @@ public:
 };
 ```
 
-## 98. 验证二叉搜索树
+### 98. 验证二叉搜索树
 https://leetcode-cn.com/problems/validate-binary-search-tree/
 和上题一样。
 
-## 530. 二叉搜索树的最小绝对差
+### 530. 二叉搜索树的最小绝对差
 https://leetcode-cn.com/problems/minimum-absolute-difference-in-bst/
 
 BST，照旧中序遍历；因为是二叉搜索树，所以最小绝对差肯定是在root和其子树之间产生，越往下绝对差越大。所以和上面的类似，用一个节点记录上一次遍历的节点的值，然后和当前遍历的节点的值作差，再设定一个全局最小值用于比较取最小值。
@@ -101,7 +101,7 @@ public:
     }
 };
 ```
-## 538. 把二叉搜索树转换为累加树
+### 538. 把二叉搜索树转换为累加树
 https://leetcode-cn.com/problems/convert-bst-to-greater-tree/
 
 这个和普通的中序遍历不太一样，因为他是把所有大于它的节点的值加到当前节点上，所以要先遍历右子树，得到最大的值，然后再遍历根节点和左子树，这样可以依次得到从大到小的序列，就比较好累加。
@@ -129,7 +129,7 @@ public:
 };
 ```
 
-## 173. 二叉搜索树迭代器
+### 173. 二叉搜索树迭代器
 https://leetcode-cn.com/problems/binary-search-tree-iterator/
 
 
@@ -167,7 +167,7 @@ public:
 };
 ```
 
-## 938. 二叉搜索树的范围和
+### 938. 二叉搜索树的范围和
 https://leetcode-cn.com/problems/range-sum-of-bst/
 
 ```C++
@@ -194,7 +194,7 @@ public:
 };
 ```
 
-## 701. 二叉搜索树中的插入操作
+### 701. 二叉搜索树中的插入操作
 https://leetcode-cn.com/problems/insert-into-a-binary-search-tree/
 
 判断节点大小，然后递归调用，返回root节点，将新建的节点作为root的左右节点。
@@ -220,7 +220,7 @@ public:
 ```
 
 
-## 1305. 两棵二叉搜索树中的所有元素
+### 1305. 两棵二叉搜索树中的所有元素
 https://leetcode-cn.com/problems/all-elements-in-two-binary-search-trees/
 
 中序遍历出来两个有序数组，归并排序一下。
@@ -270,7 +270,7 @@ public:
 };
 ```
 
-## 230. 二叉搜索树中第K小的元素
+### 230. 二叉搜索树中第K小的元素
 https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/
 
 第一版代码就是简单的中序遍历出有序数组，然后返回k-1下标；
@@ -316,7 +316,7 @@ public:
 
 ```
 
-## 669. 修剪二叉搜索树
+### 669. 修剪二叉搜索树
 https://leetcode-cn.com/problems/trim-a-binary-search-tree/
 
 判断root是否在LR范围内，如果是，就对左右子树递归调用，返回root节点；否则的话，root不在LR范围里，但是它的左子树/右子树还是可能在LR范围里，所以要递归遍历对应的左右子树。返回的是root节点，所以要将返回的root节点赋值给当前root的左右子树。
@@ -345,7 +345,7 @@ public:
 };
 ```
 
-## 653. 两数之和 IV - 输入 BST
+### 653. 两数之和 IV - 输入 BST
 https://leetcode-cn.com/problems/two-sum-iv-input-is-a-bst/
 
 两数之和变形题目，原来的想法是对tree做dfs，用map保存rootval，然后遍历map查找合适的节点。。这里要遍历2*N次。
@@ -374,7 +374,7 @@ public:
 };
 ```
 
-## 面试题 17.12. BiNode
+### 面试题 17.12. BiNode
 https://leetcode-cn.com/problems/binode-lcci/
 和链表插入差不多。一个current指针指向当前节点，中序遍历。
 
@@ -405,7 +405,7 @@ public:
 };
 ```
 
-## 501. 二叉搜索树中的众数
+### 501. 二叉搜索树中的众数
 https://leetcode-cn.com/problems/find-mode-in-binary-search-tree/
 
 中序遍历。
@@ -451,7 +451,7 @@ public:
 ```
 
 
-## 验证二叉搜索树
+### 验证二叉搜索树
 <a>https://leetcode-cn.com/problems/validate-binary-search-tree/</a>
 
 看到二叉搜索树首先想到中序遍历

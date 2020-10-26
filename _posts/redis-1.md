@@ -9,9 +9,9 @@ keywords: [redis]
 redis系列第一篇，基本数据结构
 <!---more--->
 
-## redis基本数据结构
+### redis基本数据结构
 
-### 字符串
+#### 字符串
 字符串SDS结构如下：
 ```C++
 struct sdshdr{
@@ -42,7 +42,7 @@ C字符串 | SDS
 
 
 
-### 链表
+#### 链表
 ```C++
 struct listNode{
     //前驱结点
@@ -71,14 +71,14 @@ struct list{
 
 用途广泛，列表键、发布订阅、慢查询、监视器都用到。
 
-### 字典
+#### 字典
 
 底层实现为哈希表，一个哈希表有多个哈希表结点，一个节点保存一个键值对。
 
 结构如下：
 ![](https://jaroffertree.oss-cn-hongkong.aliyuncs.com/20200724171741.png)
 
-#### 字典相关的数据结构：
+##### 字典相关的数据结构：
 ```C++
 
 struct dictht{
@@ -123,7 +123,7 @@ struct dict{
 
 ```
 
-#### 哈希算法
+##### 哈希算法
 
 计算索引值：
 ```C++
@@ -133,10 +133,10 @@ index = hash & dict->ht[x].sizemask;
 
 使用Murmurhash算法计算。
 
-#### key冲突
+##### key冲突
 链地址法，next指针添加结点，为方便添加，添加到表头，复杂度为O(1)
 
-#### rehash
+##### rehash
 随着操作不断进行，哈希表的负载可能会不均衡（一些index保存很多keyvalue，一些就空），这时要对哈希表进行扩展收缩或者Rehash。
 
 1. 分配空间：
@@ -146,13 +146,13 @@ index = hash & dict->ht[x].sizemask;
 2. 将ht[0]上面的key rehash到ht[1]上，重新计算hash和index；
 3. 释放ht[0]，将ht[1]变为ht[0]，新建一个空白ht[1]；
 
-#### 渐进式rehash
+##### 渐进式rehash
 一次性rehash可能会造成redis无响应。
 分index依次rehash到ht[1]中，用rehashidx记录当前进度，此时如果对字典进行操作，也会进行rehash，并且操作会在两个hash表上进行。完成时将rehashidx设为-1。
 
 
 
-### 跳跃表
+#### 跳跃表
 有序集合键的底层实现。
 
 结构如下：
@@ -190,7 +190,7 @@ struct zskiplist{
 ```
 
 
-### 整数集合
+#### 整数集合
 
 只包含整数的集合，集合键的底层实现之一，无重复。
 ![](https://jaroffertree.oss-cn-hongkong.aliyuncs.com/20200724172641.png)
@@ -217,7 +217,7 @@ encoding属性可以指定为16/32/64位int类型，所以可以对数组元素�
 不支持降级。
 
 
-### 压缩列表
+#### 压缩列表
 
 压缩列表作为列表键和哈希键的底层实现之一。
 
@@ -249,14 +249,14 @@ encoding：记录节点content类型和长度
 
 content：保存节点值，可以是一个字节数组或者整数，类型和长度由encoding确定。
 
-#### 连锁更新
+##### 连锁更新
 
 更新前一节点的内容，使内容长度大于254字节，这时候要更改编码方式，previous_entry_length就要扩容为5字节，后面的节点也要同样扩容。这时就发生连锁更新，不断对压缩列表进行空间重分配。同样地，如果删除节点，也有可能会发生连锁更新。
 
 最坏情况下要执行N次连锁更新，每次的复杂度为O(N),所以最坏复杂度为O(N^2);
 但出现最坏情况的几率不多。
 
-### 对象
+#### 对象
 
 redisObject结构如下：
 ![](https://jaroffertree.oss-cn-hongkong.aliyuncs.com/20200726142749.png)
@@ -267,7 +267,7 @@ type属性记录了redisObject的类型，比如REDIS_STRING/REDIS_LIST/REDIS_HA
 
 encoding则对应了每种type的编码类型，比如字符串可以是REDIS_ENCODING_INT/REDIS_ENCODING_EMBSTR/REDIS_ENCODING_RAW三种编码方式。使用ENCODING属性设定对象的编码，可以提升redis的灵活性和效率，可以随着场景的使用而进行切换。
 
-#### 字符串对象
+##### 字符串对象
 
 编码方式：
 1. REDIS_ENCODING_INT:
@@ -288,16 +288,16 @@ encoding则对应了每种type的编码类型，比如字符串可以是REDIS_EN
 
     另外long/double类型的也保存为字符串类型，进行相应操作可以转换成原类型然后再用字符串保存。也可以通过操作将编码升级为RAW。
 
-#### 列表对象
+##### 列表对象
 列表对象编码:ziplist/linkedlist。如果列表字符串长度在65字节以下/保存的元素小于512个，用ziplist，否则用linkedlist。
 
-#### 哈希对象
+##### 哈希对象
 哈希对象编码：ziplist/hashtable。所有键值对的键和值得字符串长度都小于64字节，保存的键值对数量少于512个，用ziplist；否则用hashtable。
 
-#### 集合对象
+##### 集合对象
 intset/hashtable。保存的数据为整数或者元素数量不超过512个，用intset，否则用hashtable，hashtable的dict的的key为保存的字符串，value为空值。
 
-#### 有序结合对象
+##### 有序结合对象
 ziplist/skiplist：有序集合元素小于128个或者保存的元素长度小于64字节，用ziplist，否则用skiplist。
 
 skiplist编码对象使用zset作为底层实现，一个zset同时包含一个skiplist和一个dict。
@@ -309,10 +309,10 @@ skiplist编码对象使用zset作为底层实现，一个zset同时包含一个s
 robj:encoding=SKIPLIST;(void*) ptr->zset;
 zset:robj(key);dictadd(robj*);zslInsert*(rojb*);
 
-#### 对象共享
+##### 对象共享
 对象的引用计数值除了用于内存回收外，还带有对象共享的作用；如果新建了一个同样整数值的对象，可以让keyA和keyB一起共享这个对象；每有一个键共享了这个对象，该对象的引用计数就加1 。
 redis不共享包含字符串的对象，因为共享时需要先判断两个对象的值是否相同，如果保存的是字符串，验证一次的复杂度为O(n)；如果共享对象包含了N个字符串，那么验证一次的复杂度为O(N^2)。
 
-#### 空转时长
+##### 空转时长
 
 记录上次距今访问的时间，用于LRU算法进行内存回收，释放对象。

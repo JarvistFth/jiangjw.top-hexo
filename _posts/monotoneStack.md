@@ -16,10 +16,10 @@ keywords: [leetcode,单调栈]
 ————节自labuladong的算法笔记。
 <!---more--->
 
-# 模板：
+## 模板：
 ![](https://jaroffertree.oss-cn-hongkong.aliyuncs.com/20200914231021.png)
 
-# 739. 每日温度
+## 739. 每日温度
 https://leetcode-cn.com/problems/daily-temperatures/
 
 这里放入栈的应该是下一个更大数字的索引。

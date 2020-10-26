@@ -8,7 +8,7 @@ tags: [leetcode ,树]
 ---
 一些问题经常会用到双重递归的办法，一般都是要每个根节点都与一个列表/树进行比较，外层递归负责移动root，里层递归负责对比。
 <!---more--->
-## 1367. 二叉树中的列表
+### 1367. 二叉树中的列表
 https://leetcode-cn.com/problems/linked-list-in-binary-tree/
 
 拿到手第一个想法是一趟递归完成，后来发现isSubPath()只操作左右子树会比较好，如果还要操作head进行比对，写起来会很复杂；最好是用另一个递归函数去处理列表的head。
@@ -43,7 +43,7 @@ public:
     }
 };
 ```
-## 剑指 Offer 26. 树的子结构
+### 剑指 Offer 26. 树的子结构
 https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/
 
 给出的函数是判断从root判断是否包含子树，所以肯定是递归调用左子树&&递归调用右子树；

@@ -10,7 +10,7 @@ tags: [leetcode ,树]
 树的节点关系系列问题
 <!---more--->
 
-## 面试题 04.08. 首个共同祖先
+### 面试题 04.08. 首个共同祖先
 https://leetcode-cn.com/problems/first-common-ancestor-lcci/
 
 给出的函数是
@@ -55,7 +55,7 @@ public:
 };
 ```
 
-## 993. 二叉树的堂兄弟节点
+### 993. 二叉树的堂兄弟节点
 https://leetcode-cn.com/problems/cousins-in-binary-tree/
 
 遍历节点，找到给定值的节点时，记录其父节点和高度；

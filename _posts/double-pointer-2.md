@@ -9,7 +9,7 @@ categories:
 LeetCode双指针，第3第4页题目。
 <!---more--->
 
-# 283. 移动零
+## 283. 移动零
 https://leetcode-cn.com/problems/move-zeroes/
 
 双指针，一个遍历数组，一个保存非零元素下标。将非零元素全部往前移，最后将后面所有元素置为0.
@@ -33,7 +33,7 @@ public:
 };
 ```
 
-# 27. 移除元素
+## 27. 移除元素
 https://leetcode-cn.com/problems/remove-element/
 
 双指针，一个遍历数组，一个记录非删除元素的下标。遇到不是删除的元素，就将非删除元素目前的下标的位置赋值。
@@ -60,7 +60,7 @@ public:
 };
 ```
 
-# 剑指 Offer 04. 二维数组中的查找
+## 剑指 Offer 04. 二维数组中的查找
 https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/
 
 这类有序矩阵问题都是通过查找四个角的元素，找到其左/右、上/下的规律性。如果这个角的元素等于target，就返回；否则就对应的往前一列/后一列或者上一行/下一行去搜索。
@@ -89,7 +89,7 @@ public:
 };
 ```
 
-# 826. 安排工作以达到最大收益
+## 826. 安排工作以达到最大收益
 https://leetcode-cn.com/problems/most-profit-assigning-work/
 
 将工作结合，然后按大到小排序。双指针遍历，一个遍历worker，一个遍历job。因为已经排好序，所以用贪心思想，碰到worker第一个可以做的工作，就将job的profit加入到答案中。
@@ -132,7 +132,7 @@ public:
 };
 ```
 
-# 面试题 16.06. 最小差
+## 面试题 16.06. 最小差
 https://leetcode-cn.com/problems/smallest-difference-lcci/
 
 最小差是与当前数组元素最接近的值的差值。
@@ -172,7 +172,7 @@ public:
 };
 ```
 
-# 287. 寻找重复数
+## 287. 寻找重复数
 https://leetcode-cn.com/problems/find-the-duplicate-number/
 
 思想类似链表判断是否有环。这里利用了数组里面数字是1-n的特点，让数组代替链表中的next，让快慢指针通过数组下标来进行行进。
@@ -199,7 +199,7 @@ public:
     }
 };
 ```
-# 75. 颜色分类
+## 75. 颜色分类
 https://leetcode-cn.com/problems/sort-colors/
 
 这题和之前一道移动0有点像。想法是将0移动到头，将2移动到末尾，剩下的就是1了。
@@ -232,7 +232,7 @@ public:
 };
 ```
 
-# 接雨水
+## 接雨水
 https://leetcode-cn.com/problems/trapping-rain-water/
 
 这题还挺难理解的。。。
@@ -296,7 +296,7 @@ public:
 };
 ```
 
-# 86. 分隔链表
+## 86. 分隔链表
 https://leetcode-cn.com/problems/partition-list/
 
 新建两个链表，一个存放比x小的元素，一个存放比x大的元素；然后将小的链表和大的链表合起来就可以了。
@@ -389,7 +389,7 @@ public:
 };
 ```
 
-# 392. 判断子序列
+## 392. 判断子序列
 
 双指针指向两个字符串，如果相等，让s[i]指针前移。
 

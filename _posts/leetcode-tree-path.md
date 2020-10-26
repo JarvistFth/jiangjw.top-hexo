@@ -9,9 +9,9 @@ tags: [leetcode ,树]
 
 树的路径问题以及遍历问题
 <!---more--->
-# 前序遍历
+## 前序遍历
 
-## N叉树的前序遍历
+### N叉树的前序遍历
 https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/
 
 经典前序遍历
@@ -67,7 +67,7 @@ public:
     }
 };
 ```
-## 971. 翻转二叉树以匹配先序遍历
+### 971. 翻转二叉树以匹配先序遍历
 https://leetcode-cn.com/problems/flip-binary-tree-to-match-preorder-traversal/
 前序遍历，如果当前root节点和voyage的当前下标的值不相等，清空vector返回-1；如果有左子树，并且左子树的值和voyage下一个值不相等，翻转（左右子树交换遍历顺序，先右后左），否则正常遍历。
 
@@ -105,7 +105,7 @@ public:
 ```
 
 
-## 1022. 从根到叶的二进制数之和
+### 1022. 从根到叶的二进制数之和
 https://leetcode-cn.com/problems/sum-of-root-to-leaf-binary-numbers/
 
 前序遍历，如果是叶子结点，返回sum；如果一侧空，遍历另一侧；两侧都有就两侧遍历，返回的是两侧的和。
@@ -142,7 +142,7 @@ public:
 };
 ```
 
-## 606. 根据二叉树创建字符串
+### 606. 根据二叉树创建字符串
 https://leetcode-cn.com/problems/construct-string-from-binary-tree/
 
 前序遍历，如果是叶子节点，直接返回root->val；如果没有右子树，括号会少一对；否则递归调用左子树和右子树。
@@ -167,7 +167,7 @@ public:
     }
 };
 ```
-## 652. 寻找重复的子树
+### 652. 寻找重复的子树
 https://leetcode-cn.com/problems/find-duplicate-subtrees/
 
 将root->val + dfs(root->left) + dfs(root->right)， 送入map，map中保存每个子树的数值。如果此时map中统计出次数为1，就说明之前map中已经有这个子树，将此时子树的值放入ans中。
@@ -200,7 +200,7 @@ public:
 };
 ```
 
-## 1315. 祖父节点值为偶数的节点和
+### 1315. 祖父节点值为偶数的节点和
 https://leetcode-cn.com/problems/sum-of-nodes-with-even-valued-grandparent/
 
 直接dfs，传入grandparent节点以及parent节点；根据grandparent节点，判断祖父节点数值是否为偶数，如果是，就累加。
@@ -229,7 +229,7 @@ public:
 
 ```
 
-## 1448. 统计二叉树中好节点的数目
+### 1448. 统计二叉树中好节点的数目
 https://leetcode-cn.com/problems/count-good-nodes-in-binary-tree/
 
 看到首先想法是dfs，每次dfs维护一个最大值max，如果root->val大于等于max，说明下层的节点值比上层最大值大，这个节点是好节点。这时候答案+1，并且更新最大值，然后更新dfs。
@@ -265,7 +265,7 @@ public:
 };
 ```
 
-## 1261. 在受污染的二叉树中查找元素
+### 1261. 在受污染的二叉树中查找元素
 https://leetcode-cn.com/problems/find-elements-in-a-contaminated-binary-tree/
 直接暴力解决了。。
 ```C++
@@ -312,8 +312,8 @@ private:
 
 
 
-# 中序遍历
-## 897. 递增顺序查找树
+## 中序遍历
+### 897. 递增顺序查找树
 https://leetcode-cn.com/problems/increasing-order-search-tree/
 
 中序遍历，用一个全局变量保存上次遍历的root节点的值。
@@ -336,8 +336,8 @@ public:
 };
 ```
 
-# 后序遍历
-## 1110. 删点成林
+## 后序遍历
+### 1110. 删点成林
 https://leetcode-cn.com/problems/delete-nodes-and-return-forest/
 
 这道题，要删除结点，所以不能用先序，因为删了，下面就没办法遍历了。所以用后序遍历。如果遍历到的root结点值在vector里，就把左右子树放入ans，并且将root置空。
@@ -377,7 +377,7 @@ public:
 };
 ```
 
-## 988. 从叶结点开始的最小字符串
+### 988. 从叶结点开始的最小字符串
 https://leetcode-cn.com/problems/smallest-string-starting-from-leaf/
 
 官方题解是回溯+先序遍历，但是我看到题目首先想到的是后序，因为他是从叶子结点开始的。想法就是如果是叶子结点，返回root->val对应的string，如果左右子树只有一个，继续遍历；如果左右子树都有，就遍历他们两个，返回他们中值较小的那个；返回值是做好的字符串，所以需要将当前节点对应的字符值传入作为参数。
@@ -421,7 +421,7 @@ public:
 };
 
 ```
-## 1325. 删除给定值的叶子节点
+### 1325. 删除给定值的叶子节点
 https://leetcode-cn.com/problems/delete-leaves-with-a-given-value/
 
 看到是叶子节点首先想到是后序遍历。后序遍历，如果是val值就返回null，否则返回root；因为返回的是叶子结点，所以要将当前的左右子节点赋值为后序遍历的返回值。
@@ -446,7 +446,7 @@ public:
 };
 ```
 
-## 1123. 最深叶节点的最近公共祖先
+### 1123. 最深叶节点的最近公共祖先
 https://leetcode-cn.com/problems/lowest-common-ancestor-of-deepest-leaves/
 
 看到叶子节点应该先想到后序遍历，需要计算深度。如果后序遍历左右深度相等，证明当前左右子树的叶子节点的两个深度相等，所以返回当前的root节点；否则的话对深度大的那一边进行递归。
@@ -478,7 +478,7 @@ public:
 };
 ```
 
-## 872. 叶子相似的树
+### 872. 叶子相似的树
 https://leetcode-cn.com/problems/leaf-similar-trees/
 后序遍历放到两个vector里面进行比较。
 
@@ -510,7 +510,7 @@ public:
 };
 ```
 
-## 114. 二叉树展开为链表
+### 114. 二叉树展开为链表
 https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/ 
 
 在还没操作节点右子树前，不能破坏该节点的右子树指向。所以采用后序遍历。
@@ -544,8 +544,8 @@ public:
 
 
 
-# 层序遍历
-## 623. 在二叉树中增加一行 
+## 层序遍历
+### 623. 在二叉树中增加一行 
 https://leetcode-cn.com/problems/add-one-row-to-tree/
 
 这道题层序遍历比较直观，递归代码比较简单。层序的想法是将每一层的节点入队列，然后当前层的计数器++，判断计数器与d是否相等，相等的话新建节点，调整节点关系；否则继续将当前节点的子节点入队列。
@@ -651,7 +651,7 @@ public:
 };
 ```
 
-## 199. 二叉树的右视图
+### 199. 二叉树的右视图
 https://leetcode-cn.com/problems/binary-tree-right-side-view/
 
 这题简单，层序遍历，ans保留每一层最右边的节点就可以了。
@@ -688,7 +688,7 @@ public:
     }
 };
 ```
-## 958. 二叉树的完全性检验
+### 958. 二叉树的完全性检验
 https://leetcode-cn.com/problems/check-completeness-of-a-binary-tree/
 
 这道题用了层次遍历的想法，但是在具体操作的时候有些地方不太一样，一个是它不需要对每层的每个节点分清楚；具体来说就是在队列里面只需要保存遍历过的节点，将它的子树入队就行了，不需要将每个节点的层次分清楚（少了个for循环）。在判断的时候，如果左子树是空右子树不空，就是false；如果编历过程碰到两次以上的空节点并且此时node为非叶子结点，也为false。所以用一个flag标记之前是否已经碰到过空节点。
@@ -731,7 +731,7 @@ public:
     }
 };
 ```
-## 662. 二叉树最大宽度
+### 662. 二叉树最大宽度
 https://leetcode-cn.com/problems/maximum-width-of-binary-tree/
 层次遍历，对每个节点记录他的index值，他的子节点就是2*index && 2*idnex+1 。宽度就是每一层最后的那个节点的index减最开始的节点的index，再和记录的最大值作比较。这里最坑的就是用例可能会超出范围，直接用unsigned long long去给出回答。
 
@@ -780,7 +780,7 @@ public:
     }
 };
 ```
-## 515. 在每个树行中找最大值
+### 515. 在每个树行中找最大值
 
 https://leetcode-cn.com/problems/find-largest-value-in-each-tree-row/
 
@@ -817,7 +817,7 @@ public:
     }
 };
 ```
-## 919. 完全二叉树插入器
+### 919. 完全二叉树插入器
 https://leetcode-cn.com/problems/complete-binary-tree-inserter/
 
 每层节点入队列，判断如果该节点有左右子树，证明该节点不可能作为插入的父节点，从队列中删除。如果左右子树有一个没有，证明该节点就是插入的父节点，在队列中保留。所以队列中存储的是可以作为插入父节点的节点。插入的时候从队列头获取节点就可以了，如果它的左子树是空的，就插入；如果右子树是空的，插入之后它就没有位置给其他节点插入了，再pop出队列即可。
@@ -870,4 +870,4 @@ private:
 };
 ```
   
-# 特殊遍历
+## 特殊遍历

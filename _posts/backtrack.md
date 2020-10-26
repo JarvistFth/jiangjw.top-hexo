@@ -28,7 +28,7 @@ def backtrack(path, choice):
 
 <!---more--->
 
-# N皇后问题
+## N皇后问题
 https://leetcode-cn.com/problems/eight-queens-lcci/
 
 递归枚举每一行，对每个位置都做选择（放置皇后Q），路径就是整个棋盘。
@@ -92,7 +92,7 @@ public:
 
 
 
-# 131. 分割回文串
+## 131. 分割回文串
 https://leetcode-cn.com/problems/palindrome-partitioning/
 
 对字符串s，从起点到末尾，每一位都要获取其子串；
@@ -144,7 +144,7 @@ public:
 };
 ```
 
-# 1415. 长度为 n 的开心字符串中字典序第 k 小的字符串
+## 1415. 长度为 n 的开心字符串中字典序第 k 小的字符串
 https://leetcode-cn.com/problems/the-k-th-lexicographical-string-of-all-happy-strings-of-length-n/
 
 枚举3个字符，对三个字符做选择；当前一个字符和当前字符相等的时候，不做递归回溯。
@@ -180,7 +180,7 @@ public:
 };
 ```
 
-# 1286. 字母组合迭代器
+## 1286. 字母组合迭代器
 https://leetcode-cn.com/problems/iterator-for-combination/
 
 排列组合问题，第一次选择是从character长度中任意位置选一位；后面选完后，对后续的字符继续递归回溯选择。
@@ -234,7 +234,7 @@ private:
 
  ```
 
- # 面试题 08.08. 有重复字符串的排列组合
+ ## 面试题 08.08. 有重复字符串的排列组合
  https://leetcode-cn.com/problems/permutation-ii-lcci/
  
  先排序，这样可以比较好的处理有重复的字符串。
@@ -290,7 +290,7 @@ public:
 };
 ```
 
-# 39. 组合总和
+## 39. 组合总和
 https://leetcode-cn.com/problems/combination-sum/
 
 
@@ -335,7 +335,7 @@ public:
 };
 ```
 
-# 1239. 串联字符串的最大长度
+## 1239. 串联字符串的最大长度
 
 位运算奇巧淫技实在是学不会，，其实思想就是个bitmap，但是就是很难去使用。。。
 
@@ -384,7 +384,7 @@ public:
 ```
 
 
-# 216. 组合总和 III
+## 216. 组合总和 III
 https://leetcode-cn.com/problems/combination-sum-iii/
 
 枚举1-9的数字，从当前选择的数字后面开始继续递归选择。
@@ -420,7 +420,7 @@ public:
 };
 ```
 
-# 面试题 08.04. 幂集
+## 面试题 08.04. 幂集
 子集问题，和组合不一样的是，每次遍历一个数字，都可以放入答案中。
 
 循环枚举和组合排列都是一样的。
@@ -447,7 +447,7 @@ public:
 };
 ```
 
-# 面试题 08.07. 无重复字符串的排列组合
+## 面试题 08.07. 无重复字符串的排列组合
 https://leetcode-cn.com/problems/permutation-i-lcci/
 
 无重复字符串，所以不用通过s[i] == s[i-1] && !visited[i-1]来去重；
@@ -488,7 +488,7 @@ public:
 };
 ```
 
-# 17. 电话号码的字母组合
+## 17. 电话号码的字母组合
 https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/
 
 看到这一串映射先想到用map保存每一个char的对应关系；
@@ -546,7 +546,7 @@ public:
 };
 ```
 
-# 90. 子集 II
+## 90. 子集 II
 https://leetcode-cn.com/problems/subsets-ii/
 
 子集每个path都要加入到ans中；
@@ -592,7 +592,7 @@ public:
 };
 ```
 
-# 46. 全排列
+## 46. 全排列
 https://leetcode-cn.com/problems/permutations/
 
 老套路了，全排列只需要判断一下自身是否已经加入到集合中，需要个visited数组。
@@ -630,7 +630,7 @@ public:
 };
 ```
 
-# 784. 字母大小写全排列
+## 784. 字母大小写全排列
 https://leetcode-cn.com/problems/letter-case-permutation/
 
 isalpha tolower toupper 操作字符的好东西啊。。。
@@ -671,7 +671,7 @@ public:
 };
 ```
 
-# 47. 全排列 II
+## 47. 全排列 II
 https://leetcode-cn.com/problems/permutations-ii/
 
 去重的排列，排序，i>0 && nums[i] == nums[i-1] && !visited[i-1]去重；
@@ -716,7 +716,7 @@ public:
 };
 ```
 
-# 40. 组合总和 II
+## 40. 组合总和 II
 https://leetcode-cn.com/problems/combination-sum-ii/
 
 
@@ -763,7 +763,7 @@ public:
 };
 ```
 
-# 77. 组合
+## 77. 组合
 
 https://leetcode-cn.com/problems/combinations/
 
@@ -794,7 +794,7 @@ public:
 };
 ```
 
-# 1291. 顺次数
+## 1291. 顺次数
 https://leetcode-cn.com/problems/sequential-digits/
 
 从1-9选择首位数字，每次选完了开始递归回溯继续选择，从当前选择数字的+1开始选；

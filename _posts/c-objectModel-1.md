@@ -9,19 +9,19 @@ keywords: [C++,对象模型]
 C++对象模型基本内存分布。
 <!---more--->
 
-# C++对象模型
+## C++对象模型
 
-## 简单对象模型
+### 简单对象模型
 
 一系列的对象是一串连续的slot，每个slot指向其中的一个成员。
 ![](https://jaroffertree.oss-cn-hongkong.aliyuncs.com/20200908234058.png)
 
-## 表格驱动对象模型
+### 表格驱动对象模型
 
 对象的slot里面存放指向一个table，每个table是一系列的slot，每个slot指向具体的member和function。
 ![](https://jaroffertree.oss-cn-hongkong.aliyuncs.com/20200908234146.png)
 
-## C++实际对象模型
+### C++实际对象模型
 
 * non-static member放在对象内；
 * static member、 static function、non-static function放在object外；
@@ -32,9 +32,9 @@ C++对象模型基本内存分布。
 
 ![](https://jaroffertree.oss-cn-hongkong.aliyuncs.com/20200908234349.png)
 
-# C++对象继承的内存模型
+## C++对象继承的内存模型
 
-## 单继承
+### 单继承
 
 1. 不重写虚函数的单继承：
 ![](https://jaroffertree.oss-cn-hongkong.aliyuncs.com/20200912154315.png)
@@ -49,7 +49,7 @@ C++对象模型基本内存分布。
 
 其余继承的或新增的成员变量，都按照顺序排列在vptr后。
 
-## 多继承
+### 多继承
 
 ![](https://jaroffertree.oss-cn-hongkong.aliyuncs.com/20200912154840.png)
 
@@ -61,7 +61,7 @@ C++对象模型基本内存分布。
 * 注：如果在实际中需要对多继承的同名虚函数进行不同的重写，需要在父类与子类中引入两个中间类。两个中间类分别声明一个纯虚函数，然后对父类的同名虚函数进行重写，重写时调用其声明的纯虚函数。这样子类再需要进行调用时，继承自中间类，然后利用多态特性，分别调用两个中间类中的同名虚函数。由于同名虚函数的实现是调用两个不同的纯虚函数，所以这样就可以进行同名虚函数的不同重写。
 
 
-## 虚继承
+### 虚继承
 ![](https://jaroffertree.oss-cn-hongkong.aliyuncs.com/20200912161827.png)
 
 虚基类为了解决多个间接父类的重复继承问题，以不能使用上面简单的扩充并为每个虚基类提供一个虚函数指针（这样会导致重复继承的基类会有多个虚函数表）形式。
@@ -70,7 +70,7 @@ C++对象模型基本内存分布。
 
 ![](https://jaroffertree.oss-cn-hongkong.aliyuncs.com/20200912163008.png)
 
-## 菱形继承
+### 菱形继承
 
 共同虚基类进行虚继承，直接继承的父类按照多继承的顺序进行排列。虚基类排在后面，直接继承的父类在前面。
 子类重写覆盖所有父类包括虚基类的虚函数。

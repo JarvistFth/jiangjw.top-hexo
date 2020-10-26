@@ -12,7 +12,7 @@ keywords: [leetcode,树]
 二叉树基本遍历方法，同时对二叉树类型的题目进行了大致的分类
 <!---more--->
 
-# 基本遍历方法：
+## 基本遍历方法：
 递归太简单了就不写了，非递归的模板如下：
 ```C++
 TreeNode* node = root;
@@ -28,7 +28,7 @@ while(node|| !stack.empty()){
 ```
 
 
-### 先序遍历
+#### 先序遍历
 
 
 
@@ -67,7 +67,7 @@ public:
 };
 ```
 
-## 中序遍历
+### 中序遍历
 ```C++
 
 class Solution {
@@ -95,7 +95,7 @@ public:
 };
 ```
 
-## 后序遍历
+### 后序遍历
 ```C++
 
 class Solution {
@@ -128,12 +128,12 @@ public:
 };
 ```
 
-# 树问题的分类
+## 树问题的分类
 
 
 
-## 1、基本特性
-### 1-1：对称、相同、翻转：
+### 1、基本特性
+#### 1-1：对称、相同、翻转：
  [100\. 相同的树](https://leetcode-cn.com/problems/same-tree/)<br>
  [951. 翻转等价二叉树](https://leetcode-cn.com/problems/flip-equivalent-binary-trees/)<br>
  [面试题26. 树的子结构](https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/)<br>
@@ -141,21 +141,21 @@ public:
  [1379. 找出克隆二叉树中的相同节点](https://leetcode-cn.com/problems/find-a-corresponding-node-of-a-binary-tree-in-a-clone-of-that-tree/)<br>
 
 
-### 1-2：深度
+#### 1-2：深度
 [865. 具有所有最深结点的最小子树](https://leetcode-cn.com/problems/most-frequent-subtree-sum/)<br>
 [559. N叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-n-ary-tree/)<br>
 
-### 1-3：高度：
+#### 1-3：高度：
 [面试题 04.04](https://leetcode-cn.com/problems/check-balance-lcci/)：检查平衡性<br>
 
-### 1-4：直径：
+#### 1-4：直径：
 [#543](https://leetcode-cn.com/problems/diameter-of-binary-tree/)：二叉树的直径<br>
 
-### 1-5：合并：
+#### 1-5：合并：
  [617\. 合并二叉树](https://leetcode-cn.com/problems/merge-two-binary-trees/)<br>
 
 
-### 1-6 求和
+#### 1-6 求和
 [124. 二叉树中的最大路径和](https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/)<br>
 [979. 在二叉树中分配硬币](https://leetcode-cn.com/problems/distribute-coins-in-binary-tree/)<br>
 [508. 出现次数最多的子树元素和](https://leetcode-cn.com/problems/most-frequent-subtree-sum/)<br> 
@@ -166,16 +166,16 @@ public:
 
 
 
-### 1-7 路径
+#### 1-7 路径
 [1372. 二叉树中的最长交错路径](https://leetcode-cn.com/problems/longest-zigzag-path-in-a-binary-tree/)<br>
 
-### 1-8 节点数
+#### 1-8 节点数
 [1145. 二叉树着色游戏](https://leetcode-cn.com/problems/binary-tree-coloring-game/)<br>
 [501. 二叉搜索树中的众数](https://leetcode-cn.com/problems/find-mode-in-binary-search-tree/)<br>
 
 
 
-## 2、构造二叉树
+### 2、构造二叉树
  [95\. 不同的二叉搜索树 II](https://leetcode-cn.com/problems/unique-binary-search-trees-ii/)<br>
  [654. 最大二叉树](https://leetcode-cn.com/problems/maximum-binary-tree/)<br>
  [998. 最大二叉树 II](https://leetcode-cn.com/problems/maximum-binary-tree-ii/)<br>
@@ -187,16 +187,16 @@ public:
 [894. 所有可能的满二叉树](https://leetcode-cn.com/problems/all-possible-full-binary-trees/)<br>
 
  
-## 3、节点关系
-### 3-1：祖先节点：
+### 3、节点关系
+#### 3-1：祖先节点：
 [#面试题 04.08](https://leetcode-cn.com/problems/first-common-ancestor-lcci/)：首个共同祖先<br>
-### 3-2：兄弟节点：
+#### 3-2：兄弟节点：
 [993. 二叉树的堂兄弟节点](https://leetcode-cn.com/problems/cousins-in-binary-tree/)<br>
-### 3-3：子节点：
+#### 3-3：子节点：
 
 
-## 4：遍历问题：
-### 4-1:前序遍历：
+### 4：遍历问题：
+#### 4-1:前序遍历：
 [1022：从根到叶的二进制数之和](https://leetcode-cn.com/problems/sum-of-root-to-leaf-binary-numbers/)<br>
 [606\. 根据二叉树创建字符串](https://leetcode-cn.com/problems/construct-string-from-binary-tree/)<br>
 [652. 寻找重复的子树](https://leetcode-cn.com/problems/find-duplicate-subtrees/)<br>
@@ -208,9 +208,9 @@ public:
 
 
 
-### 4-2：中序遍历：
+#### 4-2：中序遍历：
 [897. 递增顺序查找树](https://leetcode-cn.com/problems/increasing-order-search-tree/)<br>
-### 4-3：后序遍历：
+#### 4-3：后序遍历：
 [563\. 二叉树的坡度](https://leetcode-cn.com/problems/binary-tree-tilt/)<br>
 [814. 二叉树剪枝](https://leetcode-cn.com/problems/binary-tree-pruning/)
 [1110. 删点成林](https://leetcode-cn.com/problems/delete-nodes-and-return-forest/)<br>
@@ -221,7 +221,7 @@ public:
 [114. 二叉树展开为链表](https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/)<br>
 
 
-### 4-4：层次遍历
+#### 4-4：层次遍历
 [623. 在二叉树中增加一行](https://leetcode-cn.com/problems/add-one-row-to-tree/)<br>
 [199. 二叉树的右视图](https://leetcode-cn.com/problems/binary-tree-right-side-view/)<br>
 [958. 二叉树的完全性检验](https://leetcode-cn.com/problems/check-completeness-of-a-binary-tree/)<br>
@@ -233,9 +233,9 @@ public:
 
 
 
-### 4-5：特殊遍历
+#### 4-5：特殊遍历
 
-## 5、二叉搜索树
+### 5、二叉搜索树
 [#面试题 04.06](https://leetcode-cn.com/problems/successor-lcci/)  面试题 04.06. 后继者<br>
 [#面试题 04.05](https://leetcode-cn.com/problems/legal-binary-search-tree-lcci/)：合法二叉搜索树<br>
 [验证二叉搜索树]
@@ -254,11 +254,11 @@ public:
  [653. 两数之和 IV - 输入 BST](https://leetcode-cn.com/problems/two-sum-iv-input-is-a-bst/)<br>
  [面试题 17.12. BiNode](https://leetcode-cn.com/problems/binode-lcci/)<br>
 
- ## 6、双重递归
+ ### 6、双重递归
 
 [#1367. 二叉树中的列表](https://leetcode-cn.com/problems/linked-list-in-binary-tree/)<br>
 
 [剑指 Offer 26. 树的子结构](https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/) 
 
-## 7、回溯
+### 7、回溯
 [1457. 二叉树中的伪回文路径](https://leetcode-cn.com/problems/pseudo-palindromic-paths-in-a-binary-tree/)<br>

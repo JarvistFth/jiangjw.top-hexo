@@ -12,15 +12,15 @@ redis多级数据库主要有三部分：1、主从模式；2、sentinel高可�
 
 
 
-## sentinel模式
+### sentinel模式
 
 sentinel，redis高可用解决方案。由sentinel系统监测多个主服务器以及主服务器的从服务器，当某些主服务器不可用时，自动将主服务器下的某些从服务器切换为新的主服务器继续处理请求。
 
-## sentinel的初始化
+### sentinel的初始化
 
 sentinel是redis一个特殊的服务器；没有redis服务器的数据库功能；有自己的专用代码（命令表），使用sentinel的时候会将命令表从redis命令更新到sentinel命令。
 
-### sentinelState和sentinelRedisInstance结构
+#### sentinelState和sentinelRedisInstance结构
 服务器状态保存在sentinelState结构中。
 ![](https://jaroffertree.oss-cn-hongkong.aliyuncs.com/20200822150618.png)
 其中masters记录了所有sentinel监视的主服务器实例，保存在字典数据结构中。这个字典的key是主服务器的名字，值是一个指向sentinelRedisInstance的结构的指针。
@@ -115,19 +115,19 @@ timeout|刷新故障转移状态的最大时限
 sentinels【dict类型】|监视这个master的sentinel服务器
 slaves【dict类型】|master的slave
 
-### 创建与主服务器的网络连接
+#### 创建与主服务器的网络连接
 主要创建两个连接，一个是向主服务器发送命令的，一个是用于订阅主服务器的hello频道的订阅连接。（原因是redis的订阅功能不会将消息保存在redis服务器中，所以要专门建一个连接处理这个频道发来的消息）
 
-## 获取主服务器消息
+### 获取主服务器消息
 sentinel默认以10s一次的频率通过命令连接向主服务器发送INFO命令，来获取主服务器的当前信息。
 
 通过INFO命令可以获取到的信息包括：runid、role、主服务器下的所有从服务器的信息。主服务器下的所有从服务器消息保存在名称为slaves的dict数据结构中，每个dict的值和上述一样，是一个指向sentinelRedisInstance结构的指针。
 
-## 获取从服务器消息
+### 获取从服务器消息
 
 sentinel会对从服务器同样建立命令连接和订阅连接，同样会发送INFO命令获取从服务器信息。
 
-## 向主服务器和从服务器发送信息
+### 向主服务器和从服务器发送信息
 
 默认2s一次的频率向主服务器和从服务器通过命令连接发送PUBLISH命令：
 
@@ -149,7 +149,7 @@ m_epoch|master current epoch
 如果向从服务器发送消息，就会返回从服务器正在复制的主服务器信息。
 
 
-## 接收来自主服务器和从服务器的频道消息
+### 接收来自主服务器和从服务器的频道消息
 
 sentinel与主从服务器建立订阅连接后，会向服务武器发送SUBSCRIBE __ sentinel __:hello，订阅该频道。后续可以通过这个频道接收信息。
 
@@ -157,7 +157,7 @@ sentinel与主从服务器建立订阅连接后，会向服务武器发送SUBSCR
 
 也就是说：服务器通过命令连接发送信息到频道   --->    服务器通过订阅连接接收信息
 
-## 更新sentinels字典
+### 更新sentinels字典
 当一个sentinel接收到其他sentinel发来的信息时，目标sentinel会从信息系中分析出
 1. 与sentinel有关的参数；
 2. 与master有关的参数
@@ -166,12 +166,12 @@ sentinel与主从服务器建立订阅连接后，会向服务武器发送SUBSCR
 
 当发现新的sentinel，创建完毕实例后，会建立命令连接，__不创建订阅连接__。因为sentinel主要通过接受master或slave传来的信息发现sentinel，随后直接与sentinel建立命令连接就可以通信。
 
-## 检测下线状态
+### 检测下线状态
 
-### 主观下线检测
+#### 主观下线检测
 1s一次向所有创建了连接的实例发送PING命令，如果在指定时间内收不到有效回复（PONG/LOADING/MASTERDOWN)，就会修改这个实例对应的flag，标识实例已经主观下线。
 
-### 检查客观下线
+#### 检查客观下线
 为了确认服务器是否真的下线，会向其他sentinel进行询问。
 1. 发送SENTINEL is-master-down-by-addr [ip] [port] [current-epoch] [runid]命令；
 
@@ -193,7 +193,7 @@ sentinel与主从服务器建立订阅连接后，会向服务武器发送SUBSCR
 
 3. 接收命令回复：根据命令的内容，统计其他sentinel同意master下线的数量，当超过配置数目的时候，就修改flags，认定master客观下线。但不同的sentinel判断客观下线的判断条件可能不同。对一个sentinel认为客观下线，对另一sentinel却未必。
 
-## 选举leader sentinel
+### 选举leader sentinel
 
 当一个master被认定为客观下线时，sentinel会进行协商选出leader对下线的master进行故障转移。
 
@@ -206,7 +206,7 @@ sentinel与主从服务器建立订阅连接后，会向服务武器发送SUBSCR
 7. 如果在给定时间内，未选出leader sentinel，就会在一段时间后再次选举，知道选出leader为止。
 
 
-## 故障转移
+### 故障转移
 
 1. 从下线的主服务器的从服务器里挑选一个转换为主服务器；（删除列表中所有下线的从服务器、删除列表中最近通信不成功的从服务器、选择从服务器中保存的
 2. 让已下线的主服务器的所有从服务器复制新主服务器；

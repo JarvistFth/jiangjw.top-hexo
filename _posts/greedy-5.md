@@ -11,7 +11,7 @@ keywords: [leetcode,贪心]
 
 <!---more--->
 
-# 135. 分发糖果
+## 135. 分发糖果
 https://leetcode-cn.com/problems/candy/
 
 分别从左右遍历一次数组，保证其相邻的分数高者获得较多的糖果。
@@ -56,7 +56,7 @@ public:
 };
 ```
 
-# 435. 无重叠区间
+## 435. 无重叠区间
 https://leetcode-cn.com/problems/non-overlapping-intervals/
 
 按照区间的右端点排列，然后判断当前的左端点和前一个右端点的大小；如果是大于等于前一个的，就证明没有重叠。
@@ -90,7 +90,7 @@ public:
 };
 ```
 
-# 55. 跳跃游戏
+## 55. 跳跃游戏
 https://leetcode-cn.com/problems/jump-game/
 
 对每一个可以到达的位置（i<=distance）都维护一个能达到的最大距离(max(distance,nums[i]+i)。只要最后最大距离是超出数组长度，就可以到达。

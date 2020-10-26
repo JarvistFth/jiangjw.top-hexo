@@ -9,7 +9,7 @@ keywords: [leetcode,回溯]
 ---
 
 
-# 22. 括号生成
+## 22. 括号生成
 https://leetcode-cn.com/problems/generate-parentheses/
 
 用两个变量记录剩下可以用的括号数量，然后我们不断做选择，加入左括号或者右括号，递归回溯，当可以用的括号数目小于0时，退出；

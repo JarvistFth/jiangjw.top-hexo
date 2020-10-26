@@ -11,7 +11,7 @@ tags: [leetcode,树]
 树转图，一般还会加深搜
 <!---more--->
 
-## 863. 二叉树中所有距离为 K 的结点
+### 863. 二叉树中所有距离为 K 的结点
 https://leetcode-cn.com/problems/all-nodes-distance-k-in-binary-tree/
 
 对树的每个节点建图，用map保存节点的父节点；对每个节点转成图，得到targetNode的位置，往其父节点、左子树、右子树进行dfs。在dfs过程中，如果已经遍历过的节点跳过，所以要用set保存访问过的节点；不断地dfs三个方向，参数不断传入距离K-1

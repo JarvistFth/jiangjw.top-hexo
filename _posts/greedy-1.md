@@ -12,7 +12,7 @@ keywords: [leetcode,贪心]
 贪心问题，按照通过率排序，第一页题目。
 
 <!---more--->
-# 1282. 用户分组
+## 1282. 用户分组
 https://leetcode-cn.com/problems/group-the-people-given-the-group-size-they-belong-to/
 
 就用map每个group容量记录一个用户id的vector。如果map记录的该容量已满（记录的vector-size == groupSize(i)），就将记录的vector放入ans，然后清空该容量对应的vector。
@@ -37,7 +37,7 @@ public:
 };
 ```
 
-# 1221. 分割平衡字符串
+## 1221. 分割平衡字符串
 https://leetcode-cn.com/problems/split-a-string-in-balanced-strings/
 
 每次都取最短的LR字符串就可以了。比如有一个L，就要找一个R；不要多选。
@@ -64,7 +64,7 @@ public:
 };
 ```
 
-# 763. 划分字母区间
+## 763. 划分字母区间
 
 遍历字符串，用一个map记录每个字符最后出现的下标。当遍历到的字符串下标未到已经遍历过的字符串的最大最后出现下标，说明还需要延长；到达了最大最后出现下标，就获取此时长度，更新长度计算起点。
 
@@ -96,7 +96,7 @@ public:
 };
 ```
 
-# 1111. 有效括号的嵌套深度
+## 1111. 有效括号的嵌套深度
 https://leetcode-cn.com/problems/maximum-nesting-depth-of-two-valid-parentheses-strings/
 
 这题的描述真的感人。。。其实就是要将括号划分为两个阵营，让他们有效括号长度尽可能接近就行。。
@@ -125,7 +125,7 @@ public:
 };
 ```
 
-# 861. 翻转矩阵后的得分
+## 861. 翻转矩阵后的得分
 https://leetcode-cn.com/problems/score-after-flipping-matrix/
 
 最高位一定要是1，这样分数才会高；所以要把第一列首位全部转换成1；
@@ -180,7 +180,7 @@ public:
 };
 ```
 
-# 921. 使括号有效的最少添加
+## 921. 使括号有效的最少添加
 https://leetcode-cn.com/problems/minimum-add-to-make-parentheses-valid/
 
 这里右括号先出现，也要添加左括号才能匹配。所以我们对左括号做记录，遇到一个右括号的时候，看看左括号计数是否为0。
@@ -218,7 +218,7 @@ public:
 };
 ```
 
-# 944. 删列造序
+## 944. 删列造序
 https://leetcode-cn.com/problems/delete-columns-to-make-sorted/
 
 直接暴力看每一列是不是有序的，如果是，就不用删除；否则要删除。
@@ -250,7 +250,7 @@ public:
 };
 ```
 
-# 1403. 非递增顺序的最小子序列
+## 1403. 非递增顺序的最小子序列
 https://leetcode-cn.com/problems/minimum-subsequence-in-non-increasing-order/
 
 先排序，然后从最大的开始选起，选到选择的元素和大于剩下的元素和为止。
@@ -282,7 +282,7 @@ public:
 };
 ```
 
-# 1217. 玩筹码
+## 1217. 玩筹码
 https://leetcode-cn.com/problems/minimum-cost-to-move-chips-to-the-same-position/
 
 移动两位不需要成本，所以奇数位置的全部挪到一起，偶数位置的挪到一起；然后两坨谁的数量少，就挪谁。

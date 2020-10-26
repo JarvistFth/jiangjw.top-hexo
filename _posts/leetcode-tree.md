@@ -11,7 +11,7 @@ tags: [leetcode ,树]
 <!---more--->
 
 
-## 节点与其祖先之间的最大差值
+### 节点与其祖先之间的最大差值
 <a>https://leetcode-cn.com/problems/maximum-difference-between-node-and-ancestor/</a>
 
 本来首先想到的是后序遍历，但是后来发现想太复杂了，直接前序遍历就可以
@@ -52,7 +52,7 @@ public:
     }
 };
 ```
-## 完全二叉树的节点个数
+### 完全二叉树的节点个数
 <a>https://leetcode-cn.com/problems/count-complete-tree-nodes/</a>
 
 这题暴力遍历就可以。。。当然大神是有其他方法的，先说我这暴力的，就是不停遍历，一个节点+1.
@@ -77,9 +77,9 @@ class Solution(object):
         if not root:
             return 0
         lh, rh = self.__getHeight(root.left), self.__getHeight(root.right)
-        if lh == rh:  # 左右子树高度相同，说明左子树必满 则节点数=左子树节点 + root节点(=1) + 递归找右子树
+        if lh == rh:  ## 左右子树高度相同，说明左子树必满 则节点数=左子树节点 + root节点(=1) + 递归找右子树
             return (pow(2, lh) - 1) + 1 + self.countNodes(root.right)
-        else:  # 左子树比右子树高，说明右子树必满 同理
+        else:  ## 左子树比右子树高，说明右子树必满 同理
             return (pow(2, rh) - 1) + 1 + self.countNodes(root.left)
 
     def __getHeight(self, root):
@@ -90,7 +90,7 @@ class Solution(object):
         return ret
 ```
 
-## 填充每个节点的下一个右侧节点指针
+### 填充每个节点的下一个右侧节点指针
 <a>https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node/</a>
 
 题目要求用常数空间，所以不能用队列层序遍历
@@ -126,7 +126,7 @@ public:
 };
 ```
 
-## 填充每个节点的下一个右侧节点指针 II
+### 填充每个节点的下一个右侧节点指针 II
 <a>https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node-ii/</a><br>
 具体内容和上一题有点像，但是不是满二叉树，所以在连接的时候要注意多做判断，同时要从右边开始整理。
 ```c++
@@ -175,7 +175,7 @@ public:
 ```
 
 
-## 二叉树中第二小的节点
+### 二叉树中第二小的节点
 https://leetcode-cn.com/problems/second-minimum-node-in-a-binary-tree/
 
 要注意题目给出的二叉树的性质，根节点是左右节点的较小值，所以根节点是最小的。

@@ -10,7 +10,7 @@ categories:
 双指针主要分两种，一种是快慢指针，一般用来解决链表问题，比如判断链表是否有环；另一种是左右指针，解决数组或字符串的问题。（来自labuladong的算法小抄）。
 <!---more--->
 
-# 763. 划分字母区间
+## 763. 划分字母区间
 https://leetcode-cn.com/problems/partition-labels/
 
 需要一个map记录遇到的字符的最右端index。
@@ -39,7 +39,7 @@ public:
 };
 ```
 
-# 15. 三数之和
+## 15. 三数之和
 https://leetcode-cn.com/problems/3sum/
 
 难点在要跳过重复的数字；所以要对数组进行排序。遍历的时候要注意判断跳过重复的数字。外面一层循环，里面一层双指针循环。都要判断跳过重复数字。
@@ -89,7 +89,7 @@ public:
 };
 ```
 
-# 16. 最接近的三数之和
+## 16. 最接近的三数之和
 https://leetcode-cn.com/problems/3sum-closest/
 
 和上面类似，先排序；然后再在外层循环里用双指针和二分查找。
@@ -125,7 +125,7 @@ public:
 };
 ```
 
-# 26. 删除排序数组中的重复项
+## 26. 删除排序数组中的重复项
 双指针经典题目，遇到O(1)空间要求的，基本都是用双指针，一快一慢。
 ```C++
 class Solution {
@@ -146,7 +146,7 @@ public:
 };
 ```
 
-# 88. 合并两个有序数组
+## 88. 合并两个有序数组
 https://leetcode-cn.com/problems/merge-sorted-array/
 
 用多一个数组保存nums1，因为nums1要做修改，会对结果产生影响；
@@ -182,7 +182,7 @@ public:
 };
 ```
 
-# 19. 删除链表的倒数第N个节点
+## 19. 删除链表的倒数第N个节点
 https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/
 
 这种确定对第N个位置的节点，都可以用双指针。
@@ -226,7 +226,7 @@ public:
 };
 ```
 
-## 同类题目 剑指 Offer 22. 链表中倒数第k个节点
+### 同类题目 剑指 Offer 22. 链表中倒数第k个节点
 https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/
 ```C++
 /**
@@ -256,7 +256,7 @@ public:
 };
 ```
 
-# 面试题 17.11. 单词距离
+## 面试题 17.11. 单词距离
 https://leetcode-cn.com/problems/find-closest-lcci/
 
 遍历一遍，记录两个单词的index。然后计算index之间的距离，取距离的最小值。
@@ -287,7 +287,7 @@ public:
 };
 ```
 
-# 923. 三数之和的多种可能
+## 923. 三数之和的多种可能
 https://leetcode-cn.com/problems/3sum-with-multiplicity/
 
 ```C++
@@ -340,7 +340,7 @@ public:
 };
 ```
 
-# 234. 回文链表
+## 234. 回文链表
 https://leetcode-cn.com/problems/palindrome-linked-list/
 
 找到链表的中点，从中点开始反转链表。
@@ -392,7 +392,7 @@ public:
 };
 ```
 
-# 125. 验证回文串
+## 125. 验证回文串
 https://leetcode-cn.com/problems/valid-palindrome/
 这道题是数据预处理比较麻烦，要将所有字母和数字都处理成小写，去掉不必要的符号。
 然后再用双指针判断回文。
@@ -420,7 +420,7 @@ public:
 };
 ```
 
-# 986. 区间列表的交集
+## 986. 区间列表的交集
 https://leetcode-cn.com/problems/interval-list-intersections/
 
 双指针，指向要对比的元素。区间套定理，比较左右区间端点的最小值和最大值，判断有没有重合。
@@ -451,7 +451,7 @@ public:
 };
 ```
 
-# 845. 数组中的最长山脉
+## 845. 数组中的最长山脉
 https://leetcode-cn.com/problems/longest-mountain-in-array/
 
 通过比较左右元素，找到山脉数组中间最高的值。然后用双指针确定左右起点的范围。山脉数组的长度就是r-l+1 。

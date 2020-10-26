@@ -10,7 +10,7 @@ LeetCode双指针，第5第6第7页题目。
 <!---more--->
 
 
-# 977. 有序数组的平方
+## 977. 有序数组的平方
 https://leetcode-cn.com/problems/squares-of-a-sorted-array/
 
 左右下标遍历数组，哪个大，拿到哪边的数字的平方，同时移动哪边的指针。
@@ -45,7 +45,7 @@ public:
 };
 ```
 
-# 141. 环形链表
+## 141. 环形链表
 
 labuladong大佬算法提供的模板。因为链表是有环的，所以让快指针每次比慢指针多走1步，当慢指针走完链表的时候，快指针应该和慢指针会重合，所以就是环形链表。
 
@@ -80,7 +80,7 @@ public:
 };
 ```
 
-# 167. 两数之和 II - 输入有序数组
+## 167. 两数之和 II - 输入有序数组
 双指针，因为是有序数组，所以我们从小到大遍历。遇到左右指针相加==target的就返回；小于target就让left++，大于target让right++。
 
 ```C++
@@ -108,7 +108,7 @@ public:
 };
 ```
 
-# 61. 旋转链表
+## 61. 旋转链表
 https://leetcode-cn.com/problems/rotate-list/
 
 先把链表连成环，然后计算出旋转后头节点的位置，再拿到头节点的前驱节点，让前驱节点的后继节点指向null，更新头节点。
@@ -163,7 +163,7 @@ public:
 };
 ```
 
-# 881. 救生艇
+## 881. 救生艇
 https://leetcode-cn.com/problems/boats-to-save-people/
 
 先接最重的人，然后如果接了重的人还可以接最轻的人，就两个一起接走；否则只接重的。
@@ -202,7 +202,7 @@ public:
 };
 ```
 
-# 142. 环形链表 II
+## 142. 环形链表 II
 https://leetcode-cn.com/problems/linked-list-cycle-ii/
 
 双指针经典应用。应用labuladong大佬的思路：
@@ -252,7 +252,7 @@ public:
 };
 ```
 
-# 28. 实现 strStr()
+## 28. 实现 strStr()
 https://leetcode-cn.com/problems/implement-strstr/
 
 双指针指向两个字符串。如果两个指针指向的字符相等，开始比较，双指针后移；否则指向要比较字符串的指针归零，原字符串指针回到已经进行了比较的字符串长度之前的位置。
@@ -284,7 +284,7 @@ public:
 ```
 
 
-# 925. 长按键入
+## 925. 长按键入
 https://leetcode-cn.com/problems/long-pressed-name/
 
 同样的，双指针指向两个字符串。如果两个指针指向的字符相等，往前移动；如果不等，判断typed字符串的前一个字符和现在这个字符是不是相等，如果是，继续让指向typed的指针前移；否则证明这时候两个指针指向的字符不等了并且未到末尾，所以返回false。
@@ -326,7 +326,7 @@ public:
 };
 
 ```
-# 面试题 10.01. 合并排序的数组
+## 面试题 10.01. 合并排序的数组
 https://leetcode-cn.com/problems/sorted-merge-lcci/
 
 归并排序，从大到小放入到原数组中。最后如果B中还有元素没处理完，继续处理。
@@ -362,7 +362,7 @@ public:
 };
 ```
 
-# 11. 盛最多水的容器
+## 11. 盛最多水的容器
 https://leetcode-cn.com/problems/container-with-most-water/
 
 双指针，一个指向左边，一个指向右边；

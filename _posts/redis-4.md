@@ -8,7 +8,7 @@ keywords: [redis]
 redis系列第4篇，客户端服务器。
 <!---more--->
 
-## 客户端
+### 客户端
 redis的client数据结构保存了客户端的当前状态信息。举个例子：
 - clientfd：客户端的套接字描述符，伪客户端（AOF文件，lua脚本）值为-1.
 - name：名字
@@ -24,26 +24,26 @@ redisServer以链表的形式保存了当前所有与server进行连接的客户
 
 ------
 
-### 命令实现：
+#### 命令实现：
 服务器从传入的命令内容中分析得到argv和argc，然后根据argv查找命令字典中的值（RedisCommand结构）。
 
 然后redisServer将对应的client的redisCommand结构设置为上述查找的结果值，该结构封装了对应的命令实现函数。
 
-## 服务端
+### 服务端
 
-### 读取命令
+#### 读取命令
 1. 对客户端套接字中传来的格式化的字符串保存到对应的客户端输入缓冲区中；
 2. 对命令请求进行解析，提取命令参数和命令参数个数，将其保存到client的argv和argc属性中。
 3. 调用命令执行器，执行指令。
 
-### 查找命令实现：
+#### 查找命令实现：
 命令以表的形式存储，键是命令名字，值是redisComand结构。解析完后client的cmd会指向对应的redisCommand结构。
 
 ![](https://jaroffertree.oss-cn-hongkong.aliyuncs.com/20200806124512.png)
 
 其中redisCommandProc就是函数指针，指向具体命令的实现函数。
 
-### 命令执行过程
+#### 命令执行过程
 
 1. 命令执行准备操作：主要检查一些状态和属性，比如检查cmd属性是否为空，检查arity属性看参数个数是否符合等。
 2. 调用redisCommand的proc函数指针，执行命令对应函数。
@@ -55,7 +55,7 @@ redisServer以链表的形式保存了当前所有与server进行连接的客户
 
 4. 将命令回复保存到对应客户端的输出缓冲区。
 
-## serverCron函数
+### serverCron函数
 Redis中serverCron()每100毫秒执行一次，负责管理服务器的资源。
 
 1. 更新服务器时间缓存：redis中经常需要获取系统时间，但是获取系统时间需要一次系统调用，为了减少使用系统调用的次数，redisServer中结构有unixtime 和 mstime 两个精度的属性保存unix时间戳。

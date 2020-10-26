@@ -10,7 +10,7 @@ keywords: [leetcode,二分查找]
 二分查找算法。
 <!---more--->
 
-## 704. 二分查找
+### 704. 二分查找
 https://leetcode-cn.com/problems/binary-search/
 
 有序数组的二分查找，最基本的二分查找框架。
@@ -65,7 +65,7 @@ public:
 有边界就是return right；检查条件改成right<0 。
 
 
-## 剑指 Offer 53 - II. 0～n-1中缺失的数字
+### 剑指 Offer 53 - II. 0～n-1中缺失的数字
 https://leetcode-cn.com/problems/que-shi-de-shu-zi-lcof/
 
 这里就是检查左边界的应用。
@@ -90,7 +90,7 @@ public:
 ```
 
 
-## 441. 排列硬币
+### 441. 排列硬币
 https://leetcode-cn.com/problems/arranging-coins/
 
 等差数列求和，如果某一行应该的总和比实际的大，那么这一行就没有排满。检查左边界；如果left>right时跳出循环，这时候right是所求解（right是不符合条件的边界）。
@@ -118,9 +118,9 @@ public:
 ```
 
 
-## 378. 有序矩阵中第K小的元素
+### 378. 有序矩阵中第K小的元素
 
-## 744. 寻找比目标字母大的最小字母
+### 744. 寻找比目标字母大的最小字母
 https://leetcode-cn.com/problems/find-smallest-letter-greater-than-target/
 
 有序字符数组，右边界。
@@ -143,7 +143,7 @@ public:
 };
 ```
 
-## 475. 供暖器
+### 475. 供暖器
 https://leetcode-cn.com/problems/heaters/
 
 在第一个数组找第二个数组中离当前元素最近的位置，判断它在元素的左边还是右边；用heaters数组的元素减去当前的元素作为距离，返回最小的。
@@ -173,7 +173,7 @@ public:
 
     }
 ```
-## 278. 第一个错误的版本
+### 278. 第一个错误的版本
 https://leetcode-cn.com/problems/first-bad-version/
 
 左边界，如果碰到是错误的版本，右边界等于当前index；如果是正确的版本，左边界等于当前index+1 。最后左边界和右边界相等时返回这时候左右index对应的version都是错误的。
@@ -199,7 +199,7 @@ public:
 };
 ```
 
-## 69. x 的平方根
+### 69. x 的平方根
 https://leetcode-cn.com/problems/sqrtx/
 二分查找，如果当前的平方小于x，l+1;否则有边界r=mid。
 
@@ -224,7 +224,7 @@ public:
 };
 ```
 
-## 1351. 统计有序矩阵中的负数
+### 1351. 统计有序矩阵中的负数
 https://leetcode-cn.com/problems/count-negative-numbers-in-a-sorted-matrix/
 对每一行，二分右边界。每行的负数个数=每行个数-二分结束时l的位置（因为当l>r时结束循环，这时候l是小于0的，r是大于0的。）
 
@@ -255,7 +255,7 @@ public:
 };
 ```
 
-## 面试题 17.08. 马戏团人塔
+### 面试题 17.08. 马戏团人塔
 https://leetcode-cn.com/problems/circus-tower-lcci/
 
 身高排序，体重最长递增子序列。
@@ -299,7 +299,7 @@ public:
 };
 ```
 
-## 面试题 10.05. 稀疏数组搜索
+### 面试题 10.05. 稀疏数组搜索
 https://leetcode-cn.com/problems/sparse-array-search-lcci/
 
 二分查找，如果找到是空的字符串，就把对应的下表++或--。
@@ -331,7 +331,7 @@ public:
     }
 };
 ```
-## 剑指 Offer 11. 旋转数组的最小数字
+### 剑指 Offer 11. 旋转数组的最小数字
 https://leetcode-cn.com/problems/xuan-zhuan-shu-zu-de-zui-xiao-shu-zi-lcof/
 如果右边的比中间的小，证明最小值在右侧，l+；否则的话最小值在左侧，r=mid。遇到重复的r--；
  
@@ -357,7 +357,7 @@ public:
 };
 ```
 
-## 436. 寻找右区间
+### 436. 寻找右区间
 https://leetcode-cn.com/problems/find-right-interval/
 
 对每个区间的左端点进行排序；然后对每个右端点进行二分查找，如果在排序过的左端点容器里找到比右端点大的，此时肯定有右区间，左端点容器对应的index就是所求值；否则的话找不到比右端点大的，此时没有右区间。
@@ -385,7 +385,7 @@ public:
 };
 ```
 
-## 719. 找出第 k 小的距离对
+### 719. 找出第 k 小的距离对
 https://leetcode-cn.com/problems/find-k-th-smallest-pair-distance/
 
 二分+双指针。
@@ -426,7 +426,7 @@ public:
 };
 ```
 
-## 剑指 Offer 53 - I. 在排序数组中查找数字 I
+### 剑指 Offer 53 - I. 在排序数组中查找数字 I
 https://leetcode-cn.com/problems/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof/
 
 二分查找到target的左边界，让左边界往右移动，如果和target相等，ans++。
@@ -454,7 +454,7 @@ public:
 };
 ```
 
-## 875. 爱吃香蕉的珂珂
+### 875. 爱吃香蕉的珂珂
 https://leetcode-cn.com/problems/koko-eating-bananas/
 
 二分查找速度；以这个速度吃香蕉，如果全部吃完所需时间大于H，就加快速度；否则减少速度。
@@ -489,7 +489,7 @@ public:
 };
 ```
 
-# # 1498. 满足条件的子序列数目
+## ## 1498. 满足条件的子序列数目
 https://leetcode-cn.com/problems/number-of-subsequences-that-satisfy-the-given-sum-condition/
 
 先排序，然后二分查找当前元素可以加的最大值；在这个最大值元素前的所有元素都可以成为子序列。

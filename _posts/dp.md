@@ -11,7 +11,7 @@ LeetCode动态规划题目，先从简单的做起。。。。。
 
 <!---more--->
 
-# 53. 最大子序和
+## 53. 最大子序和
 求最大子序和，所以状态f[i]表示，选了第i个数字后的子序和。
 
 当我们不选i的时候，题目要求是连续的子序和；所以f[i] = nums[i]；
@@ -43,7 +43,7 @@ public:
 };
 ```
 
-# 300. 最长上升子序列
+## 300. 最长上升子序列
 https://leetcode-cn.com/problems/longest-increasing-subsequence/
 
 f[i]表示选了nums[i]的时候的上升子序列的最长长度；
@@ -79,7 +79,7 @@ public:
     }
 };
 ````
-# 983. 最低票价
+## 983. 最低票价
 https://leetcode-cn.com/problems/minimum-cost-for-tickets/
 
 f[i]对应第i天的最低票价。
@@ -115,7 +115,7 @@ public:
 };
 ```
 
-# 70. 爬楼梯
+## 70. 爬楼梯
 https://leetcode-cn.com/problems/climbing-stairs/
 
 f[i]为爬i层楼梯的总数；我们的选择可以分为先爬i-1层楼梯再爬1层；或者先爬i-2层再爬2层。
@@ -144,7 +144,7 @@ public:
 };
 ```
 
-# 剑指 Offer 47. 礼物的最大价值
+## 剑指 Offer 47. 礼物的最大价值
 
 f[i,j]表示在[i,j]处能拿到礼物的最大价值；
 
@@ -188,7 +188,7 @@ public:
 };
 ```
 
-# 787. K 站中转内最便宜的航班
+## 787. K 站中转内最便宜的航班
 
 考虑状态变量，这里有两个，一个是到达站j，一个是中转次数k。
 
@@ -237,7 +237,7 @@ public:
 };
 ```
 
-# 322. 零钱兑换
+## 322. 零钱兑换
 https://leetcode-cn.com/problems/coin-change/
 
 dp[n]表示总金额n的金币最少个数；对于每个金额的情况，都可以选择从其中小于当前数值的某一种金币开始进行选择，或者不选；

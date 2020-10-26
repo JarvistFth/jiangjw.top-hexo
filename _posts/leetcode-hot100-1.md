@@ -8,7 +8,7 @@ tags: [leetcode ,hot100]
 keywords: [leetcode,hot100]
 ---
 
-# 1. 两数之和
+## 1. 两数之和
 https://leetcode-cn.com/problems/two-sum/
 
 用一个map记录数组中元素对应的下标，每次遍历新的元素的时候到map里面去找有没有加起来等于target的元素，如果有，将map记录的下标和当前下标放入ans中。
@@ -32,7 +32,7 @@ public:
 };
 ```
 
-# 2. 两数相加
+## 2. 两数相加
 
 维护一个进位变量，当链表有值的时候或者进位不为0的时候，循环进行加法。
 
@@ -72,7 +72,7 @@ public:
 };
 ```
 
-# 3. 无重复字符的最长子串
+## 3. 无重复字符的最长子串
 https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/
 
 滑动窗口，遇到重复字符时开始出窗，出窗后更新最长子串的长度。
@@ -103,7 +103,7 @@ public:
 };
 ```
 
-# 4. 寻找两个正序数组的中位数
+## 4. 寻找两个正序数组的中位数
 https://leetcode-cn.com/problems/median-of-two-sorted-arrays/
 
 一开始想到归并排序，然后复杂度O(M+N)，血崩。
@@ -183,7 +183,7 @@ public:
 };
 ```
 
-# 5. 最长回文子串
+## 5. 最长回文子串
 https://leetcode-cn.com/problems/longest-palindromic-substring/
 
 对字符串的每一个字符，都枚举作为回文串的中心字符，然后进行两边扩散。
@@ -229,7 +229,7 @@ public:
 };
 ```
 
-# 10. 正则表达式匹配
+## 10. 正则表达式匹配
 https://leetcode-cn.com/problems/regular-expression-matching/
 
 感觉正解还是用dp比较好。。
@@ -298,7 +298,7 @@ public:
 };
 ```
 
-# 11. 盛最多水的容器
+## 11. 盛最多水的容器
 https://leetcode-cn.com/problems/container-with-most-water/
 
 双指针，指向最低高度的一侧，此时面积等于左右指针围成的底乘最低高度；然后判断一下是否大于最大面积。是就更新最大面积；
@@ -329,7 +329,7 @@ public:
 };
 ```
 
-# 15. 三数之和
+## 15. 三数之和
 https://leetcode-cn.com/problems/3sum/
 
 先排序，外层循环枚举，内层双指针取值。遇到数值相同的数字时，记得跳过。
@@ -377,7 +377,7 @@ public:
 };
 ```
 
-# 17. 电话号码的字母组合
+## 17. 电话号码的字母组合
 https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/
 
 用一个map记录数字和字母的映射关系。然后取输入的数字，对每一个数字对应的字符，都做递归枚举回溯。
@@ -427,7 +427,7 @@ public:
 };
 ```
 
-# 19. 删除链表的倒数第N个节点
+## 19. 删除链表的倒数第N个节点
 https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/
 
 链表快慢指针，让快指针先走n步，找到要删除的节点的前一个节点，让他的next等于next->next 。
@@ -478,7 +478,7 @@ public:
 };
 ```
 
-# 20. 有效的括号
+## 20. 有效的括号
 https://leetcode-cn.com/problems/valid-parentheses/
 
 左括号入栈；右括号出栈。 注意出栈的时候先判断栈是不是空，如果是空，证明只有一个右括号，return false；
@@ -530,7 +530,7 @@ public:
 };
 ```
 
-# 21. 合并两个有序链表
+## 21. 合并两个有序链表
 https://leetcode-cn.com/problems/merge-two-sorted-lists/
 
 归并排序。
@@ -588,7 +588,7 @@ public:
 };
 ```
 
-# 22. 括号生成
+## 22. 括号生成
 https://leetcode-cn.com/problems/generate-parentheses/
 
 维护两个变量记录可用的左右括号的数量；然后从可以用的括号数量开始做选择，回溯；每次选一次左括号或右括号，递归的时候对应括号计数减1；当左右括号数量刚好为0时，证明生成的括号合符要求。
@@ -627,7 +627,7 @@ public:
 };
 ```
 
-# 23. 合并K个升序链表
+## 23. 合并K个升序链表
 https://leetcode-cn.com/problems/merge-k-sorted-lists/
 
 递归归并排序。每次取vector中间开始二分做递归；递归到最后是两个list；对这两个list进行归并排序。
@@ -697,7 +697,7 @@ public:
 };
 ```
 
-# 31. 下一个排列
+## 31. 下一个排列
 https://leetcode-cn.com/problems/next-permutation/
 
 从右边找降序序列里面第一个遇到的升序的元素，那个元素就是后面要和比他大但是和他最接近的元素交换位置的元素，我们可以叫元素A。
@@ -729,7 +729,7 @@ public:
     }
 };
 ```
-# 33. 搜索旋转排序数组
+## 33. 搜索旋转排序数组
 https://leetcode-cn.com/problems/search-in-rotated-sorted-array/
 
 logn时间复杂度，首先想到就是二分；通过判断mid和左右边界元素的大小，知道某一部分是有序的；然后在有序的部分进行二分；注意边界条件的判断，比如nums[mid]< target ，除此之外还要target<=nums[r] ，否则要找的元素还是在另外一侧。
@@ -770,7 +770,7 @@ public:
 };
 ```
 
-# 34. 在排序数组中查找元素的第一个和最后一个位置
+## 34. 在排序数组中查找元素的第一个和最后一个位置
 https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/
 
 logn时间复杂度，有序数组，典型二分。
@@ -812,7 +812,7 @@ public:
 };
 ```
 
-# 39. 组合总和
+## 39. 组合总和
 https://leetcode-cn.com/problems/combination-sum/
 
 排序，回溯；当sum==target时结束递归回溯。
@@ -855,7 +855,7 @@ public:
 };
 ```
 
-# 42. 接雨水
+## 42. 接雨水
 https://leetcode-cn.com/problems/trapping-rain-water/
 
 双指针，选择两边较矮的柱子；如果当前较矮的柱子比其对应边上的最高柱子要高，就更新对应侧最高柱子的值；如果比最高柱子要矮，就可以更新接雨水的雨量了。
@@ -895,7 +895,7 @@ public:
 };
 ```
 
-# 46. 全排列
+## 46. 全排列
 https://leetcode-cn.com/problems/permutations/
 
 排列问题，回溯+visited数组跳过重复数字。
@@ -933,7 +933,7 @@ public:
 };
 ```
 
-# 48. 旋转图像
+## 48. 旋转图像
 https://leetcode-cn.com/problems/rotate-image/
 
 顺时针，交换 左上-右下 对角线对称的元素，然后每一行交换中点对称元素；
@@ -962,7 +962,7 @@ public:
 };
 ```
 
-# 49. 字母异位词分组
+## 49. 字母异位词分组
 https://leetcode-cn.com/problems/group-anagrams/
 
 对每个单词进行排序，然后将其排序后的结果作为map的key；value就是各种字符相同的异位词分组。
@@ -990,7 +990,7 @@ public:
 };
 ```
 
-# 53. 最大子序和
+## 53. 最大子序和
 https://leetcode-cn.com/problems/maximum-subarray/
 
 经典dp。用一个dp表示当前的子序和；
@@ -1018,7 +1018,7 @@ public:
 };
 ```
 
-# 55. 跳跃游戏
+## 55. 跳跃游戏
 https://leetcode-cn.com/problems/jump-game/
 
 贪心。维护一个可以到达最长距离的变量初始化为第0号做标的值，然后从1开始遍历数组，直到倒数第二位。
@@ -1030,7 +1030,7 @@ https://leetcode-cn.com/problems/jump-game/
 ```C++
 ```
 
-# 56. 合并区间
+## 56. 合并区间
 https://leetcode-cn.com/problems/merge-intervals/
 
 将区间按照左边界来排序；然后先将第一个区间放入ans。
@@ -1067,7 +1067,7 @@ public:
 };
 ```
 
-# 62. 不同路径
+## 62. 不同路径
 https://leetcode-cn.com/problems/unique-paths/
 
 一开始觉得是用回溯去做，结果超时了。。看了评论才发现和之前的走楼梯是差不多的，只不过走楼梯是一维动态规划，这里是二维。注意基础状态（第一行和第一列）都是1 。
@@ -1088,7 +1088,7 @@ public:
 };
 ```
 
-# 64. 最小路径和
+## 64. 最小路径和
 https://leetcode-cn.com/problems/minimum-path-sum/
 
 经典二维dp。
@@ -1123,7 +1123,7 @@ public:
 };
 ```
 
-# 581. 最短无序连续子数组
+## 581. 最短无序连续子数组
 https://leetcode-cn.com/problems/shortest-unsorted-continuous-subarray/
 
 直观的就是借助一个排好序的数组，然后双指针，找到左右第一个和排好序后不一样的元素的index。
@@ -1153,7 +1153,7 @@ public:
 }
 ```
 
-# 647. 回文子串
+## 647. 回文子串
 https://leetcode-cn.com/problems/palindromic-substrings/
 
 中心扩散法，枚举每个字符，作为回文串的中心字符；

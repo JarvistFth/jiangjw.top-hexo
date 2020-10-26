@@ -10,7 +10,7 @@ keywords: [leetcode,hot100]
 leetcode hot100 合集，第二部分。
 <!---more--->
 
-# 70. 爬楼梯
+## 70. 爬楼梯
 https://leetcode-cn.com/problems/climbing-stairs/
 
 经典dp。dp[n]表示到n层的爬法个数；到第i层的爬法，我们可以从i-1层爬1层，或者从i-2层爬2层。所以dp[i]=dp[i-1]+dp[i-2]。
@@ -37,7 +37,7 @@ public:
 };
 ```
 
-# 72. 编辑距离
+## 72. 编辑距离
 https://leetcode-cn.com/problems/edit-distance/
 
 知道是dp。。但是不会构造dp。。评论的题解很棒。。。嗯。。。
@@ -84,7 +84,7 @@ public:
 };
 ```
 
-# 75. 颜色分类
+## 75. 颜色分类
 https://leetcode-cn.com/problems/sort-colors/
 
 双指针指向0和2数字的边界，然后再维护一个指针指向当前元素；
@@ -121,7 +121,7 @@ public:
 };
 ```
 
-# 76. 最小覆盖子串
+## 76. 最小覆盖子串
 https://leetcode-cn.com/problems/minimum-window-substring/
 
 滑动窗口，一个维护当前窗口，一个维护需要的子串字符。
@@ -178,7 +178,7 @@ public:
 };
 ```
 
-# 78. 子集
+## 78. 子集
 https://leetcode-cn.com/problems/subsets/
 
 回溯。
@@ -208,7 +208,7 @@ public:
 };
 ```
 
-# 79. 单词搜索
+## 79. 单词搜索
 https://leetcode-cn.com/problems/word-search/
 
 迷宫类dfs搜索。对每个位置都要进行一次dfs搜索。
@@ -258,7 +258,7 @@ public:
 };
 ```
 
-# 84. 柱状图中最大的矩形
+## 84. 柱状图中最大的矩形
 https://leetcode-cn.com/problems/largest-rectangle-in-histogram/
 
 单调增栈。
@@ -289,7 +289,7 @@ public:
 };
 ```
 
-# 85. 最大矩形
+## 85. 最大矩形
 
 这题可以看作是上一题的延伸，对每一行都进行一次求最大矩形；用一个vector表示当前位置的柱形图，如果matrix的值是1，就让柱形图++；否则归0。
 
@@ -346,7 +346,7 @@ public:
 };
 ```
 
-# 139. 单词拆分
+## 139. 单词拆分
 https://leetcode-cn.com/problems/word-break/
 
 类似背包问题的dp。dp[i]表示string的前i个字符能否被拆分；如果我们假设前j个字符已经可以被成功拆分，那么只需要看j-i个字符是否在dict中就可以了。
@@ -373,7 +373,7 @@ public:
 };
 ```
 
-# 94. 二叉树的中序遍历
+## 94. 二叉树的中序遍历
 https://leetcode-cn.com/problems/binary-tree-inorder-traversal/
 
 ```C++
@@ -415,7 +415,7 @@ public:
 };
 ```
 
-# 96. 不同的二叉搜索树
+## 96. 不同的二叉搜索树
 https://leetcode-cn.com/problems/unique-binary-search-trees/
 
 对于n个节点的树，其左子树的数量可以是0,1,2,...n-1；右子树对应的就是n-1,n-2...0;
@@ -443,7 +443,7 @@ public:
 };
 ```
 
-# 98. 验证二叉搜索树
+## 98. 验证二叉搜索树
 https://leetcode-cn.com/problems/validate-binary-search-tree/
 
 中序遍历，用一个pre记录前一个遍历的节点，判断他和当前节点的大小；在中序遍历的时候更新pre。
@@ -483,7 +483,7 @@ public:
 };
 ```
 
-# 101. 对称二叉树
+## 101. 对称二叉树
 https://leetcode-cn.com/problems/symmetric-tree/
 
 判断二叉树的数值是否相同或者某一子树是否为空，注意对称的要求，递归的时候传入的两个节点一个是left一个是right就可以。
@@ -519,7 +519,7 @@ public:
 };
 ```
 
-# 104. 二叉树的最大深度
+## 104. 二叉树的最大深度
 https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/
 
 递归，每层+1返回。
@@ -545,7 +545,7 @@ public:
 };
 ```
 
-# 105. 从前序与中序遍历序列构造二叉树
+## 105. 从前序与中序遍历序列构造二叉树
 https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
 
 递归建树，每次传入左子树范围和右子树的范围。
@@ -587,7 +587,7 @@ public:
 };
 ```
 
-# 114. 二叉树展开为链表
+## 114. 二叉树展开为链表
 https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/
 
 递归将左右子树捋直了，然后将左子树接到右子树上。
@@ -625,7 +625,7 @@ public:
 };
 ```
 
-# 124. 二叉树中的最大路径和
+## 124. 二叉树中的最大路径和
 https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/
 
 递归获取左右子树的最大路径和（如果是负数就让他为0）
@@ -667,7 +667,7 @@ public:
 };
 ```
 
-# 128. 最长连续序列
+## 128. 最长连续序列
 https://leetcode-cn.com/problems/longest-consecutive-sequence/
 
 用哈希表存储每个端点值对应连续区间的长度
@@ -710,7 +710,7 @@ public:
 };
 ```
 
-# 136. 只出现一次的数字
+## 136. 只出现一次的数字
 https://leetcode-cn.com/problems/single-number/
 
 每个数字和自己异或会变成0.
@@ -728,7 +728,7 @@ public:
 };
 ```
 
-# 139. 单词拆分
+## 139. 单词拆分
 https://leetcode-cn.com/problems/word-break/
 
 背包模型dp；dp[j]表示第j个单词可以被划分；那么[j,...,i]的单词能不能被划分取决于dict中是否有s[j,...i]。
@@ -755,7 +755,7 @@ public:
 };
 ```
 
-# 141. 环形链表
+## 141. 环形链表
 https://leetcode-cn.com/problems/linked-list-cycle/
 
 快慢指针，如果有环，快指针和慢指针最终会遇上（相等）。
@@ -791,7 +791,7 @@ public:
 };
 ```
 
-# 146. LRU缓存机制
+## 146. LRU缓存机制
 https://leetcode-cn.com/problems/lru-cache/
 
 哈希双向链表；通过哈希O(1)找到key对应的listnode是否存在；
@@ -889,7 +889,7 @@ private:
  */
  ```
 
-# 148. 排序链表
+## 148. 排序链表
 https://leetcode-cn.com/problems/sort-list/
 
 归并或者快排版本都有。
@@ -999,7 +999,7 @@ public:
 };
 ```
 
-# 152. 乘积最大子数组
+## 152. 乘积最大子数组
 https://leetcode-cn.com/problems/maximum-product-subarray/
 
 遇到负数会让最大值变最小值，最小值变最大值；所以在更新最大值和最小值前，先判断一下当前元素是不是负数；如果是负数就先把他们交换。
@@ -1028,7 +1028,7 @@ public:
 };
 ```
 
-# 155. 最小栈
+## 155. 最小栈
 https://leetcode-cn.com/problems/min-stack/
 
 两个栈，一个正常出入，一个只将最小值入栈；如果当前push进来的值小于top的值，就将top push进去。getMin其实就是获取最小值的栈的top。
@@ -1083,7 +1083,7 @@ public:
  */
  ```
 
-# 160. 相交链表
+## 160. 相交链表
 https://leetcode-cn.com/problems/intersection-of-two-linked-lists/
 
 每次走到一个本链表的末尾就让指针指向另一个链表的头；这样走两次后，如果有环，环的起点前走过的长度相等，此时pA==pB。返回pA即可。
@@ -1114,7 +1114,7 @@ public:
 };
 ```
 
-# 169. 多数元素
+## 169. 多数元素
 https://leetcode-cn.com/problems/majority-element/
 
 哈希表是最容易想到的。O(1)空间用摩尔投票法，每次如果遇到相同的数，就count++，否则count--；当count为0的时候，就换一个数去统计。最后剩下的肯定是count不为0的数，就是答案。
@@ -1151,7 +1151,7 @@ public:
 };
 ```
 
-# 347. 前 K 个高频元素
+## 347. 前 K 个高频元素
 https://leetcode-cn.com/problems/top-k-frequent-elements/
 
 map记录元素的出现次数，然后按照出现次数开始建小根堆；然后将前K个元素入堆；

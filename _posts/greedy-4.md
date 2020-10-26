@@ -12,7 +12,7 @@ keywords: [leetcode,贪心]
 
 <!---more--->
 
-# 1414. 和为 K 的最少斐波那契数字数目
+## 1414. 和为 K 的最少斐波那契数字数目
 https://leetcode-cn.com/problems/find-the-minimum-number-of-fibonacci-numbers-whose-sum-is-k/
 
 求出最大为k的斐波那契数列；然后从最大的取起，取到k为0为止。
@@ -46,7 +46,7 @@ public:
 };
 ```
 
-# 860. 柠檬水找零
+## 860. 柠檬水找零
 https://leetcode-cn.com/problems/lemonade-change/
 
 枚举就完事了，枚举5块、10块、20块的数量。注意找零的时候，20块可以找1张10块1张5块，也可以找3张5块。如果5块的钱数小于0，证明没法找。
@@ -80,7 +80,7 @@ public:
 };
 ```
 
-# 455. 分发饼干
+## 455. 分发饼干
 https://leetcode-cn.com/problems/assign-cookies/comments/
 
 贪心就是先将两个数组排序，然后从最小的饼干数组开始取起。
@@ -112,7 +112,7 @@ public:
 };
 ```
 
-# 134. 加油站
+## 134. 加油站
 https://leetcode-cn.com/problems/gas-station/submissions/
 
 首先判断总的油量是不是大于花费油量，是的话才能走完全程一个环；
@@ -143,7 +143,7 @@ public:
 };
 ```
 
-# 1005. K 次取反后最大化的数组和
+## 1005. K 次取反后最大化的数组和
 https://leetcode-cn.com/problems/maximize-sum-of-array-after-k-negations/
 
 排序，让前K个负数取反；
@@ -180,7 +180,7 @@ public:
 };
 ```
 
-# 1090. 受标签影响的最大值
+## 1090. 受标签影响的最大值
 https://leetcode-cn.com/problems/largest-values-from-labels/
 
 将label和value绑定在一起，可以用struct，也可以用pair；然后按照value的价值进行排序。
@@ -231,7 +231,7 @@ public:
 };
 ```
 
-# 621. 任务调度器
+## 621. 任务调度器
 https://leetcode-cn.com/problems/task-scheduler/
 
 每个相同任务之间要间隔n；所以我们直觉地将任务次数最多的任务放在一轮处理的开头。这样每一轮中间可以插入其他任务或者空转时间。
@@ -269,7 +269,7 @@ public:
 
 
 
-# 991. 坏了的计算器
+## 991. 坏了的计算器
 https://leetcode-cn.com/problems/broken-calculator/
 
 让Y向X靠近。如果X比Y大，只能递减，步骤数就是X-Y；

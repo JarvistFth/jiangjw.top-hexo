@@ -10,7 +10,7 @@ tags: [leetcode,树]
 <!---more--->
 
 
-## 1457. 二叉树中的伪回文路径
+### 1457. 二叉树中的伪回文路径
 https://leetcode-cn.com/problems/pseudo-palindromic-paths-in-a-binary-tree/
 
 用map或者数组保存遍历过的路径的节点值，因为题目要求是可以调换节点顺序，所以不用严格回文，只需要判断一下保存下来的节点的值只有一个是奇数的就可以了。

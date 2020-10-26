@@ -15,7 +15,7 @@ keywords: [leetcode,链表]
 3. 一些基础的插入删除操作；注意头节点dummy的使用。
 
 <!---more--->
-# 82. 删除排序链表中的重复元素 II
+## 82. 删除排序链表中的重复元素 II
 https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/
 
 确定重复元素的左右边界；然后维护一个pre变量，因为删除都要从左边界的前一个节点开始删除。
@@ -65,7 +65,7 @@ public:
 };
 ```
 
-# 92. 反转链表 II
+## 92. 反转链表 II
 https://leetcode-cn.com/problems/reverse-linked-list-ii/
 
 c++，经典快慢指针确定左右范围；然后递归反转链表。注意递归反转链表并不是要反转到末尾，而是n位置处。

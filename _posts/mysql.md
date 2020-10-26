@@ -6,15 +6,15 @@ tags: [mysql]
 keywords: [mysql]
 ---
 
-# Database Storage
+## Database Storage
 
 
-# Buffer pool
+## Buffer pool
 
-# Index
+## Index
 
-# Concurrency
+## Concurrency
 
-# Muti-version Concurrency
+## Muti-version Concurrency
 
-# Transaction
+## Transaction

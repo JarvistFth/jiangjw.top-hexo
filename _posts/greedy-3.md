@@ -12,7 +12,7 @@ keywords: [leetcode,贪心]
 
 <!---more--->
 
-# 1046. 最后一块石头的重量
+## 1046. 最后一块石头的重量
 https://leetcode-cn.com/problems/last-stone-weight/
 
 直觉是排序，但是排序后还要对操作后的数值继续保持有序，所以感觉直接用vector不太好用。
@@ -55,7 +55,7 @@ public:
 };
 ```
 
-# 1558. 得到目标数组的最少函数调用次数
+## 1558. 得到目标数组的最少函数调用次数
 https://leetcode-cn.com/problems/minimum-numbers-of-function-calls-to-make-target-array/
 
 反着推，从现有的数字，分别进行-1和/2操作，看多少步可以到0.
@@ -99,7 +99,7 @@ public:
 };
 ```
 
-# 1578. 避免重复字母的最小删除成本
+## 1578. 避免重复字母的最小删除成本
 https://leetcode-cn.com/problems/minimum-deletion-cost-to-avoid-repeating-letters/
 
 发现两个字母相等的时候，取成本低的那个，如果是靠后的成本较低的话，我们取完他以后，让他更新为前一个成本的值，用于后面进行比较，留下成本最高的不取。
@@ -128,7 +128,7 @@ public:
 };
 ```
 
-# 1094. 拼车
+## 1094. 拼车
 https://leetcode-cn.com/problems/car-pooling/
 
 用一个vector表示每个车站上下车的人数，对vector求和就表示这个车上的总人数。只要某个区间内乘客的人数大于capacity，就return false。
@@ -161,7 +161,7 @@ public:
 };
 ```
 
-# 452. 用最少数量的箭引爆气球
+## 452. 用最少数量的箭引爆气球
 https://leetcode-cn.com/problems/minimum-number-of-arrows-to-burst-balloons/
 
 先按右端点排序，然后判断下一个的左端点是不是在右端点的右侧，如果是，证明还需要多射一支箭；
@@ -194,7 +194,7 @@ public:
 };
 ```
 
-# 1400. 构造 K 个回文字符串
+## 1400. 构造 K 个回文字符串
 https://leetcode-cn.com/problems/construct-k-palindrome-strings/
 
 要构造最多的回文字符串，就让一个奇数字符作为一个回文。 每个奇数，必在k中占一个名额。 所以odds <= k; 其他的是偶数元素，构造的话随便安排。
@@ -222,7 +222,7 @@ public:
 };
 ```
 
-# 1247. 交换字符使得字符串相同
+## 1247. 交换字符使得字符串相同
 https://leetcode-cn.com/problems/minimum-swaps-to-make-strings-equal/
 
 s1和s2可以交换任意位置的字符，所以我们统计不相等的x和y的字符总数；

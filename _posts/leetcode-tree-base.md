@@ -8,8 +8,8 @@ tags: [leetcode,树]
 ---
 树的基本特性，例如深度、高度等特性，类型的题目。
 <!---more--->
-# 对称、相同、翻转
-## 相同的树
+## 对称、相同、翻转
+### 相同的树
 https://leetcode-cn.com/problems/same-tree/
 
 前序遍历每个节点，如果有一个为null或者节点值不相等就返回false；否则返回true
@@ -31,7 +31,7 @@ public:
     }
 };
 ```
-## 951. 翻转等价二叉树
+### 951. 翻转等价二叉树
 https://leetcode-cn.com/problems/flip-equivalent-binary-trees/
 给出的函数是用于翻转两个节点的；所以如果两个参数节点有一个为null或者值不相等就返回false；否则返回true。
 
@@ -55,7 +55,7 @@ public:
     
 };
 ```
-## 剑指 Offer 26. 树的子结构
+### 剑指 Offer 26. 树的子结构
 https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/
 
 看到题目首先的想法是前序遍历，先对root节点做判断；然后递归调用给出的函数，传入的参数是A的左子树，B以及A的右子树，B。
@@ -94,7 +94,7 @@ public:
     }
 };
 ```
-## 剑指 Offer 28. 对称的二叉树
+### 剑指 Offer 28. 对称的二叉树
 判断两个节点是不是相等，需要传入两个参数；对称的要求就是root1->left root2->right && root1->right root2->left 。
 
 如果有一个为空，返回false；如果值不相等，返回false；否则返回true。
@@ -122,7 +122,7 @@ public:
 };
 ```
 
-## 1379. 找出克隆二叉树中的相同节点
+### 1379. 找出克隆二叉树中的相同节点
 https://leetcode-cn.com/problems/find-a-corresponding-node-of-a-binary-tree-in-a-clone-of-that-tree/
 
 同时递归遍历，如果找到target节点，返回当前的cloned；如果节点数相同还要判断子树，这里就不写了。
@@ -145,7 +145,7 @@ public:
 };
 ```
 
-# 深度
+## 深度
 865. 具有所有最深结点的最小子树
 
 https://leetcode-cn.com/problems/most-frequent-subtree-sum/
@@ -185,7 +185,7 @@ public:
 
 ```
 
-## 559. N叉树的最大深度
+### 559. N叉树的最大深度
  https://leetcode-cn.com/problems/maximum-depth-of-n-ary-tree/
 
  对每个子树递归遍历，记录其每个子树的最大深度，递归函数返回其最大深度+1，
@@ -212,8 +212,8 @@ public:
 
 
 
-# 高度
-## 面试题 04.04. 检查平衡性
+## 高度
+### 面试题 04.04. 检查平衡性
 https://leetcode-cn.com/problems/check-balance-lcci/
 
 平衡的定义是两棵子树高度差不超过1，所以通过递归，计算左右子树的高度，如果高度差大于1，返回false；递归函数返回的是树的高度（左右子树的最大值+1）
@@ -242,8 +242,8 @@ public:
     }
 };
 ```
-# 直径
-## 543. 二叉树的直径
+## 直径
+### 543. 二叉树的直径
 https://leetcode-cn.com/problems/diameter-of-binary-tree/
 二叉树的直径，和高度类似，分别求左右子树的高度，最大直径就是左右子树高度之和；由于直径可能不过root，所以需要对每个root都求一下，然后用一个变量存储目前的直径最大值用于比较；最后返回真·最大值。
 ```C++
@@ -270,8 +270,8 @@ public:
     }
 };
 ```
-# 合并
-## 617. 合并二叉树
+## 合并
+### 617. 合并二叉树
 https://leetcode-cn.com/problems/merge-two-binary-trees/
 
 如果两个节点A/B都为空，返回null
@@ -303,9 +303,9 @@ public:
 };
 ```
 
-# 求和
+## 求和
 
-## 979. 在二叉树中分配硬币
+### 979. 在二叉树中分配硬币
 https://leetcode-cn.com/problems/distribute-coins-in-binary-tree/
 
 官方题解比较好 这道题还挺难理解
@@ -336,7 +336,7 @@ public:
 };
 ```
 
-## 124. 二叉树中的最大路径和
+### 124. 二叉树中的最大路径和
 https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/
 
 对于任意一个节点, 如果最大和路径包含该节点, 那么只可能是两种情况:
@@ -366,7 +366,7 @@ public:
 };
 ```
 
-## 508. 出现次数最多的子树元素和
+### 508. 出现次数最多的子树元素和
 https://leetcode-cn.com/problems/most-frequent-subtree-sum/<br>
 
 用map记录子树出现的次数和其对应的子树和。由于次数是可以逐渐增加的，所以作为value，key则是用元素和sum。遍历map，如果找到出现的次数与最大次数相等，则返回key。所以用一个全局变量存储出现最多的次数，子树和就是root->val + dfs(root->left) + dfs(root->right)。
@@ -406,7 +406,7 @@ public:
 };
 ```
 
-## 129. 求根到叶子节点数字之和
+### 129. 求根到叶子节点数字之和
 https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/
 先序遍历，每次传入当前的数字和作为参数。如果碰到叶子节点，就返回当前的和加节点的值，否则递归调用，传入当前和*10
 
@@ -436,7 +436,7 @@ public:
 };
 ```
 
-## 112. 路径总和
+### 112. 路径总和
 https://leetcode-cn.com/problems/path-sum/
 
 dfs,每次dfs传入一个sum，然后将sum-=root->val，如果减完发现sum为0，并且是叶子节点，就符合要求。
@@ -465,7 +465,7 @@ public:
 };
 ```
 
-## 面试题 04.12. 求和路径
+### 面试题 04.12. 求和路径
 https://leetcode-cn.com/problems/paths-with-sum-lcci/
 和上题类似，但是要注意一点的是，它不要求从根节点到叶子节点，所以sum==0时不需要判断是否是叶子结点，同时还需要用原函数递归一下root->left root->right
 
@@ -499,7 +499,7 @@ public:
 };
 ```
 
-## 1339. 分裂二叉树的最大乘积
+### 1339. 分裂二叉树的最大乘积
 https://leetcode-cn.com/problems/maximum-product-of-splitted-binary-tree/
 
 分成两部分的二叉树的和也可以分为两部分，所以用一个vector存部分1的和，部分2的和就等于总和减部分1的和。然后保留部分1的和与部分2的和的最大值就可以了。
@@ -536,8 +536,8 @@ public:
 ```
 
 
-# 路径
-## 1372. 二叉树中的最长交错路径
+## 路径
+### 1372. 二叉树中的最长交错路径
 https://leetcode-cn.com/problems/longest-zigzag-path-in-a-binary-tree/
 
 遍历左右结点，如果是左结点，返回右边深度+1；否则反之；再和全局变量比较。
@@ -571,8 +571,8 @@ public:
 };
 ```
 
-# 节点数
-## 1145. 二叉树着色游戏
+## 节点数
+### 1145. 二叉树着色游戏
 
 https://leetcode-cn.com/problems/binary-tree-coloring-game/
 
@@ -609,7 +609,7 @@ public:
 };
 ```
 
-## 501. 二叉搜索树中的众数
+### 501. 二叉搜索树中的众数
 https://leetcode-cn.com/problems/find-mode-in-binary-search-tree/
 
 统计每个节点的值，找到某个值出现最多的节点。这是简单思路。不利用额外空间，就是按照中序遍历遍历二叉树，这样可以得到一个升序序列，这时候可以用一个值记录上次遍历的节点值，判断其是否和当前的相等，如果相等，出现次数加1，否则出现次数归1，然后用一个值记录最大的出现次数，进行对比；如果大于最大值，就清空原vector，并且将当前的值加入vector。

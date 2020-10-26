@@ -96,7 +96,7 @@ public:
 
 ```
 
-# 剑指 Offer 48. 最长不含重复字符的子字符串
+## 剑指 Offer 48. 最长不含重复字符的子字符串
 https://leetcode-cn.com/problems/zui-chang-bu-han-zhong-fu-zi-fu-de-zi-zi-fu-chuan-lcof/
 
 用一个map维护一个window，窗口右移。当window里面是有遍历的字符串的时候，窗口左移。左移后比较当前长度是否是最长。
@@ -126,7 +126,7 @@ public:
 };
 ```
 
-# 1004. 最大连续1的个数 III
+## 1004. 最大连续1的个数 III
 https://leetcode-cn.com/problems/max-consecutive-ones-iii/
 窗口右移；当遇到0的个数大于K时，窗口左移。在窗口左移后更新最大长度。
 
@@ -160,7 +160,7 @@ public:
 };
 ```
 
-# 480. 滑动窗口中位数
+## 480. 滑动窗口中位数
 https://leetcode-cn.com/problems/sliding-window-median/
 
 想法就是用一个vector维护一个window，每次window超过K个元素就出窗；入窗的时候通过二分查找维护窗口有序插入，这样可以方便找到window的中位数(window[(i-1)/2] + window(i/2))/2 。
@@ -201,7 +201,7 @@ public:
 };
 ```
 
-# 76. 最小覆盖子串
+## 76. 最小覆盖子串
 https://leetcode-cn.com/problems/minimum-window-substring/
 
 字符串子串的滑动窗口模板。维护一个window和一个need，入窗时判断一下入窗的元素是不是子串的字符，如果是window++;如果window和need维护的字符次数相同，就说明window这个字符可用；当window维护的可用字符==need.size()，说明子串和原字符串已经完全覆盖了。这时候为了保证长度最小，就要窗口左移，元素出窗。出窗的时候也要更新窗口内的数据。同时更新最小长度。
@@ -255,7 +255,7 @@ public:
 };
 ```
 
-# 239. 滑动窗口最大值
+## 239. 滑动窗口最大值
 https://leetcode-cn.com/problems/sliding-window-maximum/
 
 维护一个单调双端队列作为窗口，每次将数组元素下标入窗。当队头元素下标超出窗口大小k时，队头元素出窗。此时window.front()<=此时元素下标-k。
@@ -294,7 +294,7 @@ public:
 };
 ```
 
-# 剑指 Offer 59 - II. 队列的最大值
+## 剑指 Offer 59 - II. 队列的最大值
 https://leetcode-cn.com/problems/dui-lie-de-zui-da-zhi-lcof/
 
 和上题基本一致，维护一个deque，最大值放在队列头；当存入的value大于队尾元素时，将队尾元素出队；当从队头出队时，判断一下是不是deque的队列头，如果是deque也出队。
@@ -344,7 +344,7 @@ private:
  */
 ```
 
-# 424. 替换后的最长重复字符
+## 424. 替换后的最长重复字符
 https://leetcode-cn.com/problems/longest-repeating-character-replacement/
 
 模板走起。先入窗，当需要替换的字符大于k的时候，也就是窗口长度-最长重复字符长度>k时，窗口收缩。所以定义一个变量count计算当前窗口最长重复字符的长度。
@@ -382,7 +382,7 @@ public:
 };
 ```
 
-# 1456. 定长子串中元音的最大数目
+## 1456. 定长子串中元音的最大数目
 https://leetcode-cn.com/problems/maximum-number-of-vowels-in-a-substring-of-given-length/
 
 入窗；窗口长度>=k时出窗。出窗时更新最长长度。当出窗和入窗是元音字母的时候，更新当前元音字母数量。
@@ -421,7 +421,7 @@ public:
 };
 ```
 
-# 567. 字符串的排列
+## 567. 字符串的排列
 
 字符串模板；入窗；如果入窗的字符是子串中的字符，入窗的map对应字符++，表示窗口内有该字符；当窗口内的某一字符数和子串中对应字符的数量相等时，表明子串中有一个字符已经符合结果；
 
@@ -474,7 +474,7 @@ public:
 };
 ```
 
-# 面试题 17.18. 最短超串
+## 面试题 17.18. 最短超串
 最短子串类问题，框架走起。注意这里说的是返回最左端的端点，开始多想了怎么保证是最左端；后来发现在下面这里就确定了。
 ```C++
                 //right-left<len 就保证了是最左端；如果改为<=len，就是最右端。
@@ -534,7 +534,7 @@ public:
 };
 ```
 
-# 1248. 统计「优美子数组」
+## 1248. 统计「优美子数组」
 https://leetcode-cn.com/problems/count-number-of-nice-subarrays/
 入窗；当奇数数目为k时，出窗；出窗时子数组数量+1；因为题目不是只包含奇数的子数组，所以可以有偶数。但是和上面一些题目不同的是，当奇数数目小于k时，也符合要求，所以我们这时候要把之前所有符合要求的子数组数目都加上。
 
@@ -578,7 +578,7 @@ public:
 };
 ```
 
-# 992. K 个不同整数的子数组
+## 992. K 个不同整数的子数组
 https://leetcode-cn.com/problems/subarrays-with-k-different-integers/
 
 入窗；当遇到window里的元素大于K的时候，需要出窗。

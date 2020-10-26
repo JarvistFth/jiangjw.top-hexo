@@ -9,7 +9,7 @@ keywords: [leetcode,杂题, 每日一题]
 ---
 一些不好归类的杂题和每日一题。
 <!---more--->
-# 50. Pow(x, n)
+## 50. Pow(x, n)
 https://leetcode-cn.com/problems/powx-n/
 
 经典快速幂。递归版：
