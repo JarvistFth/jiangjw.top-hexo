@@ -8,6 +8,9 @@ tags: [leetcode ,hot100]
 keywords: [leetcode,hot100]
 ---
 
+leetcode hot100 合集，第一部分。
+<!---more--->
+
 ## 1. 两数之和
 https://leetcode-cn.com/problems/two-sum/
 

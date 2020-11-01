@@ -9,7 +9,7 @@ keywords: [leetcode,杂题, 每日一题]
 ---
 一些不好归类的杂题和每日一题。
 <!---more--->
-## 50. Pow(x, n)
+# 50. Pow(x, n)
 https://leetcode-cn.com/problems/powx-n/
 
 经典快速幂。递归版：
@@ -65,6 +65,46 @@ public:
             N>>=1;
         }
         return n<0?1.0/ans:ans;
+    }
+};
+```
+
+# 面试题 16.19. 水域大小
+https://leetcode-cn.com/problems/pond-sizes-lcci/
+
+dfs，迷宫类题目。
+
+```C++
+class Solution {
+public:
+    vector<int> pondSizes(vector<vector<int>>& land) {
+        vector<int> ans;
+        int area = 0;
+        for(int i=0;i<land.size();i++){
+            for(int j=0;j<land[i].size();j++){
+                if(land[i][j] == 0){
+                    area = backtrack(land,i,j);
+                    ans.push_back(area);
+                }
+            }
+        }
+        sort(ans.begin(),ans.end());
+        return ans;
+    }
+
+    int backtrack(vector<vector<int>>& land, int x, int y){
+        if(x<0 || x>=land.size() || y<0 || y>=land[x].size() || land[x][y] != 0){
+            return 0;
+        }
+
+        int sum = 1;
+        land[x][y] = -1;
+        sum += backtrack(land,x-1,y) + backtrack(land,x-1,y-1) 
+            + backtrack(land,x-1,y+1) 
+            + backtrack(land,x,y-1)+ backtrack(land,x,y+1) 
+            + backtrack(land,x+1,y-1) + backtrack(land,x+1,y) + backtrack(land,x+1,y+1);
+        
+        return sum;
     }
 };
 ```

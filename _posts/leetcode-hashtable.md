@@ -166,3 +166,69 @@ public:
     }
 };
 ```
+
+### 381. O(1) 时间插入、删除和获取随机元素 - 允许重复
+https://leetcode-cn.com/problems/insert-delete-getrandom-o1-duplicates-allowed/
+
+这题和前一题O（1）插入删除获取随机元素差不多，但是这题允许重复，所以记录index要用unordered_set。
+
+其他做法基本一致，将要删除的和最后的交换；但要注意先erase掉现有的index，再insert；否则如果要删除的和末尾的数字一致，最后erase会造成现有index的lost。
+
+```C++
+class RandomizedCollection {
+public:
+
+    vector<int> nums;
+    unordered_map<int,unordered_set<int>> valToIndex;//<val,index>
+
+    /** Initialize your data structure here. */
+    RandomizedCollection() {
+        
+    }
+    
+    /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
+    bool insert(int val) {
+        valToIndex[val].insert(nums.size());
+        nums.push_back(val);
+        return valToIndex[val].size() == 1;
+    }
+    
+    /** Removes a value from the collection. Returns true if the collection contained the specified element. */
+    bool remove(int val) {
+        if(valToIndex[val].empty()){
+            return false;
+        }
+        //get val first index
+        int lastidx = nums.size() - 1;
+        int pos = *(valToIndex[val].begin());
+        //erase first, why?? cuz nums.back() may equal to val? 
+        //if insert first, may lost num.back()'s index
+        valToIndex[val].erase(pos);
+        //need swap when not the last
+        if(pos != lastidx){
+            //swap nums
+            nums[pos] = nums.back();
+            //update lastnum index
+            valToIndex[nums.back()].erase(lastidx);
+            valToIndex[nums.back()].insert(pos);
+        }
+
+        //pop back
+        nums.pop_back();
+        return true;
+    }
+    
+    /** Get a random element from the collection. */
+    int getRandom() {
+        return nums[rand() % nums.size()];
+    }
+};
+
+/**
+ * Your RandomizedCollection object will be instantiated and called as such:
+ * RandomizedCollection* obj = new RandomizedCollection();
+ * bool param_1 = obj->insert(val);
+ * bool param_2 = obj->remove(val);
+ * int param_3 = obj->getRandom();
+ */
+ ```
