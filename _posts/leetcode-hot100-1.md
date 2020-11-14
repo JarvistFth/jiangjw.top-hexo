@@ -703,32 +703,27 @@ public:
 ## 31. 下一个排列
 https://leetcode-cn.com/problems/next-permutation/
 
-从右边找降序序列里面第一个遇到的升序的元素，那个元素就是后面要和比他大但是和他最接近的元素交换位置的元素，我们可以叫元素A。
-
-如果找到他的位置是在头部，说明这时候全是降序，下一个排列就是升序序列。
-
-然后我们要找比他大但是和他最接近的元素B，和他交换位置；也是从右边开始找，如果当前找的元素比他小，就继续找；找到以后，将元素A和元素B进行交换，交换以后，从元素B后对剩下的元素继续进行排序，就是下一个序列了。
-
-考虑序列[0,1,4,3,2]、找到要交换的元素A(1)，找到最接近1的元素(2)，将1和2交换、[0,2,4,3,1]；从2以后对序列排列[0,2,1,3,4]。
+见注释。
 
 ```C++
 class Solution {
 public:
     void nextPermutation(vector<int>& nums) {
-        int i=nums.size()-1;
-        while(i>0 && nums[i-1] >= nums[i]){
+        //从右边找起第一个非降序的元素；（全部降序就没有下一个排列了）
+        //从右边找到第一个比上述元素大的元素；
+        //交换位置，反转交换后的部分（交换后已经有序，降序，反转一下变升序就可以了）
+        int i = nums.size() - 2;
+        while (i >= 0 && nums[i] >= nums[i + 1]) {
             i--;
         }
-        if(i == 0){
-            reverse(nums.begin(),nums.end());
-        }else{
-            int j=nums.size()-1;
-            while(j>i && nums[j] <= nums[i-1]){
+        if (i >= 0) {
+            int j = nums.size() - 1;
+            while (j >= 0 && nums[i] >= nums[j]) {
                 j--;
             }
-            swap(nums[i-1],nums[j]);
-            sort(nums.begin()+i,nums.end());
+            swap(nums[i], nums[j]);
         }
+        reverse(nums.begin() + i + 1, nums.end());
     }
 };
 ```

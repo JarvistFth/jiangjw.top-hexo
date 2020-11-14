@@ -135,3 +135,47 @@ public:
     }
 };
 ```
+
+
+## 328. 奇偶链表
+https://leetcode-cn.com/problems/odd-even-linked-list/
+
+原地修改，注意o = o->next;
+            e->next = o->next;这一步。
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* oddEvenList(ListNode* head) {
+        if(head == nullptr || head->next == nullptr){
+            return head;
+        }
+        
+        ListNode* o = head; // point 
+        ListNode* e = head->next; // point 
+
+        ListNode* even = head->next;
+
+        while(o->next && e->next){
+            o->next = e->next;
+            o = o->next;
+            e->next = o->next;
+            e = e->next;
+        }
+
+        o->next = even;
+        return head;
+
+    }
+};
+```
