@@ -13,6 +13,7 @@ keywords: [leetcode,链表]
 1. 快慢指针：一次遍历确定某些特定元素的范围；
 2. 反转链表：我喜欢用递归实现；
 3. 一些基础的插入删除操作；注意头节点dummy的使用。
+4. 一些需要对当前节点进行调换位置的时候，可以以这个节点的前一个节点的next作为处理结果。（147题）
 
 <!---more--->
 ## 82. 删除排序链表中的重复元素 II
@@ -176,6 +177,55 @@ public:
         o->next = even;
         return head;
 
+    }
+};
+```
+
+## 147. 对链表进行插入排序
+https://leetcode-cn.com/problems/insertion-sort-list/
+
+将要排序的节点（比前一个节点小）拉到前面开始比较；如果比前面的节点大，就继续往后面比较；否则就将他插入到当前比较的节点的后面。
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* insertionSortList(ListNode* head) {
+        if(head == NULL || head->next == NULL){
+            return head;
+        }
+
+        ListNode*  dummy = new ListNode(INT_MIN);
+        dummy->next = head;
+        ListNode* prev = NULL;
+
+        //真正要处理的的节点是curP->next, curP means current-previous node
+        ListNode* curP = head;
+        while(curP != NULL && curP->next != NULL){
+            prev = dummy;
+            //前面的已经有序了，如果下一个比现在的要大，就不用排序了，往后移动指针
+            if(curP->next->val >= curP->val){
+                curP = curP->next;
+                continue;
+            }else{
+                while(curP->next->val > prev->next->val){
+                    prev = prev->next;
+                }
+                auto curNext = curP->next;
+                curP->next = curNext->next;
+                curNext->next = prev->next;
+                prev->next = curNext;
+            }
+           
+        }
+        return dummy->next;
     }
 };
 ```

@@ -1,9 +1,9 @@
 ---
-title: zookeeper-ZAB
+title: 6.824-zookeeper
 date: 2020-11-07 23:18:05
 categories: 
 - 分布式
-- zookeeper
+- 6.824
 tags: [分布式,zookeeper,ZAB]
 ---
 

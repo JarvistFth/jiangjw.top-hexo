@@ -108,3 +108,45 @@ public:
     }
 };
 ```
+
+---
+## 649. Dota2 参议院
+Date:2020/12/11
+
+https://leetcode-cn.com/problems/dota2-senate/
+
+贪心+模拟，两个队列模拟banpick环节，每次ban的时候都找最近的那个位置对手去ban，循环该ban选过程直到某一个队列为空。
+
+```C++
+class Solution {
+public:
+    string predictPartyVictory(string senate) {
+        queue<int> RadianQueue;
+        queue<int> DireQueue;
+        int n = senate.size();
+        for(int i=0;i<n;i++){
+            char c = senate[i];
+            if(c == 'R'){
+                RadianQueue.push(i);
+            }else{
+                DireQueue.push(i);
+            }
+            
+        }
+
+        while(!RadianQueue.empty() && !DireQueue.empty()){
+            int rfront = RadianQueue.front();
+            int dfront = DireQueue.front();
+            if(rfront < dfront){
+                RadianQueue.push(rfront + n);
+            }else{
+                DireQueue.push(dfront + n);
+            }
+            RadianQueue.pop();
+            DireQueue.pop();
+        }
+
+        return RadianQueue.empty()?"Dire":"Radiant";
+    }
+};
+```
