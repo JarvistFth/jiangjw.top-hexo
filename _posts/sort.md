@@ -1,5 +1,5 @@
 ---
-title: sort
+title: Leetcode - sort
 date: 2020-11-14 00:38:05
 categories: 
     - leetcode
@@ -89,8 +89,11 @@ public:
 ## 406. 根据身高重建队列
 https://leetcode-cn.com/problems/queue-reconstruction-by-height/
 
-将身高按降序、排序按升序排序。
-然后按照排序插入到数组中。
+将身高按降序、同一身高排序按升序排序。
+
+这样的好处是按照按照排序后的顺序进行头插法，立刻就满足了要求。（否则按照位置降序，第一个进行头插法的就没法插入了）
+
+然后按照位置的序号，进行头插法，插入到数组中。
 
 ```C++
 class Solution {
