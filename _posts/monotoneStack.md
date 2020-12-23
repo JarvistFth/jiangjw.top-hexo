@@ -1,5 +1,5 @@
 ---
-title: monotoneStack
+title: 单调栈 - monotoneStack
 date: 2020-09-14 23:00:13
 categories:
 - leetcode
@@ -105,6 +105,58 @@ public:
 
         reverse(ans.begin(),ans.end());
         return ans;
+
+    }
+};
+```
+
+## 316. 去除重复字母
+https://leetcode-cn.com/problems/remove-duplicate-letters/
+
+单调栈+贪心；详解见注释。维持字母顺序和单调栈的想法很类似。
+
+```C++
+class Solution {
+public:
+    string removeDuplicateLetters(string s) {
+
+        //
+        unordered_map<char,int> charLeft;
+        unordered_set<char> inStack;
+
+        string stack;
+
+        for(auto &c:s){
+            charLeft[c]++;
+        }
+        
+        //1. 如果当前字符的字符顺序比最后一个加入的小，尽量将前面的字符出栈；
+        //2. 如果当前要弹出的字符在剩余字符串中没有再出现了，就不能弹出；
+        //3. 如果当前字符已经在stack中，就不能再添加了
+
+        for(auto &c:s){
+            //如果当前字符已经在stack中，就不能再添加了
+            if(!inStack.count(c)){
+                //如果当前字符的字符顺序比最后一个加入的小，尽量将前面的字符出栈；
+                while(!stack.empty() && stack.back() > c){
+                    //如果当前要弹出的字符在剩余字符串中没有再出现了，就不能弹出；
+                    if(charLeft[stack.back()] > 0){
+                        inStack.erase(stack.back());
+                        stack.pop_back();
+                    }else{
+                        break;
+                    }
+                }
+                //入栈
+                stack.push_back(c);
+                inStack.insert(c);
+            }
+            //处理完这个字符了，待处理字符数减少。
+            charLeft[c]--;
+        }
+        return stack;
+
+
 
     }
 };

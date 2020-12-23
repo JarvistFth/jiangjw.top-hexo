@@ -264,3 +264,30 @@ public:
     }
 };
 ```
+
+## 746. 使用最小花费爬楼梯
+https://leetcode-cn.com/problems/min-cost-climbing-stairs/
+
+和爬楼梯步数那个有点像，但是这个有花费；
+
+设dp[i]为到i楼层所需花费，那么我们要么选择从i-1层开始走一步，或者从i-2层走两步；取二者最小者。
+
+所以dp[i] = min(dp[i-1] + cost[i-1] , dp[i-2]
+ + cost[i-2])
+
+ base case: i>=2开始for循环，i=0/i=1时是开始选择的花费，为0.
+
+ 每个索引作为一个阶梯，楼顶是cost.size()。
+
+```C++
+class Solution {
+public:
+    int minCostClimbingStairs(vector<int>& cost) {
+        vector<int> dp(cost.size()+1,0);
+        for(int i=2;i<dp.size();i++){
+            dp[i] = min(dp[i-1] + cost[i-1],dp[i-2] + cost[i-2]);
+        }
+        return dp[cost.size()];
+    }
+};
+```
