@@ -78,7 +78,8 @@ public:
 
     }
 };
-````
+```
+
 ## 983. 最低票价
 https://leetcode-cn.com/problems/minimum-cost-for-tickets/
 
@@ -288,6 +289,162 @@ public:
             dp[i] = min(dp[i-1] + cost[i-1],dp[i-2] + cost[i-2]);
         }
         return dp[cost.size()];
+    }
+};
+```
+
+## 375. 猜数字大小 II
+https://leetcode-cn.com/problems/guess-number-higher-or-lower-ii/
+
+
+```C++
+class Solution {
+public:
+    int getMoneyAmount(int n) { 
+        vector<vector<int>> memo(n+1,vector<int>(n+1));
+
+        return dfs(memo,1,n);
+
+    }
+
+    int dfs(vector<vector<int>>& memo, int l, int r){
+        if(l >= r){
+            return 0;
+        }
+
+        if(memo[l][r]){
+            return memo[l][r];
+        }
+
+        int ret = INT_MAX;
+        //记忆化搜索，每次从[l,r]开始选一个i， 
+        //memo[l][r]表示从[l,r]开始猜对的至少现金
+
+        for(int i=l; i<=r; i++){
+            int retl = dfs(memo,l,i-1);
+            int retr = dfs(memo,i+1,r);
+
+            //左区间和右区间选的至少现金，为了保证猜对，所以左右区间取个大的值；
+            //每次选取完以后，再取个最小值（从左右区间选取已经保证肯定能猜对），
+            ret = min(ret,max(retl,retr)+i);
+        }
+        //记录[l,r]中保证猜对的至少现金
+        memo[l][r] = ret;
+        return ret;
+    }
+};
+```
+
+## 368. 最大整除子集
+https://leetcode-cn.com/problems/largest-divisible-subset/
+
+类似最长上升子序列。dp[i]表示以i结尾的最长整除子集的长度，从0到i开始枚举，查看nums[i]是否能整除nums[j]，如果可以整除，dp[i]可以考虑更新。
+
+最后我们可以得到一个dp[i]最长的长度，以及它最长坐标。
+
+然后从末尾开始遍历，看当前位置的元素能不能整除记录的index的元素，以及当前位置的最大整除子集长度是不是最大长度；如果是，就选择当前位置的元素作为子集；最大长度-1，更新index为当前位置i。
+
+```C++
+class Solution {
+public:
+    vector<int> largestDivisibleSubset(vector<int>& nums) {
+
+        int n = nums.size();
+        vector<int> dp(n,1);
+        vector<int> ans;
+        sort(nums.begin(),nums.end());
+        int index = 0;
+        int maxLen = 1;
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<i; j++){
+                if(nums[i] % nums[j] == 0){
+                    dp[i] = max(dp[i],dp[j]+1);
+                }
+            }
+            if(dp[i] > maxLen){
+                maxLen = dp[i];
+                index = i;
+            }
+        }
+
+
+        for(int i=n-1; i>=0; i--){
+            if(nums[index] % nums[i] == 0 && dp[i] == maxLen){
+                maxLen--;
+                index = i;
+                ans.push_back(nums[i]);
+            }
+        }
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+};
+```
+
+## 516. 最长回文子序列
+https://leetcode-cn.com/problems/longest-palindromic-subsequence/
+
+dp[i][j]表示s[i...j]最长的回文子序列。也就是从末尾和开头遍历字符串做比较，如果相等，就选择i和n-j添加到回文子序列中，dp[i][j] = max(dp[i][j],dp[i-1][j-1])；
+
+如果不相等，就不取i或者不取j，所以dp[i][j] = max(dp[i-1][j],dp[i][j-1])
+
+```C++
+class Solution {
+public:
+    int longestPalindromeSubseq(string s) {
+        int n = s.size();
+        vector<vector<int>> dp(n+1,vector<int>(n+1));//dp[i][j]: s[i...j]'s max len of palindrome
+
+        for(int i=1; i<=n; i++){
+            for(int j=1; j<=n; j++){
+                if(s[i-1] == s[n-j]){
+                    dp[i][j] = max(dp[i][j],dp[i-1][j-1]+1);
+                }else{
+                    dp[i][j] = max(dp[i-1][j],dp[i][j-1]);
+                }
+            }
+        }
+
+        return dp[n][n];
+    }
+};
+```
+
+## 413. 等差数列划分
+https://leetcode-cn.com/problems/arithmetic-slices/
+
+d1记录前一个等差数列的公差，d2记录当前位置的元素和上一个位置的元素的差；
+如果d1==d2，证明当前位置的元素可以加入到等差数列中；
+
+dp记录等差数列元素个数；
+
+每次d1==d2的话，dp++，等差数列个数增加dp个。d1!=d2的话，让dp归0，公差d1换成d2。
+
+```C++
+class Solution {
+public:
+    int numberOfArithmeticSlices(vector<int>& nums) {
+        int n = nums.size();
+        if(n < 3){
+            return 0;
+        }
+        int dp = 0;
+        int ans = 0;
+
+        int d1 = nums[1] - nums[0];
+
+        for(int i=2; i<n; i++){
+            int d2 = nums[i] - nums[i-1];
+            if(d1 == d2){
+                dp++;
+                ans += dp;
+            }else{
+                dp = 0;
+                d1 = d2;
+            }
+        }
+        return ans;
     }
 };
 ```

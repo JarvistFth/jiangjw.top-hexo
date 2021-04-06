@@ -1,3 +1,4 @@
+---
 title: 计算机网络 - TCP
 date: 2021-03-02 13:44:28
 categories: 
@@ -5,7 +6,10 @@ categories:
 - TCP
 tags: [计网,TCP]
 keywords: [计网,TCP]
+---
 
+TCP八股文
+<!---more--->
 ## TCP
 
 面向连接、可靠、基于字节流的传输层通信协议。
@@ -85,3 +89,10 @@ TCP建立连接时，ACK和SYN一起发送，所以减少了一次；但是释�
 1. 保证客户端发送的ACK能到达server端；若未成功到达，这时候server端会重传FIN+ACK，这时候客户端还要处理这个FIN+ACK，然后重传ACK给server，并重新进入TIME_WAIT；
 2. 防止失效连接数据出现在本次连接中（在2MSL后，所有数据都会丢弃），下次再使用这个连接时，不会再收到旧的数据。
 
+### 和UDP区别
+1. TCP面向连接的，UDP无连接；
+2. TCP保证可靠交付，UDP尽最大努力交付；
+3. TCP面向字节流，UDP面向报文；
+4. TCP包有最大字节数，UDP交IP分包；
+5. TCP一对一，UDP可以多对一、一对多；
+5. UDP适用于实时场景，TCP适合可靠传输场景。

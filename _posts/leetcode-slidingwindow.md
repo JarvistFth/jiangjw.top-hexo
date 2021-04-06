@@ -581,12 +581,11 @@ public:
 ## 992. K 个不同整数的子数组
 https://leetcode-cn.com/problems/subarrays-with-k-different-integers/
 
-入窗；当遇到window里的元素大于K的时候，需要出窗。
+恰好为K个不同整数的子数组个数 = 最多为K个不同整数的子数组个数 - 最多为K-1个不同整数的子数组个数。
 
-当window的size等于k时，这时候子序列是从最长的子序列开始统计的。所以统计时候，每次window的size是k的时候，ans++。同时可以让另一个指针指向left，让left假装出窗，缩小窗口范围，直至window的size不为k。
+所以问题转化为最多K个不同整数的子数组个数。
 
-但是要注意的是这里当window的size是k的时候，这时候left假装出窗只是为了方便统计；统计完毕以后还要恢复在window中的原样。
-
+所以统计window里面的元素的个数，大于K时出窗，出窗后更新数组长度。
 
 ```C++
 class Solution {
@@ -596,45 +595,64 @@ public:
             return 0;
         }
 
+
+        return subarraysWithKDistinctMost(A,K) - subarraysWithKDistinctMost(A,K-1);
+    }
+
+    int subarraysWithKDistinctMost(vector<int>& A, int K) {
         int left=0,right=0;
         unordered_map<int,int> window;
-        int ans = 0;
+        int ret = 0;
 
         while(right<A.size()){
             int c = A[right];
             right++;
             window[c]++;
 
-        while(window.size() > K){
-            int d = A[left];
-            if(window.count(d)){
-                window[d]--;
-                if(window[d] == 0){
-                    window.erase(d);
+            while(window.size() > K){
+                int d = A[left];
+                if(window.count(d)){
+                    window[d]--;
+                    if(window[d] == 0){
+                        window.erase(d);
+                    }
                 }
+                left++;
             }
-            left++;
+            ret += right - left + 1;
         }
+        return ret;
 
-            int temp = left;
+    }
 
-            //为了统计，假装出窗。
-            while(window.size() == K){
-                ans++;
-                int e = A[temp];
-                if(window[e] > 1){
-                    window[e]--;
-                }else{
-                    window.erase(e);
-                }
-                temp++;
+};
+```
+
+## 1695. 删除子数组的最大得分
+https://leetcode-cn.com/problems/maximum-erasure-value/
+
+题目的意思其实是找出最大连续子数组的和。。。。。
+
+```C++
+class Solution {
+public:
+    int maximumUniqueSubarray(vector<int>& nums) {
+        int l=0,r=0;
+        unordered_map<int,int> window;
+        int ans = 0;
+        int sum = 0;
+        while(r<nums.size()){
+            sum += nums[r];
+            int c = nums[r++];
+            window[c]++;
+
+            while(window[c] > 1){
+                int d = nums[l];
+                sum -= nums[l++];
+                window[d]--;
             }
-            
-            //恢复原来hashtable中的数据原样
-            while(temp > left){
-                window[A[temp-1]]++;
-                temp--;
-            }
+
+            ans = max(ans,sum);
         }
         return ans;
     }

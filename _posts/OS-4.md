@@ -7,6 +7,11 @@ categories:
 tags: [OS,文件系统]
 keywords: [OS,文件系统]
 ---
+
+
+linux文件系统总结
+<!---more--->
+
 ## 文件系统
 
 VFS，虚拟文件系统
