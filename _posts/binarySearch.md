@@ -74,17 +74,17 @@ https://leetcode-cn.com/problems/que-shi-de-shu-zi-lcof/
 class Solution {
 public:
     int missingNumber(vector<int>& nums) {
-        int left=0,right = nums.size()-1;
-        while(left <= right){
-            int mid = left + (right - left)/2;
-            if(nums[mid] > mid){
-                right = mid;
-            }else if(nums[mid] == mid){
-                left = mid+1;
+        int l=0,r=nums.size()-1;
+
+        while(l<=r){
+            int mid = l+(r-l)/2;
+            if(mid != nums[mid]){
+                r = mid - 1;
+            }else{
+                l = mid + 1;
             }
         }
-        return left == nums.size()?left+1:left;
-
+        return l;
     }
 };
 ```
@@ -489,7 +489,7 @@ public:
 };
 ```
 
-## ## 1498. 满足条件的子序列数目
+## 1498. 满足条件的子序列数目
 https://leetcode-cn.com/problems/number-of-subsequences-that-satisfy-the-given-sum-condition/
 
 先排序，然后二分查找当前元素可以加的最大值；在这个最大值元素前的所有元素都可以成为子序列。
@@ -519,6 +519,74 @@ public:
 
 
         
+    }
+};
+```
+
+## 154. 寻找旋转排序数组中的最小值 II
+https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array-ii/
+
+从左半边有序和右半边有序进行比较，每次取target为最左边的值作为最小值。
+
+可以用常用去重手段，也可以在nums[mid] == nums[r]的时候让r--去重，并且注意这时候也要更新target为最小值。
+
+```C++
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int l=0, r=nums.size()-1;
+        int target = INT_MAX;
+        while(l<=r){
+            //常用去重
+            // while(l<r && nums[l] == nums[l+1]){
+            //     l++;
+            // }
+            // while(l<r && nums[r] == nums[r-1]){
+            //     r--;
+            // }
+            int mid = l+(r-l)/2;
+            if(nums[mid] < nums[r]){
+                target = min(target,nums[mid]);
+                r = mid - 1;
+            }else if(nums[mid] > nums[r]){
+                target = min(target,nums[l]);
+                l = mid + 1;
+            }else{
+                target = min(target,nums[l]);
+                r--;
+            }
+        }
+
+        return target;
+    }
+};
+```
+
+## 274. H 指数
+
+https://leetcode-cn.com/problems/h-index/
+
+```C++
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        sort(citations.begin(),citations.end());
+
+        int n = citations.size();
+        int l=0,r=citations.size();
+
+        while(l<r){
+            int h = l+(r-l)/2;
+            //[h:] 都是引用次数大于citation[h]的文章，n-h篇
+            //我们要找的是至少多少文章citation >= n-h
+            if(citations[h] >= n-h){
+                r = h;
+            }else{
+                l = h + 1;
+            }
+        }
+
+        return n-l;
     }
 };
 ```

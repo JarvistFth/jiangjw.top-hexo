@@ -10,6 +10,43 @@ keywords: [排序]
 排序
 <!---more--->
 
+## 堆排
+
+```C++
+
+void Heapify(vector<int>& nums, int i, int size){
+    int largest = i;
+    int l = 2*i, r=2*i+1;
+    
+        if(l<size && nums[largest] < nums[l]){
+            largest = l;
+        }
+        if(r<size && nums[largest] < nums[r] ){
+            largest = r;
+        }
+        if(largest != i){
+            swap(nums[i],nums[largest]);
+            Heapify(nums, largest,size);
+        }
+}
+
+void buildMinHeap(vector<int>& nums){
+    for(int i=(nums.size()-1)/2; i>=0; i--){
+        Heapify(nums,i,nums.size());
+    }
+}
+
+void heapsort(vector<int>& nums){
+    buildMinHeap(nums);
+    int size = nums.size();
+    for(int i=nums.size()-1; i>=0; i--){
+        swap(nums[0],nums[i]);
+        size--;
+        Heapify(nums,0,size);
+    }
+}
+```
+
 ## 1365. 有多少小于当前数字的数字
 https://leetcode-cn.com/problems/how-many-numbers-are-smaller-than-the-current-number/
 

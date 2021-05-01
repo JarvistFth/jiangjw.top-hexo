@@ -112,7 +112,8 @@ while True:
     
     if exist(nodes[0].num < lock.num, watch = True):
         # zk has next lower file num in listing, wait
-        # when watch event comes, re-listing file in zk and check the lowest file num
+        # watch the nodes before my node, if it deletes, get notice
+        # when watch event comes, re-listing node in zk and check the lowest file num
         wait()
 
 ```

@@ -41,3 +41,9 @@ prevote也可以避免某一个节点在产生网络分区的情况下，不停�
 
 PreVote算法解决了网络分区节点在重新加入时，会中断集群的问题。在PreVote算法中，网络分区节点由于无法获得大部分节点的许可，因此无法增加其Term。然后当它重新加入集群时，它仍然无法递增其Term，因为其他服务器将一直收到来自Leader节点的定期心跳信息。一旦该服务器从领导者接收到心跳，它将返回到Follower状态，Term和Leader一致。
 
+## paxos和raft区别
+
+1. basic paxos， 多个proposer，3个阶段，prepare、promise、accept；可能会存在多个proposer轮流发送prepare造成死锁；
+2. multi-paxos，basic-paxos的优化，在有一个proposer连续发送accept后，其他节点会拒绝prepare请求；相当于选出了一个leader负责去发送accept；可以跳过prepare和promise阶段；
+3. raft的leader要求日志是连续的，paxos则没有要求，所有人都可以成为proposer；所以paxos在选出一个proposer以后，需要去做日志的同步；重新执行prepare阶段补全日志；
+4. Raft保证日志的连续性使得leader向follower同步日志时可以进行快速的比对；因为这条日志已经commit的话，前面的所有日志都是已经commit了的，是连续的。
