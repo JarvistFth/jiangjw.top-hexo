@@ -6,6 +6,8 @@ categories:
 - leetcode
 - 动态规划
 ---
+迷宫类的二维dp。
+<!---more--->
 
 ## 62. 不同路径
 https://leetcode-cn.com/problems/unique-paths/

@@ -6,7 +6,8 @@ categories:
 - leetcode
 - 动态规划
 ---
-
+记忆化搜索类型的动态规划。
+<!---more--->
 
 ## 494. 目标和
 https://leetcode-cn.com/problems/target-sum/
