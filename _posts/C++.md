@@ -7,6 +7,8 @@ tags: [C++]
 keywords: [C++]
 ---
 
+问到的一些八股，语言特性。
+<!---more--->
 
 ## lambda，std::function 等函数对象
 

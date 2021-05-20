@@ -7,6 +7,9 @@ tags: [数据库]
 keywords: [数据库]
 
 ---
+索引相关。
+<!---more--->
+
 ## 索引
 
 MyISAM和InnoDB均采用b+树的索引结构。

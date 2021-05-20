@@ -382,34 +382,7 @@ public:
 };
 ```
 
-## 516. 最长回文子序列
-https://leetcode-cn.com/problems/longest-palindromic-subsequence/
 
-dp[i][j]表示s[i...j]最长的回文子序列。也就是从末尾和开头遍历字符串做比较，如果相等，就选择i和n-j添加到回文子序列中，dp[i][j] = max(dp[i][j],dp[i-1][j-1])；
-
-如果不相等，就不取i或者不取j，所以dp[i][j] = max(dp[i-1][j],dp[i][j-1])
-
-```C++
-class Solution {
-public:
-    int longestPalindromeSubseq(string s) {
-        int n = s.size();
-        vector<vector<int>> dp(n+1,vector<int>(n+1));//dp[i][j]: s[i...j]'s max len of palindrome
-
-        for(int i=1; i<=n; i++){
-            for(int j=1; j<=n; j++){
-                if(s[i-1] == s[n-j]){
-                    dp[i][j] = max(dp[i][j],dp[i-1][j-1]+1);
-                }else{
-                    dp[i][j] = max(dp[i-1][j],dp[i][j-1]);
-                }
-            }
-        }
-
-        return dp[n][n];
-    }
-};
-```
 
 ## 413. 等差数列划分
 https://leetcode-cn.com/problems/arithmetic-slices/
@@ -446,5 +419,40 @@ public:
         }
         return ans;
     }
+};
+```
+
+## 740. 删除并获得点数
+https://leetcode-cn.com/problems/delete-and-earn/
+
+和打家劫舍类似。每次可以选nums[i]是否删除，如果选择了nums[i]，就获得它与nums[i]-1和nums[i]+1的次数乘积之和。
+
+为了方便计算，取dp[i]为删除点数i时的最大和。
+
+那么dp[i] = max(dp[i-2] + tmp[i]*i,dp[i-1])。删除了i，就不能获得i-1和i+1的分数。若不删除i，就是dp[i-1]。
+
+```C++
+class Solution {
+public:
+    int deleteAndEarn(vector<int>& nums) {
+        int n = *max_element(nums.begin(),nums.end());
+
+        vector<int> tmp(n+1);
+        for(auto& num:nums){
+            tmp[num]++;
+        }
+
+
+        vector<int> dp(n+1);// 删除nums[i-1]时最大和
+        dp[0] = 0;
+        dp[1] = tmp[1];
+
+        for(int i=2; i<=n; i++){
+            dp[i] = max(dp[i-2] + tmp[i]*i, dp[i-1]);
+        }
+
+        return dp[n];
+
+    }   
 };
 ```

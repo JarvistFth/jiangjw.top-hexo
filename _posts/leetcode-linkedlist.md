@@ -16,6 +16,310 @@ keywords: [leetcode,链表]
 4. 一些需要对当前节点进行调换位置的时候，可以以这个节点的前一个节点的next作为处理结果。（147题）
 
 <!---more--->
+## 2. 两数相加
+https://leetcode-cn.com/problems/add-two-numbers/
+
+这个没啥说的，就像大数加法一样，只不过都换成了链表。依次维护进位相加就行。
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        int carry = 0;
+        ListNode* head = new ListNode(-1);
+        ListNode* cur = head;
+        while(l1 || l2 || carry){
+            int sum = carry;
+            if(l1){
+                sum+=l1->val;
+                l1 = l1->next;
+            }
+            if(l2){
+                sum+=l2->val;
+                l2 = l2->next;
+            }
+            carry = sum/10;
+            sum = sum%10;
+            cur->next = new ListNode(sum);
+            cur = cur->next;
+        }
+        return head->next;
+    }
+};
+```
+
+## 206. 反转链表
+https://leetcode-cn.com/problems/reverse-linked-list/
+
+据说是频率最高的题；维护一个prev结点，每次将curr结点的next指针指向prev；
+
+更新prev和curr就好了。注意return是prev
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if(head == nullptr || head->next == nullptr){
+            return head;
+        }
+
+        ListNode* prev = nullptr;
+        ListNode* curr = head;
+
+        while(curr){
+            ListNode* next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        return prev;
+    }
+};
+```
+
+## 21. 合并两个有序链表
+https://leetcode-cn.com/problems/merge-two-sorted-lists/
+
+归并排序嘛，哪个小用哪个接在后面，更新接了的那个链表的当前结点。
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+        if(l1 == nullptr){
+            return l2;
+        }
+        if(l2 == nullptr){
+            return l1;
+        }
+
+        ListNode* dummy = new ListNode(-1);
+        ListNode* curr = dummy;
+
+        while(l1 && l2){
+            if(l1->val < l2->val){
+                curr->next = l1;
+                l1 = l1->next;
+            }else{
+                curr->next = l2;
+                l2 = l2->next;
+            }
+            curr = curr->next;
+        }
+
+        while(l1){
+            curr->next = l1;
+            l1 = l1->next;
+            curr = curr->next;
+        }
+
+        while(l2){
+            curr->next = l2;
+            l2 = l2->next;
+            curr = curr->next;
+        }
+
+        return dummy->next;
+    }
+};
+```
+
+## 92. 反转链表 II
+https://leetcode-cn.com/problems/reverse-linked-list-ii/
+
+确定链表反转的范围，将最左边的前一个定义为prev，最左边的那个作为curr；
+然后每次反转都是将curr->next翻转接到prev->next;
+从left到right共需要反转right-left次。
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseBetween(ListNode* head, int left, int right) {
+        if(head == nullptr || head->next == nullptr){
+            return head;
+        }
+
+        ListNode* dummy = new ListNode(-1);
+        dummy->next = head;
+        ListNode* prev = dummy;
+        ListNode* curr = head;
+
+        for(int i=1; i<left; i++){
+            prev = prev->next;
+        }
+        curr = prev->next;
+        for(int i=left; i<right; i++){
+            auto next = curr->next;
+            curr->next = next->next;
+            next->next = prev->next;
+            prev->next = next;
+        }
+        return dummy->next;
+    }
+};
+```
+
+## 25. K 个一组翻转链表
+https://leetcode-cn.com/problems/reverse-nodes-in-k-group/
+
+利用上一题的方法对每个k组里面进行反转（共k-1次）；反转后外层需要更新prev和curr（分成len/k组，每个组反转后更新，所以共len/k次）；
+因为反转后尾部是curr；所以外层prev = curr； curr = prev->next;
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if(head == nullptr || head->next == nullptr){
+            return head;
+        }
+
+        ListNode* curr = head;
+        int len = 0;
+        while(curr){
+            len++;
+            curr = curr->next;
+        }
+
+        ListNode* dummy = new ListNode(-1);
+        dummy->next = head;
+        ListNode* prev = dummy;
+        curr = head;
+
+        for(int i=0; i<len/k; i++){
+            for(int j=1; j<k; j++){
+                auto next = curr->next;
+                curr->next = next->next;
+                next->next = prev->next;
+                prev->next = next;
+            }
+            prev = curr;
+            curr = curr->next;
+        }
+
+        return dummy->next;
+    }
+};
+```
+
+## 143. 重排链表
+https://leetcode-cn.com/problems/reorder-list/
+
+快慢指针找中点，然后从中点开始reverse链表；最后按照顺序接入。
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        if(head == nullptr || head->next == nullptr){
+            return ;
+        }
+
+        ListNode* slow = head;
+        ListNode* fast = head;
+        while(fast->next && fast->next->next){
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        auto slowNext = slow->next;
+        slow->next = nullptr;
+        ListNode* reverseHead = reverseList(slowNext);
+
+        ListNode* l1 = head;
+        ListNode* l2 = reverseHead;
+
+        while(l1 && l2){
+            auto l1next = l1->next;
+            auto l2next = l2->next;
+
+            l1->next = l2;
+            l2->next = l1next;
+
+            l1 = l1next;
+            l2 = l2next; 
+        }
+
+    }
+
+    ListNode* reverseList(ListNode* head){
+        if(head == nullptr || head->next == nullptr){
+            return head;
+        }
+
+        ListNode* prev = nullptr;
+        ListNode* curr = head;
+
+        while(curr){
+            auto next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+};
+```
+
 ## 82. 删除排序链表中的重复元素 II
 https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/
 
@@ -66,120 +370,6 @@ public:
 };
 ```
 
-## 92. 反转链表 II
-https://leetcode-cn.com/problems/reverse-linked-list-ii/
-
-c++，经典快慢指针确定左右范围；然后递归反转链表。注意递归反转链表并不是要反转到末尾，而是n位置处。
-
-```C++
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode(int x) : val(x), next(NULL) {}
- * };
- */
-class Solution {
-public:
-    ListNode* reverseBetween(ListNode* head, int m, int n) {
-        if(head == NULL){
-            return NULL;
-        }
-        if(m == n){
-            return head;
-        }
-
-        ListNode* dummy = new ListNode(-1);
-        dummy->next = head;
-
-        ListNode* slow = dummy;
-        ListNode* fast = dummy;
-        ListNode* slowPrev = dummy;
-
-        //拿到m位置的前驱结点
-        for(int i=1;i<m;i++){
-            slowPrev = slowPrev->next;
-            fast = fast->next;
-        }
-        //拿到m位置的结点
-        slow = slowPrev->next;
-        
-        //拿到n位置的结点
-        for(int i=0;i<=n-m;i++){
-            fast = fast->next;
-        }
-        //拿到n位置后的结点（n+1位置），用于确定reverse的范围以及连接反转后的链表。
-        ListNode* end = fast->next;
-        //反转链表，拿到反转后的头节点，也就是n位置的结点；
-        ListNode* last = reverse(slow,end);
-
-        //前驱结点的后继是反转后的头结点
-        slowPrev->next = last;
-        //反转后的尾节点其实是m位置的结点，让他的后继指向n+1位置的结点就可以了。
-        slow->next = end;
-        
-        return dummy->next;
-
-
-    }
-
-    ListNode* reverse(ListNode* head, ListNode* end){
-        if(head->next == NULL || head == NULL || head->next == end){
-            return head;
-        }
-
-        ListNode* last = reverse(head->next,end);
-        head->next->next = head;
-        head->next = NULL;
-        return last;
-    }
-};
-```
-
-
-## 328. 奇偶链表
-https://leetcode-cn.com/problems/odd-even-linked-list/
-
-原地修改，注意o = o->next;
-            e->next = o->next;这一步。
-
-```C++
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
-class Solution {
-public:
-    ListNode* oddEvenList(ListNode* head) {
-        if(head == nullptr || head->next == nullptr){
-            return head;
-        }
-        
-        ListNode* o = head; // point 
-        ListNode* e = head->next; // point 
-
-        ListNode* even = head->next;
-
-        while(o->next && e->next){
-            o->next = e->next;
-            o = o->next;
-            e->next = o->next;
-            e = e->next;
-        }
-
-        o->next = even;
-        return head;
-
-    }
-};
-```
 
 ## 147. 对链表进行插入排序
 https://leetcode-cn.com/problems/insertion-sort-list/
@@ -226,6 +416,107 @@ public:
            
         }
         return dummy->next;
+    }
+};
+```
+
+## 61. 旋转链表
+https://leetcode-cn.com/problems/rotate-list/
+
+旋转链表其实就是将后面k个元素挪到前面；先用长度对k取余数，看要移动哪几个元素；
+然后通过快慢指针定位到后k个元素，将后k个元素移动到前面，原头部接到后面。
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if(head == NULL){
+            return NULL;
+        }
+
+        if(k == 0){
+            return head;
+        }
+
+        int len = 0;
+        ListNode* cur = head;
+        while(cur){
+            cur = cur->next;
+            len++;
+        }
+        
+        k = k%len;
+        //k == 0 不需要移动
+        if(k == 0){
+            return head;
+        }
+        
+        ListNode* slow = head;
+        ListNode* fast = head;
+        while(k-- && fast){
+            fast = fast->next;
+        }
+
+        while(fast && fast->next){
+            fast = fast->next;
+            slow = slow->next;
+        }
+
+        auto next = slow->next;
+        slow->next = NULL;
+        fast->next = head;
+        return next;
+    }
+};
+```
+
+## 86. 分隔链表
+https://leetcode-cn.com/problems/partition-list/
+
+将大于x和小于等于x的分成两个链表，分别将原节点接到他们对应的链表上。然后再将这两个链表合并。
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        ListNode* bigHead = new ListNode(-1);
+        ListNode* smallHead = new ListNode(-1);
+
+        ListNode* curr = head;
+        ListNode* currBig = bigHead;
+        ListNode* currSmall = smallHead;
+        while(curr){
+            if(curr->val < x){
+                currSmall->next = curr;
+                currSmall = currSmall->next;
+            }else{
+                currBig->next = curr;
+                currBig = currBig->next;
+            }
+            curr = curr->next;
+        }
+        currSmall->next = bigHead->next;
+        currBig->next = nullptr;
+        return smallHead->next;
+
     }
 };
 ```
