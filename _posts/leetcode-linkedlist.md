@@ -520,3 +520,45 @@ public:
     }
 };
 ```
+
+## 147. 对链表进行插入排序
+https://leetcode-cn.com/problems/insertion-sort-list/
+
+用一个结点记住排好序的最后一个节点，然后每次比较的时候都从这个节点开始比较，如果当前节点是小于排好序的节点的，就要将它插入到前面。
+
+每次插入排序，都从头开始找到比当前大的第一个节点，然后将它插入到它的前面。
+
+插入完成后，因为当前节点已经挪走了，所以要再更新lastSorted的next为current->next；
+
+最后挪动一下curr节点到lastSorted的next。
+
+```C++
+class Solution {
+public:
+    ListNode* insertionSortList(ListNode* head) {
+        if (head == nullptr) {
+            return head;
+        }
+        ListNode* dummyHead = new ListNode(0);
+        dummyHead->next = head;
+        ListNode* lastSorted = head;
+        ListNode* curr = head->next;
+        while (curr != nullptr) {
+            if (lastSorted->val <= curr->val) {
+                lastSorted = lastSorted->next;
+            } else { 
+                ListNode *prev = dummyHead;
+                while (prev->next->val <= curr->val) {
+                    prev = prev->next;
+                }
+                lastSorted->next = curr->next;
+                curr->next = prev->next;
+                prev->next = curr;
+            }
+            curr = lastSorted->next;
+        }
+        return dummyHead->next;
+    }
+};
+
+```

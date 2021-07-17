@@ -1,5 +1,5 @@
 ---
-title: leetcode-tree-BSTtree
+title: 【树】 - 二叉搜索树
 date: 2020-06-25 17:22:20
 categories: 
 - leetcode
@@ -7,107 +7,564 @@ categories:
 tags: [leetcode,树]
 ---
 
-二叉搜索树
+二叉搜索树，看到二叉搜索树首先就要想到中序遍历。一般都是采用中序遍历来做的。
 <!---more--->
 
+## 98. 验证二叉搜索树
+https://leetcode-cn.com/problems/validate-binary-search-tree/
 
-### 面试题 04.06. 后继者
-https://leetcode-cn.com/problems/successor-lcci/
-
-二叉搜索树基本都是利用中序遍历得到排序访问。
-```C++
-class Solution {
-public:
-    TreeNode* inorderSuccessor(TreeNode* root, TreeNode* p) {
-        if(root != NULL){
-            //左子树中找下一个节点，返回的是找到的节点；找到就返回，找不到证明该节点在root或者有节点；
-            auto res = inorderSuccessor(root->left,p);
-            if(res != NULL){
-                return res;
-            }
-            //右子树的值都比root大，我们要找的是第一个比p大的，如果root大于p，直接返回root
-            if(root->val > p->val){
-                return root;
-            }
-            //一直往右子树查找，找比root大的
-            return inorderSuccessor(root->right,p);
-        }
-        return NULL;
-
-    }
-
-};
-```
-### 面试题 04.05. 合法二叉搜索树
 https://leetcode-cn.com/problems/legal-binary-search-tree-lcci/
 
-中序遍历需要记录前一个节点的值做比较的时候，需要一个全局变量来记录前一个节点的值
+维护一个prev节点作为遍历的前一个节点，这样我们在中序遍历的时候，在处理当前节点时，就可以和前一个节点的值做比较。
 
+只要当前节点的值小于前一个节点的值，这个就不是二叉搜索树。
 
 ```C++
-
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
 class Solution {
 public:
+    //维护一个prev节点作为遍历的前一个节点
     TreeNode* pre = NULL;
     bool isValidBST(TreeNode* root) {
-        if(root != NULL){
+        if(root == NULL){
+            return true;
+        }
+        else{
             if(!isValidBST(root->left)){
                 return false;
-            };
-            if(pre!=NULL && pre->val >= root->val){
+            }
+            //prev是空的话证明是第一个节点
+            if(pre != NULL && pre->val>=root->val){
                 return false;
             }
+            //更新prev
             pre = root;
             if(!isValidBST(root->right)){
                 return false;
             }
             return true;
         }
-        return true;
+        
     }
 };
 ```
 
-### 98. 验证二叉搜索树
-https://leetcode-cn.com/problems/validate-binary-search-tree/
-和上题一样。
+## 96. 不同的二叉搜索树
+https://leetcode-cn.com/problems/unique-binary-search-trees/
 
-### 530. 二叉搜索树的最小绝对差
-https://leetcode-cn.com/problems/minimum-absolute-difference-in-bst/
+这道其实是dp题。。。左子树的节点数可以是0~n-1个，对应的右子树的节点是n-1~0个。
+所以总和s = f(0)*f(n-1) + f(1)*f(n-2) + ... + f(n-2)*f(0)；
 
-BST，照旧中序遍历；因为是二叉搜索树，所以最小绝对差肯定是在root和其子树之间产生，越往下绝对差越大。所以和上面的类似，用一个节点记录上一次遍历的节点的值，然后和当前遍历的节点的值作差，再设定一个全局最小值用于比较取最小值。
+换成递推式就是dp[i] = dp[j-1]*dp[i-j] (1<=i<=n, 1<=j<=i) 。
+注意basecase dp[0] = 1。
 
 ```C++
-
 class Solution {
 public:
-    int ans = INT_MAX;
-    TreeNode* preNode = NULL;
-    int getMinimumDifference(TreeNode* root) {
-        dfs(root);
-        return ans;
+    int numTrees(int n) {
+        vector<int> dp(n+1);
+        dp[0] = 1;
+
+        for(int i=1; i<=n; i++){
+            for(int j=1; j<=i; j++){
+                dp[i] += dp[j-1] * dp[i-j];
+            }
+        }
+        return dp[n];
+        
+    }
+};
+```
+
+## 剑指 Offer 36. 二叉搜索树与双向链表
+https://leetcode-cn.com/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof/
+
+维护一个头节点和一个尾节点，然后中序遍历，尾插法把当前节点串成双向链表。
+
+```C++
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+
+    Node() {}
+
+    Node(int _val) {
+        val = _val;
+        left = NULL;
+        right = NULL;
     }
 
-    void dfs(TreeNode *root){
+    Node(int _val, Node* _left, Node* _right) {
+        val = _val;
+        left = _left;
+        right = _right;
+    }
+};
+*/
+class Solution {
+public:
+    Node* head;
+    Node* tail;
+    Node* treeToDoublyList(Node* root) {
+        if(root == NULL){
+            return NULL;
+        }
+        dfs(root);
+        head->left = tail;
+        tail->right = head;
+        return head;
+
+
+    }
+
+    void dfs(Node* root){
         if(root == NULL){
             return ;
         }
+
         dfs(root->left);
-        if(preNode != NULL){
-            ans = min(ans,root->val - preNode->val);
+        if(head == NULL){
+            head = new Node(root->val);
+            tail = head;
+        }else{
+            tail->right = root;
+            auto prev = tail;
+            tail = tail->right;
+            tail->left = prev;
         }
-        preNode = root;
         dfs(root->right);
     }
 };
 ```
-### 538. 把二叉搜索树转换为累加树
-https://leetcode-cn.com/problems/convert-bst-to-greater-tree/
 
-这个和普通的中序遍历不太一样，因为他是把所有大于它的节点的值加到当前节点上，所以要先遍历右子树，得到最大的值，然后再遍历根节点和左子树，这样可以依次得到从大到小的序列，就比较好累加。
+## 109. 有序链表转换二叉搜索树
+https://leetcode-cn.com/problems/convert-sorted-list-to-binary-search-tree/
+
+有序链表通过快慢指针找到中点，然后按照中点分左右子树，然后按照左右子树进行buildTree操作。
+
+需要注意的是，在链表操作，要把左子树的next置为nullptr。
 
 ```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* sortedListToBST(ListNode* head) {
+        if(head == nullptr){
+            return nullptr;
+        }
 
+        ListNode* slow = head;
+        ListNode* fast = head;
+        ListNode* prev = nullptr;
+        while(fast && fast->next){
+            fast = fast->next->next;
+            prev = slow;
+            slow = slow->next;
+        }
+
+        TreeNode* root = new TreeNode(slow->val);
+        if(prev){
+            prev->next = nullptr;
+            root->left = sortedListToBST(head);
+            root->right = sortedListToBST(slow->next);
+        }
+        return root;
+    }
+};
+```
+
+## 99. 恢复二叉搜索树
+https://leetcode-cn.com/problems/recover-binary-search-tree/
+
+中序遍历，维护一个prev节点，看当前节点和prev节点的大小关系；
+
+如果违反了二叉搜索树的限制，就证明这两个节点是错误的节点。用两个全局变量记住他们。
+然后交换他们的值就可以了。
+
+
+```C++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* preNode = nullptr;
+    TreeNode* s;
+    TreeNode *t;
+    void recoverTree(TreeNode* root) {
+        if(root == nullptr){
+            return ;
+        }
+        traverse(root);
+        int temp = s->val;
+        s->val = t->val;
+        t->val = temp;
+
+    }
+
+    void traverse(TreeNode* root){
+        if(root == nullptr){
+            return ;
+        }
+        traverse(root->left);
+        if(preNode != nullptr && root->val < preNode->val){
+            
+            if(s == nullptr){
+                s = preNode;
+            }
+            t = root;
+        }
+        preNode = root;
+        traverse(root->right);
+    }
+};
+```
+
+## 173. 二叉搜索树迭代器
+https://leetcode-cn.com/problems/binary-search-tree-iterator/
+
+先将左子树全部入栈；然后每次next的时候，从栈顶取一个出来作为next的值；然后再看它是否有右子树，
+如果有，把它的右子树也入栈，再将当前节点改为右子树的左子树。
+
+没有下一个节点的时候就是栈为空的时候。
+
+```C++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class BSTIterator {
+public:
+    stack<TreeNode*> subTree;
+    BSTIterator(TreeNode* root) {
+        while(root != NULL){
+            subTree.push(root);
+            root = root->left;
+        }
+    }
+    
+    /** @return the next smallest number */
+    int next() {
+        TreeNode* t = subTree.top();
+        subTree.pop();
+        int val = t->val;
+        t = t->right;
+        while(t){
+            subTree.push(t);
+            t = t->left;
+        }
+        return val;
+    }
+    
+    /** @return whether we have a next smallest number */
+    bool hasNext() {
+        return !subTree.empty();
+    }
+};
+
+/**
+ * Your BSTIterator object will be instantiated and called as such:
+ * BSTIterator* obj = new BSTIterator(root);
+ * int param_1 = obj->next();
+ * bool param_2 = obj->hasNext();
+ */
+ ```
+
+ ## 剑指 Offer 54. 二叉搜索树的第k大节点
+ https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-di-kda-jie-dian-lcof/
+
+维护一个全局变量表示是第几个节点，然后按中序遍历遍历就好。遍历到第k大就可以了。
+
+ ```C++
+ /**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int ans = 0;
+    int t;
+    int kthLargest(TreeNode* root, int k){
+        t = k;
+        dfs(root);
+        return ans;
+    }
+
+    void dfs(TreeNode* root){
+        if(root == NULL){
+            return ;
+        }
+        
+        dfs(root->right);
+        t--;
+        if(t == 0){
+            ans = root->val;
+            return ;
+        }
+        dfs(root->left);
+
+    }
+};
+```
+
+## 501. 二叉搜索树中的众数
+https://leetcode-cn.com/problems/find-mode-in-binary-search-tree/
+
+中序遍历，如果前一个节点和当前节点一样，那么当前节点的次数加1。
+
+如果当前节点的次数比最大出现次数要大，更新众数和最大次数；同时删除返回的众数；
+如果次数相等，则将当前节点也作为众数返回。
+
+```C++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> ans;
+    int previousVal = 0;
+    int currentFreq = 0;
+    int maxFreq = 0;
+    vector<int> findMode(TreeNode* root) {
+        dfs(root);
+        return ans;
+    }
+
+    void dfs(TreeNode* root){
+        if(root == nullptr){
+            return ;
+        }
+
+        dfs(root->left);
+        if(root->val == previousVal){
+            currentFreq++;
+        }else{
+            currentFreq = 1;
+            previousVal = root->val;
+        }
+
+        if(currentFreq >= maxFreq){
+            if(currentFreq > maxFreq){
+                ans.clear();
+            }
+            ans.push_back(root->val);
+            maxFreq = currentFreq;
+        }
+
+        dfs(root->right);
+    }
+
+
+};
+```
+
+## 938. 二叉搜索树的范围和
+https://leetcode-cn.com/problems/range-sum-of-bst/
+
+中序遍历，如果当前值比low要小，就往右子树去递归寻找；否则往左子树递归寻找。
+如果是在区间内，就往上返回节点的值和左右子树的范围和。
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+
+    int ans = 0;
+    int rangeSumBST(TreeNode* root, int low, int high) {
+        if(root == nullptr){
+            return 0;
+        }
+
+        if(root->val < low){
+            return rangeSumBST(root->right,low,high);
+        }
+        if(root->val > high){
+            return rangeSumBST(root->left,low,high);
+        }
+        return root->val + rangeSumBST(root->left,low,high) + rangeSumBST(root->right,low,high);
+    }
+};
+```
+
+## 450. 删除二叉搜索树中的节点
+https://leetcode-cn.com/problems/delete-node-in-a-bst/
+
+比较大小，从左右子树找到要删除的那个节点。
+
+删除完以后，要将该节点找到最接近它但是比他小的节点。将原来的右子树接到这个节点上。
+
+所以从左子树的右子树开始找，尽可能往右子树开始找。找到以后将原来的右子树接到现在的右子树上返回。
+
+如果没有左子树，直接取右子树就可以。
+
+```C++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* deleteNode(TreeNode* root, int key) {
+        if(root == NULL){
+            return NULL;
+        }
+        if(root->val > key){
+            root->left = deleteNode(root->left,key);
+        }
+        else if(root->val < key){
+            root->right = deleteNode(root->right,key);
+        }
+        else{
+            if(root->left){
+                TreeNode* node = root->left;
+                while(node->right){
+                    node = node->right;
+                }
+                node->right = root->right;
+                return root->left;
+            }
+            return root->right;
+        }
+        return root;
+    }
+};
+```
+
+## 783. 二叉搜索树节点最小距离
+https://leetcode-cn.com/problems/minimum-distance-between-bst-nodes/
+
+二叉搜索树的最小距离肯定是中序遍历的两个节点之间产生，所以用一个prev保存前一个节点，每次遍历的时候将当前节点和prev节点的值比较一下就好。
+
+```C++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int ans = INT_MAX;
+    TreeNode* prev = nullptr;
+    int minDiffInBST(TreeNode* root) {
+        if(root == nullptr){
+            return 0;
+        }
+        dfs(root);
+        return ans;
+    }
+
+
+    void dfs(TreeNode* root){
+        if(root == nullptr){
+            return ;
+        }
+
+        dfs(root->left);
+        if(prev){
+            ans = min(ans,root->val - prev->val);
+        }
+        prev = root;
+        dfs(root->right);
+    }
+};
+```
+
+## 538. 把二叉搜索树转换为累加树
+https://leetcode-cn.com/problems/convert-bst-to-greater-tree/
+
+累加树要从右边开始累加，所以中序遍历时要从右边开始。保存一个全局变量作为当前总和，每次都将总和和当前节点数值作为新的节点数值。
+
+```C++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
 class Solution {
 public:
     int sum = 0;
@@ -123,95 +580,124 @@ public:
             //遍历左子树
             auto left = convertBST(root->left);
             return root;
+
+            
         }
         return NULL;
     }
+
+    
 };
 ```
 
-### 173. 二叉搜索树迭代器
-https://leetcode-cn.com/problems/binary-search-tree-iterator/
+## 230. 二叉搜索树中第K小的元素
+https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/
 
-
-题目要求空间复杂度为O(h)，所以用数组保存所有中序遍历的节点然后依次返回的方法不合题意！
-
-所以想办法，用数组或者栈保存左子树的节点。因为最小的值，就是一直递归左子树到叶子节点，正好是O(h)的空间。next()时，返回数组的最后一位，将当前节点指针指向右子树（因为可能还存在右子树，这个节点比上一个入栈的左子树要小）；然后重复遍历右子树的左子树。
-```C++
-class BSTIterator {
-public:
-    vector<TreeNode*> subTree;
-    BSTIterator(TreeNode* root) {
-        while(root != NULL){
-            subTree.push_back(root);
-            root = root->left;
-        }
-    }
-    
-    /** @return the next smallest number */
-    int next() {
-        TreeNode* t = subTree.back();
-        subTree.pop_back();
-        int val = t->val;
-        t = t->right;
-        while(t){
-            subTree.push_back(t);
-            t = t->left;
-        }
-        return val;
-    }
-    
-    /** @return whether we have a next smallest number */
-    bool hasNext() {
-        return !subTree.empty();
-    }
-};
-```
-
-### 938. 二叉搜索树的范围和
-https://leetcode-cn.com/problems/range-sum-of-bst/
+中序遍历，每遍历一个让k-1，当k为0的时候就是第k大的元素；
 
 ```C++
-
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
 class Solution {
 public:
-    int rangeSumBST(TreeNode* root, int L, int R) {
-        if(root == NULL){
+    int ans = 0;
+    int kthSmallest(TreeNode* root, int k) {
+        if(root == nullptr){
             return 0;
         }
+        dfs(root,k);
+        return ans;
+    }
 
-        //如果根节点的值大于要搜的R，说明要往小的方向搜，所以往左边搜
-        if(root->val > R){
-            return rangeSumBST(root->left,L,R);
+    void dfs(TreeNode* root, int& k){
+        if(root == nullptr || k < 0){
+            return ;
         }
-        //同理，如果已经小于L，说明往大了搜
-        else if(root->val < L){
-            return rangeSumBST(root->right,L,R);
+        dfs(root->left,k);
+        if(--k == 0){
+            ans = root->val;
         }
-        //如果不大不小，说明在范围内，返回root+左边返回的节点和+右边的节点和
-        return root->val + rangeSumBST(root->left,L,R) + rangeSumBST(root->right,L,R);
-
+        dfs(root->right,k);
     }
 };
 ```
 
-### 701. 二叉搜索树中的插入操作
+## 700. 二叉搜索树中的搜索
+https://leetcode-cn.com/problems/search-in-a-binary-search-tree/
+
+大的往右找，小的往左找。
+
+```C++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* searchBST(TreeNode* root, int val) {
+        if(root == nullptr){
+            return nullptr;
+        }
+        
+        if(root->val < val){
+            return searchBST(root->right,val);
+        }else if(root->val > val){
+            return searchBST(root->left,val);
+        }
+        return root;
+    }
+};
+```
+
+## 701. 二叉搜索树中的插入操作
 https://leetcode-cn.com/problems/insert-into-a-binary-search-tree/
 
-判断节点大小，然后递归调用，返回root节点，将新建的节点作为root的左右节点。
+大的往右边插，小的往左边插。
+
+如果插入的地方是空，证明该从这里插进去了，所以新建node节点。
+
+我们返回上一层的是新建的这个节点，所以我们要让它成为root的左子树或者右子树。
+
 ```C++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
 class Solution {
 public:
     TreeNode* insertIntoBST(TreeNode* root, int val) {
         if(root == nullptr){
-            TreeNode* node = new TreeNode(val);
+            auto node = new TreeNode(val);
             return node;
         }
 
-
-        if(val>root->val){
+        if(val > root->val){
             root->right = insertIntoBST(root->right,val);
         }
-        if(val<root->val){
+        if(val < root->val){
             root->left = insertIntoBST(root->left,val);
         }
         return root;
@@ -219,255 +705,46 @@ public:
 };
 ```
 
-
-### 1305. 两棵二叉搜索树中的所有元素
-https://leetcode-cn.com/problems/all-elements-in-two-binary-search-trees/
-
-中序遍历出来两个有序数组，归并排序一下。
-
-```C++
-
-class Solution {
-public:
-    vector<int> ans;
-    vector<int> getAllElements(TreeNode* root1, TreeNode* root2) {
-        vector<int> v1,v2;
-        dfs(root1,v1);
-        dfs(root2,v2);
-        //stl-- std::merge
-        // merge(v1.begin(),v1.end(),v2.begin(),v2.end(),back_inserter(ans));
-        //手写归并
-        int i=0, j=0;
-        while(i<v1.size()&&j<v2.size()){
-            if(v1[i]<=v2[j]){
-                ans.push_back(v1[i]);
-                i++;
-            }else{
-                ans.push_back(v2[j]);
-                j++;
-            }
-        }
-        while(i<v1.size()){
-            ans.push_back(v1[i]);
-            i++;
-        }
-        while(j<v2.size()){
-            ans.push_back(v2[j]);
-            j++;
-        }
-        return ans;
-    }
-
-
-    void dfs(TreeNode* root,vector<int> &ret){
-        if(root == NULL){
-            return;
-        }
-        dfs(root->left,ret);
-        ret.push_back(root->val);
-        dfs(root->right,ret);
-    }
-};
-```
-
-### 230. 二叉搜索树中第K小的元素
-https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/
-
-第一版代码就是简单的中序遍历出有序数组，然后返回k-1下标；
-
-看了下大神们的代码，改成了中序遍历然后剪枝。
-
-```C++
-
-class Solution {
-public:
-    int n = 0;
-    int ans = 0;
-    int kthSmallest(TreeNode* root, int k) {
-        if(root == nullptr){
-            return 0;
-        }
-        search(root,k);
-        return ans;
-    }
-
-    // void dfs(TreeNode* root,vector<int>& vec){
-    //     if(root == nullptr){
-    //         return ;
-    //     }
-
-    //     dfs(root->left,vec);
-    //     vec.push_back(root->val);
-    //     dfs(root->right,vec);
-    // }
-
-    void search(TreeNode* root, int k){
-        if(root == nullptr || n > k){
-            return ;
-        }
-        search(root->left,k);
-        n++;
-        if(n == k){
-            ans = root->val;
-        }
-        search(root->right,k);
-    }
-};
-
-```
-
-### 669. 修剪二叉搜索树
+## 669. 修剪二叉搜索树
 https://leetcode-cn.com/problems/trim-a-binary-search-tree/
 
-判断root是否在LR范围内，如果是，就对左右子树递归调用，返回root节点；否则的话，root不在LR范围里，但是它的左子树/右子树还是可能在LR范围里，所以要递归遍历对应的左右子树。返回的是root节点，所以要将返回的root节点赋值给当前root的左右子树。
+修剪二叉搜索树，如果比low要小，就往右子树修剪；比high大，就往左子树修剪；
+
+如果刚好在这个范围里面，那就对左右子树进行递归调用修剪。
+
+递归函数作用就是修剪这个子树，返回修剪后的root；
+
+所以你的左右子树已经被递归函数的返回值赋值。
 
 ```C++
-
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
 class Solution {
 public:
-    TreeNode* trimBST(TreeNode* root, int L, int R) {
-        if(root == NULL){
-            return NULL;
+    TreeNode* trimBST(TreeNode* root, int low, int high) {
+        if(root == nullptr){
+            return nullptr;
         }
 
-        if(root->val < L ){
-            return trimBST(root->right,L,R);
+        if(root->val < low){
+            return trimBST(root->right,low,high);
         }
-        if(root->val>R){
-            return trimBST(root->left,L,R);
+        if(root->val > high){
+            return trimBST(root->left,low,high);
         }
 
-        root->left = trimBST(root->left,L,R);
-        root->right =trimBST(root->right,L,R);
-
+        root->left = trimBST(root->left,low,high);
+        root->right = trimBST(root->right,low,high);
         return root;
-    }
-};
-```
-
-### 653. 两数之和 IV - 输入 BST
-https://leetcode-cn.com/problems/two-sum-iv-input-is-a-bst/
-
-两数之和变形题目，原来的想法是对tree做dfs，用map保存rootval，然后遍历map查找合适的节点。。这里要遍历2*N次。
-
-后来看了别人的答案，遍历1*N就可以了，和两数之和1类似。拿到一个数值，就把它放到map里面，然后再查看k-root->val在map里面有没有保存，如果有返回true，否则返回false。
-
-```C++
-
-class Solution {
-public:
-    unordered_map<int,int> heap;//<remain-val>
-    bool findTarget(TreeNode* root, int k) {
-        if(root == NULL){
-            return false;
-        }
-
-        if(heap.count(k-root->val)){
-            return true;
-        }
-
-        heap[root->val]++;
-        return findTarget(root->left,k) || findTarget(root->right,k);
-    }
-
-    
-};
-```
-
-### 面试题 17.12. BiNode
-https://leetcode-cn.com/problems/binode-lcci/
-和链表插入差不多。一个current指针指向当前节点，中序遍历。
-
-```C++
-
-
-class Solution {
-public:
-    TreeNode* cur;
-    TreeNode* convertBiNode(TreeNode* root) {
-        TreeNode* head = new TreeNode(-1);
-        cur = head;
-        dfs(root);
-        return head->right;
-    }
-
-    void dfs(TreeNode* root){
-        if(root == NULL){
-            return;
-        }
-        dfs(root->left);
-        cur->right = root;
-        root->left = NULL;      
-        cur = root;
-        
-        dfs(root->right);
-    }
-};
-```
-
-### 501. 二叉搜索树中的众数
-https://leetcode-cn.com/problems/find-mode-in-binary-search-tree/
-
-中序遍历。
-
-用一个变量保存上一次遍历的变量；如果两次结果相等，次数+1,；否则次数归1，将这个变量改为当前root的值。
-
-如果当前次数大于最大次数，清空ans。否则将当前的root的值加入到ans中，更新出现的最大次数。
-
-
-```C++
-
-class Solution {
-public:
-    vector<int> findMode(TreeNode* root) {
-        vector<int> ans;
-        int preval = -1, currentFreq = 0, maxFreq = 0;
-        dfs(root,preval,currentFreq,maxFreq,ans);
-        return ans;
-    }
-
-    void dfs(TreeNode* root, int& preval, int& currentFreq, int& maxFreq, vector<int>& ans){
-        if(root == NULL){
-            return;
-        }
-
-        dfs(root->left,preval,currentFreq,maxFreq,ans);
-        if(preval == root->val){
-            currentFreq++;
-        }else{
-            currentFreq = 1;
-            preval = root->val; 
-        }
-        if(currentFreq >= maxFreq){
-            if(currentFreq > maxFreq){
-                ans.clear();
-            }
-            ans.push_back(root->val);
-            maxFreq = currentFreq;
-        }
-        dfs(root->right,preval,currentFreq,maxFreq,ans);
-    }
-};
-```
-
-
-### 验证二叉搜索树
-<a>https://leetcode-cn.com/problems/validate-binary-search-tree/</a>
-
-看到二叉搜索树首先想到中序遍历
-先遍历左子树，然后记录左子树的值；
-访问根节点，将根节点的值和记录左子树的值作比较，符合返回true，否则返回false；
-用根节点的值更新记录值，遍历右子树，用于与右子树的值进行比较。
-
-```C++
-class Solution {
-public:
-    long pre = LONG_MIN;
-    bool isValidBST(TreeNode* root) {
-        if(root == NULL){
-            return true;
-        }
-        return isValidBST(root->left) && pre < (pre = root->val) && isValidBST(root->right);
     }
 };
 ```
