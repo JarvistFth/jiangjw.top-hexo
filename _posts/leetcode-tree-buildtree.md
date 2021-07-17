@@ -10,7 +10,7 @@ tags: [leetcode,树]
 构造二叉树系列。
 <!---more--->
 
-### 105. 从前序与中序遍历序列构造二叉树
+## 105. 从前序与中序遍历序列构造二叉树
 https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
 
 构造类题目标准模板，buildTree函数，参数是左边界和有边界。
@@ -49,7 +49,7 @@ public:
 
 ```
 
-### 106. 从中序与后序遍历序列构造二叉树
+## 106. 从中序与后序遍历序列构造二叉树
 https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
 
 类似上题
@@ -84,7 +84,7 @@ public:
 };
 ```
 
-### 889. 根据前序和后序遍历构造二叉树
+## 889. 根据前序和后序遍历构造二叉树
 https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/
 
 思想上和上述类似，需要注意的是这里没有中序遍历，所以左子树的root节点需要通过前序遍历的preleft+1获得，所以要注意判断preleft+1<=preright才可以。
@@ -127,7 +127,7 @@ public:
 };
 ```
 
-### 1008. 先序遍历构造二叉树
+## 1008. 先序遍历构造二叉树
 https://leetcode-cn.com/problems/construct-binary-search-tree-from-preorder-traversal/
 
 想法和上面类似，但是因为构造的是二叉搜索树，所以不需要两个遍历数组。
@@ -159,7 +159,7 @@ public:
 };
 ```
 
-### 449. 序列化和反序列化二叉搜索树
+## 449. 序列化和反序列化二叉搜索树
 https://leetcode-cn.com/problems/serialize-and-deserialize-bst/
 
 理解题意的意思，将二叉树进行遍历，获取出对应的string；对字符串编码，存成二叉搜索树。以前序遍历为例。获取到首节点以后，区分出左子树和右子树，分别递归生成树。
@@ -228,7 +228,7 @@ public:
 };
 ```
 
-### 95. 不同的二叉搜索树 II
+## 95. 不同的二叉搜索树 II
 https://leetcode-cn.com/problems/unique-binary-search-trees-ii/
 
 从1到n，生成所有可能的二叉树。<br>
@@ -269,7 +269,7 @@ public:
 };
 ```
 
-### 654. 最大二叉树
+## 654. 最大二叉树
 https://leetcode-cn.com/problems/maximum-binary-tree/
 
 构造二叉树的都有点像，就是分左右两个边界，然后递归调用构造。<br>
@@ -296,7 +296,7 @@ public:
     
 };
 ```
-### 998. 最大二叉树 II
+## 998. 最大二叉树 II
 https://leetcode-cn.com/problems/maximum-binary-tree-ii/
 其实这道题感觉和构造二叉树没啥联系，，但是和上面这道最大二叉树有点关系，所以放这里好了。
 
@@ -326,7 +326,7 @@ public:
 };
 ```
 
-### 894. 所有可能的满二叉树
+## 894. 所有可能的满二叉树
 https://leetcode-cn.com/problems/all-possible-full-binary-trees/
 
 N只有为奇数才可能是满二叉树；将N生成的节点分成两部分，一部分作为左子树一部分作为右子树。

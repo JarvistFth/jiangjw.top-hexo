@@ -7,8 +7,10 @@ categories:
 tags: [leetcode ,树]
 keywords: [leetcode,树]
 
-
 ---
+
+树的层序遍历相关相关题目。
+<!---more--->
 
 ## 199. 二叉树的右视图 
 https://leetcode-cn.com/problems/binary-tree-right-side-view/
