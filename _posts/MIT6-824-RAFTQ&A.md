@@ -47,3 +47,19 @@ PreVote算法解决了网络分区节点在重新加入时，会中断集群的�
 2. multi-paxos，basic-paxos的优化，在有一个proposer连续发送accept后，其他节点会拒绝prepare请求；相当于选出了一个leader负责去发送accept；可以跳过prepare和promise阶段；
 3. raft的leader要求日志是连续的，paxos则没有要求，所有人都可以成为proposer；所以paxos在选出一个proposer以后，需要去做日志的同步；重新执行prepare阶段补全日志；
 4. Raft保证日志的连续性使得leader向follower同步日志时可以进行快速的比对；因为这条日志已经commit的话，前面的所有日志都是已经commit了的，是连续的。
+
+
+## readIndex机制
+缓解read操作也要走leader的appendEntry的情况；
+
+1. client往leader发送读请求的时候，检查一下自己是不是还是真的leader；
+2. 然后记录当前commitIndex，收到大多数成功回复后，等applyIndex > commitIndex；
+3. 返回结果。
+
+follower的readIndex：向leader要readIndex的值，leader接到请求后，向其他节点发送no-op entry，检查自己的地位是否合法以及获取commitIndex；然后将commitIndex作为readIndex回复；follower在log到了readIndex后，回复客户端。
+
+## raft的leader失效判断和lease机制
+
+leader每次发送心跳的时候，都会记录一个时间点lease-start；只要大部分follower节点收到这次心跳，那么可以认为这次leader有效期为lease-start+election_timeout。（在这期间，其他follower保证不会参与leader选举，防止脑裂双主）。
+
+问题：缺乏全局时钟，不同node之间的时钟可能有误差；如果误差过大，就会造成lease期限不一致，就可能出问题。
