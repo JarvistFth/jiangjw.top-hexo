@@ -5,6 +5,8 @@ categories:
 - 数据库
 tags: [并发控制,数据库]
 ---
+dbms并发控制常见手段。
+<!---more--->
 
 ## dbms concurrency control theory
 

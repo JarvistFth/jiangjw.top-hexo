@@ -6,6 +6,9 @@ categories:
 tags: [buffer-pool,数据库]
 ---
 
+dbms底层存储结构
+<!---more--->
+
 ## buffer-pool
 
 ### 为什么需要自定义bufferpool，不适用OS的内存管理机制？
