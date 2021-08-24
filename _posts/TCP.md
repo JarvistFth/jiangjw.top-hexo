@@ -1,11 +1,10 @@
 ---
-title: 计算机网络 - TCP
+title: network - TCP
 date: 2021-03-02 13:44:28
 categories: 
-- 计网
-- TCP
-tags: [计网,TCP]
-keywords: [计网,TCP]
+- network
+tags: [network,TCP]
+keywords: [network,TCP]
 ---
 
 TCP八股文
@@ -56,9 +55,9 @@ checkSum校验和。
 
 ## TCP建立的阶段
 
-1. client SYN -> server；
-2. client <- SYN,ACK server；
-3. client ACK -> server. 
+1. client SYN -> server；（connect系统调用）
+2. client <- SYN,ACK server；（accept系统调用）
+3. client ACK -> server. （connect回复）
 
 - 初始seq随机：为了防止伪造seq进行攻击。
 
@@ -69,10 +68,10 @@ checkSum校验和。
 
 ## TCP释放阶段
 
-1. client FIN -> server
-2. client <- ACK server
-3. client <- data/ FIN+ACK server
-4. client ACK -> server
+1. client FIN -> server（close系统调用）
+2. client <- ACK server （server端被动关闭，ACK传回）
+3. client <- data/ FIN+ACK server （一段时间后server发出FIN）
+4. client ACK -> server（一段时间后client接受到server的FIN，返回ACK）
 
 FIN-WAIT-1：等待server发送ack，客户端到server关闭连接；
 FIN-WAIT-2：等待server将未发送完的数据发送完，同时server发送FIN，从server端关闭连接。
@@ -97,19 +96,3 @@ TCP建立连接时，ACK和SYN一起发送，所以减少了一次；但是释�
 5. TCP一对一，UDP可以多对一、一对多；
 5. UDP适用于实时场景，TCP适合可靠传输场景。
 
-
-## HTTP：
-
-### Content-length的使用：
-使用了Transfer-Encoding字段时，不能使用Content-length；比如http请求中的chunk模式；
-
-#### chunk模式
-在持久连接中，可能会一边生产数据，一边发送数据；这时候我们不知道内容的长度，需要一边生产数据一边发送数据；这时候就不能使用Content-Length；
-
-Transfer-Encoding:Chunk 的首部设定被启用；
-
-每个内容由若干个chunk组成，chunk编码格式如下：
-
-[chunk size][\r\n][chunk data][\r\n][chunk size][\r\n][chunk data][\r\n][chunk size = 0][\r\n][\r\n]
-
-chunk size是以十六进制的ASCII码表示，比如：头部是3134这两个字节，表示的是1和4这两个ascii字符，被http协议解释为十六进制数14，也就是十进制的20，后面紧跟[\r\n](0d 0a)，再接着是连续的20个字节的chunk正文。chunk数据以0长度的chunk块结束。
