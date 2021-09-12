@@ -11,8 +11,27 @@ webServer面试问题相关
 
 <!---more--->
 
-## Reactor和Proator
+## 服务器架构
 
+### Server Start
+start以后做了两件事，启动MainLoop,启动TcpServer。
+
+### 初始化Server
+1. 新建acceptor，bindAddress，在MainLoop里调用listen()；
+2. 设定acceptor的IO事件回调函数；
+3. acceptor在IO事件回调函数进行循环accept()；观察到accept有事件发生了，就调用连接建立的回调函数；
+4. 连接建立的回调函数主要做了几件事：
+    - 从threadPool里面取一个IO-Loop，作为新建连接的IO处理线程；
+    - 让连接对应的fd加入到IO-Loop的EPOLLER中；
+    - 调用连接事件发生的回调函数。
+
+### IO-Loop
+1. IO-Loop进行无限Loop：IO-Loop中的EPOLLER关注到感兴趣的事件后，将感兴趣的fd对应的channel返回给IO-Loop；IO-Loop遍历返回的活跃channel，分别对channel调用感兴趣的事件的回调函数（比如产生了可读事件，就调用可读事件的回调函数）
+
+2. server端会在建立时，设定每个连接的感兴趣事件的回调函数。以Http为例，在调用可读回调函数时，会调用该Channel的readCallBack，这个readCallback在新建立连接时会设定。
+3. 在这个readCallBack中，会读取channel对应的fd的数据到内存中，然后执行http特定的读回调函数。比如这里是取出读的内容，按照Http的格式进行解析，然后根据解析内容返回响应内容。
+
+## Reactor和Proator
 
 两个与事件分离器有关的模式是Reactor和Proactor。
 * Reactor模式采用同步IO，而Proactor采用异步IO。

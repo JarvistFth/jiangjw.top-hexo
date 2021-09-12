@@ -1031,8 +1031,121 @@ public:
 };
 ```
 
+## 面试题 02.03. 删除中间节点
+https://leetcode-cn.com/problems/delete-middle-node-lcci/
 
+让当前结点的值为next结点的值，然后再把当前的node->next连到next->next，最后把next删除，
 
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void deleteNode(ListNode* node) {
+        if(node == NULL){
+            return ;
+        }
+
+        auto next = node->next;
+        node->val = next->val;
+        node->next = next->next;
+        delete next;
+    }
+};
+```
+
+## 328. 奇偶链表
+https://leetcode-cn.com/problems/odd-even-linked-list/
+
+给奇数结点建一个指针odd，偶数结点建一个指针even。每次接的时候将odd->next = even->next；然后更新odd指针为下一个odd；even同理。
+
+注意当odd或even在末尾最后一个结点的时候，就不需要再拼接了。这时候只需将odd->next和even链表的head接起来。
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* oddEvenList(ListNode* head) {
+        if(head == nullptr || head->next == nullptr){
+            return head;
+        }
+        ListNode* odd = head;
+        ListNode* even = head->next;
+        ListNode* evenHead = even;
+
+        while(odd->next && even->next){
+            odd->next = even->next;
+            odd = odd->next;
+
+            even->next = odd->next;
+            even = even->next;
+        }
+
+        odd->next = evenHead;
+        return head;
+    }
+};
+```
+
+## 24. 两两交换链表中的节点
+https://leetcode-cn.com/problems/swap-nodes-in-pairs/
+
+正常处理拼接关系。注意后面的back指针指向的prev->next时可能为空。
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        if(head == nullptr || head->next == nullptr){
+            return head;
+        }
+
+        ListNode* dummy = new ListNode(-1);
+        dummy->next = head;
+        ListNode* prev = dummy;
+        ListNode* front = head;
+        ListNode* back = head->next;
+
+        while(front && back){
+            auto next = back->next;
+            prev->next = back;
+            back->next = front;
+            front->next = next;
+
+            prev = front;
+            front = prev->next;
+            back = prev->next?prev->next->next:nullptr;
+        }
+
+        return dummy->next;
+    }
+};
+```
 
 ## 61. 旋转链表
 https://leetcode-cn.com/problems/rotate-list/
@@ -1089,6 +1202,165 @@ public:
         fast->next = head;
         return next;
     }
+};
+```
+
+## 剑指 Offer 36. 二叉搜索树与双向链表
+https://leetcode-cn.com/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof/
+
+二叉搜索树，所以肯定是中序遍历。先定义一个头指针和尾指针。
+
+中序遍历的作用，是将树的结点连接成双向链表；所以中序遍历左子树后，左子树已经连好成为了双向链表；接下来对根节点，要做的就是将根节点接到双向链表后。
+
+所以将尾指针的right连接到根节点上；然后更新尾指针，再把根节点的left连到原来的尾指针指向的结点上。
+
+需要注意如果原来head为空，就先创建head结点，同时更新尾指针指向head。
+
+```C++
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+
+    Node() {}
+
+    Node(int _val) {
+        val = _val;
+        left = NULL;
+        right = NULL;
+    }
+
+    Node(int _val, Node* _left, Node* _right) {
+        val = _val;
+        left = _left;
+        right = _right;
+    }
+};
+*/
+class Solution {
+public:
+    Node* head = NULL;
+    Node* tail = NULL;
+    Node* treeToDoublyList(Node* root) {
+        if(root == NULL){
+            return NULL;
+        }
+
+        dfs(root);
+        head->left = tail;
+        tail->right = head;
+        return head;
+    }
+
+    void dfs(Node* root){
+        if(root == NULL){
+            return ;
+        }
+
+        dfs(root->left);
+
+        if(head == NULL){
+            head = root;
+            tail = head;
+        }else{
+            tail->right = root;
+            auto prev = tail;
+            tail = tail->right;
+            tail->left = prev;
+        }
+
+        dfs(root->right);
+
+
+    }
+};
+```
+
+## 160. 相交链表
+https://leetcode-cn.com/problems/intersection-of-two-linked-lists/
+
+定义两个指针，当走到末尾nullptr的时候，指向另一个的链表头。只要有环，他们一定会相遇，并且相遇的地方就是起点。（走的路程一样）
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        ListNode* pA = headA;
+        ListNode* pB = headB;
+
+        while(pA != pB){
+            pA = pA == NULL?headB:pA->next;
+            pB = pB == NULL?headA:pB->next;
+        }
+        return pA;
+    }
+};
+```
+
+## 109. 有序链表转换二叉搜索树
+https://leetcode-cn.com/problems/convert-sorted-list-to-binary-search-tree/
+
+快慢指针找中点，取出中点后，将中点val值作为rootval；然后递归左右链表作为左右子树。
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* sortedListToBST(ListNode* head) {
+        if(head == nullptr){
+            return nullptr;
+        }
+
+        ListNode* fast = head;
+        ListNode* slow = head;
+        ListNode* prev = nullptr;
+
+        while(fast && fast->next){
+            fast = fast->next->next;
+            prev = slow;
+            slow = slow->next;
+        }
+        TreeNode* root = new TreeNode(slow->val);
+        if(prev){
+            prev->next = nullptr;
+            root->left = sortedListToBST(head);
+            root->right = sortedListToBST(slow->next);
+        }
+        return root;
+        
+    }
+
 };
 ```
 
